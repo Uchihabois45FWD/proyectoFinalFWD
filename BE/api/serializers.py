@@ -10,7 +10,14 @@ from .models import AsistenteEvento
 class UsuarioSerializer(ModelSerializer):
     class Meta:
         model = Usuario
-        fields = "__all__"
+        exclude = [
+            "is_superuser",
+            "last_login",
+            "is_staff",
+            "is_active",
+            "groups",
+            "user_permissions"
+        ]
 
 class CursoSerializer(ModelSerializer):
     class Meta:
