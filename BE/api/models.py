@@ -54,4 +54,3 @@ class AsistenteEvento(models.Model):
         Usuario, on_delete=models.CASCADE, limit_choices_to={'rol': 'usuario'}
     )
     fecha_registro = models.DateTimeField(auto_now_add=True)
-
