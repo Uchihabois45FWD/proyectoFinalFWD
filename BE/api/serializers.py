@@ -5,19 +5,19 @@ from .models import Inscripcion
 from .models import CategoriaEvento
 from .models import Evento
 from .models import AsistenteEvento
-
+from .models import Organizador
 
 class UsuarioSerializer(ModelSerializer):
     class Meta:
         model = Usuario
-        exclude = [
-            "is_superuser",
-            "last_login",
-            "is_staff",
-            "is_active",
-            "groups",
-            "user_permissions"
-        ]
+        fields = ["id","username","email","first_name","last_name","password","fecha_nacimiento","direccion","rol","num_telefono"]
+        
+    def create(self,validated_data):
+        clave = validated_data.pop("password")
+        usuario = Usuario(**validated_data)
+        usuario.set_password(clave)
+        usuario.save()
+        return usuario
 
 class CursoSerializer(ModelSerializer):
     class Meta:
@@ -42,4 +42,9 @@ class EventoSerializer(ModelSerializer):
 class AsistenteEventoSerializer(ModelSerializer):
     class Meta:
         model = AsistenteEvento
+        fields = "__all__"
+
+class OrganizadorSerializer(ModelSerializer):
+    class Meta:
+        model = Organizador
         fields = "__all__"

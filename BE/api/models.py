@@ -55,3 +55,9 @@ class AsistenteEvento(models.Model):
     )
     fecha_registro = models.DateTimeField(auto_now_add=True)
 
+class Organizador(models.Model):
+    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
+    nombre_organizacion = models.CharField(max_length=100)
+    correo_contacto = models.EmailField()
+    telefono_contacto = models.CharField(max_length=20)
+    descripcion = models.TextField(blank=True, null=True)

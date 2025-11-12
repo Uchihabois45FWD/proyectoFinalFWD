@@ -1,5 +1,6 @@
 import {BrowserRouter as Router,Routes,Route} from "react-router-dom"
 import Inicio from "../pages/Inicio"
+import Registro from "../pages/Registro"
 
 
 const Routing = () =>{
@@ -7,7 +8,7 @@ const Routing = () =>{
         <Router>
             <Routes>
                 <Route path="/" element={<Inicio/>}/>
-                {/* <Route path="/registro" element={<Inicio/>}/> */}
+                <Route path="/registro" element={<Registro/>}/>
             </Routes>
         </Router>
     )
