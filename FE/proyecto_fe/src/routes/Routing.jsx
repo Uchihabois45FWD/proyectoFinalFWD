@@ -1,12 +1,12 @@
 import {BrowserRouter as Router,Routes,Route} from "react-router-dom"
-import LoginPage from "../pages/LoginPage"
+import Inicio from "../pages/Inicio"
 
 
 const Routing = () =>{
     return(
         <Router>
             <Routes>
-                <Route path="/" element={<LoginPage/>}/>
+                <Route path="/" element={<Inicio/>}/>
                 {/* <Route path="/registro" element={<Inicio/>}/> */}
             </Routes>
         </Router>
