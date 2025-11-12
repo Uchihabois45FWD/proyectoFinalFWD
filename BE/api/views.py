@@ -3,6 +3,7 @@ from rest_framework.generics import ListCreateAPIView
 from .models import Usuario, Curso, Inscripcion, CategoriaEvento, Evento, AsistenteEvento,Organizador
 from django.contrib.auth import authenticate
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .serializers import (
     UsuarioSerializer,
@@ -13,7 +14,6 @@ from .serializers import (
     AsistenteEventoSerializer,
     OrganizadorSerializer
 )
-from rest_framework.views import APIView
 
 class UsuarioCreateView(ListCreateAPIView):
     queryset = Usuario.objects.all()

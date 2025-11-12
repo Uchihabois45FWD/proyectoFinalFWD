@@ -2,14 +2,9 @@ import { useState } from "react";
 import "../style/registro.css"
 
 export default function RegistroComp() {
-  const [data, setData] = useState({
-    nombre: "",
-    apellidos: "",
-    correo: "",
-    tel: "",
-    cedula: "",
-    pass: "",
-    pass2: "",
+ const [username,setUsername] = useState("")
+ const [data, setData] = useState({
+   
   });
 
   const [ver, setVer] = useState(false);
@@ -45,14 +40,14 @@ export default function RegistroComp() {
               name="nombre"
               placeholder="Nombre"
               value={data.nombre}
-              onChange={onChange}
+              onChange={(e)=>setUsername(e.target.value)}
             />
             <input
               type="text"
               name="apellidos"
               placeholder="Apellidos"
               value={data.apellidos}
-              onChange={onChange}
+              
             />
           </div>
 
