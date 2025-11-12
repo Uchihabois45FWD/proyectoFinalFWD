@@ -1,16 +1,18 @@
 import React from "react";
 import "../styles/navbar.css";
 
-export default function Navbar() {
+const Navbar = () => {
   return (
     <nav className="navbar">
-      <div className="navbar-logo">
+      <div className="navbar-left">
+        <span className="navbar-title">Centro Cívico La Capri</span>
       </div>
-      <div className="navbar-links">
-        <a href="#">Inicio</a>
-        <a href="#">Acerca</a>
-        <a href="#">Contacto</a>
+      <div className="navbar-right">
+        <a href="/login">Iniciar Sesión</a>
+        <a href="/register">Registro</a>
       </div>
     </nav>
   );
-}
+};
+
+export default Navbar;

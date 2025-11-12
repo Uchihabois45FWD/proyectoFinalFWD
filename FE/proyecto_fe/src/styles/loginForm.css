@@ -1,46 +1,121 @@
-.login-form {
-  background: #ffffff;
-  padding: 2rem;
-  border-radius: 12px;
+.login-card {
+  background: white;
+  padding: 2rem 2.5rem;
+  border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
+  width: 380px;
+  margin: 3rem auto;
   text-align: center;
 }
 
-.login-form h2 {
-  margin-bottom: 1.5rem;
+.login-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+  color: #1d3557;
+}
+
+.login-card p {
+  margin-bottom: 1rem;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.login-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.login-card label {
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.9rem;
   color: #333;
 }
 
-.login-form input {
-  width: 100%;
-  padding: 0.75rem;
-  margin-bottom: 1rem;
+.login-card input[type="email"],
+.login-card input[type="password"] {
+  padding: 0.6rem;
   border: 1px solid #ccc;
   border-radius: 6px;
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
-.login-form input:focus {
-  border-color: #00adb5;
-  outline: none;
+.remember-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.2rem;
 }
 
-.login-form button {
-  width: 100%;
-  padding: 0.8rem;
-  background-color: #00adb5;
+.btn-login {
+  margin-top: 1rem;
+  background: linear-gradient(to right, #003b91, #00a59c);
+  color: white;
   border: none;
   border-radius: 6px;
-  color: #fff;
-  font-weight: bold;
-  font-size: 1rem;
+  padding: 0.6rem;
   cursor: pointer;
-  transition: background 0.2s ease-in-out;
+  font-weight: 600;
 }
 
-.login-form button:hover {
-  background-color: #007b80;
+.btn-login:hover {
+  opacity: 0.9;
+}
+
+.register-link a {
+  color: #003b91;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+}
+
+.forgot-password a {
+  color: #00a59c;
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
+}
+
+hr {
+  margin: 1.5rem 0;
+  border: none;
+  border-top: 1px solid #ddd;
+}
+
+.demo-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.btn-user {
+  background: #00a96e;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-admin {
+  background: #d9534f;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-user:hover,
+.btn-admin:hover {
+  opacity: 0.9;
 }

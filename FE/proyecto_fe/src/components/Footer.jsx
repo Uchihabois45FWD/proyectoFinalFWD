@@ -1,35 +1,28 @@
 import React from "react";
+import "../styles/footer.css";
 
 const Footer = () => {
   return (
-    <footer>
-      <div>
+    <footer className="footer">
+      <div className="footer-columns">
         <div>
-          <h2>
-            Centro Cívico La Capri
-          </h2>
+          <h4>Centro Cívico La Capri</h4>
           <p>
             Fortaleciendo nuestra comunidad a través de la educación y la
             participación ciudadana.
           </p>
         </div>
-
         <div>
-          <h2>Enlaces Rápidos</h2>
-          <ul>
-            <li><a href="#">Sobre Nosotros</a></li>
-            <li><a href="#">Cursos</a></li>
-            <li><a href="#">Contacto</a></li>
-          </ul>
+          <h4>Enlaces Rápidos</h4>
+          <a href="/about">Sobre Nosotros</a>
+          <a href="/courses">Cursos</a>
+          <a href="/contact">Contacto</a>
         </div>
-
         <div>
-          <h2>Contacto</h2>
-          <p>
-            📍 Barrio La Capri, San José <br />
-            ☎ 2234-5678 <br />
-            ✉ info@centrocivicilacapri.cr
-          </p>
+          <h4>Contacto</h4>
+          <p>📍 Barrio La Capri, San José</p>
+          <p>📞 2234-5678</p>
+          <p>✉️ info@centrocivicollacapri.cr</p>
         </div>
       </div>
     </footer>
