@@ -1,6 +1,6 @@
 import {BrowserRouter as Router,Routes,Route} from "react-router-dom"
 import Inicio from "../pages/Inicio"
-
+import Registro from "../pages/Registro"
 
 const Routing = () =>{
     return(

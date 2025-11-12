@@ -9,7 +9,7 @@ const Navbar = () => {
       </div>
       <div className="navbar-right">
         <a href="/login">Iniciar Sesión</a>
-        <a href="/register">Registro</a>
+        <a href="/registro">Registro</a>
       </div>
     </nav>
   );

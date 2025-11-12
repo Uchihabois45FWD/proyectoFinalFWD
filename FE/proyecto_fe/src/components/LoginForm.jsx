@@ -47,7 +47,7 @@ const LoginForm = () => {
         </button>
 
         <p className="register-link">
-          ¿No tienes cuenta? <a href="/register">Regístrate aquí</a>
+          ¿No tienes cuenta? <a href="/registro">Regístrate aquí</a>
         </p>
 
         <p className="forgot-password">

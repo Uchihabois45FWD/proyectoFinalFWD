@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "../style/registro.css"
+import "../styles/registro.css"
 
 export default function RegistroComp() {
  const [username,setUsername] = useState("")
