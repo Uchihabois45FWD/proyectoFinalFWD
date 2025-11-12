@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 import LoginForm from "../components/LoginForm";
 import "../styles/loginPage.css";
 
-const LoginPage = () => {
+const Inicio = () => {
   return (
     <div className="login-page">
       <Navbar />
@@ -16,4 +16,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default Inicio;

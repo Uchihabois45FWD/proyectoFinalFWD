@@ -7,7 +7,7 @@ const Routing = () =>{
         <Router>
             <Routes>
                 <Route path="/" element={<Inicio/>}/>
-                {/* <Route path="/registro" element={<Inicio/>}/> */}
+                <Route path="registro" element={<Registro/>}/>
             </Routes>
         </Router>
     )
