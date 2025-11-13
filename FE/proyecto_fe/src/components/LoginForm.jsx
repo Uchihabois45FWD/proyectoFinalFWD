@@ -6,38 +6,9 @@ const LoginForm = () => {
   const [contrasena, setContrasena] = useState("");
   const [recordarme, setRecordarme] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    try {
-      const response = await fetch("http://127.0.0.1:8000/api/login/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: correo,
-          password: contrasena,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Credenciales inválidas");
-      }
-
-      const data = await response.json();
-      console.log("Respuesta del backend:", data);
-
-      // Aquí puedes manejar lo que devuelva tu API
-      // Ejemplo: si devuelve { "mensaje": "Login exitoso" }
-      alert(data.mensaje || "Login correcto");
-
-      // En el futuro, aquí guardarías el token:
-      // localStorage.setItem("token", data.token);
-    } catch (error) {
-      console.error("Error al iniciar sesión:", error.message);
-      alert("Error: " + error.message);
-    }
+    alert(`Correo: ${correo}\nContraseña: ${contrasena}`);
   };
 
   return (
@@ -88,24 +59,8 @@ const LoginForm = () => {
 
       <h4>Acceso de Demostración</h4>
       <div className="demo-buttons">
-        <button
-          className="btn-user"
-          onClick={() => {
-            setCorreo("user@example.com");
-            setContrasena("userpass");
-          }}
-        >
-          👤 Acceso como Usuario
-        </button>
-        <button
-          className="btn-admin"
-          onClick={() => {
-            setCorreo("admin@example.com");
-            setContrasena("adminpass");
-          }}
-        >
-          🔑 Acceso como Administrador
-        </button>
+        <button className="btn-user">👤 Acceso como Usuario</button>
+        <button className="btn-admin">🔑 Acceso como Administrador</button>
       </div>
     </div>
   );
