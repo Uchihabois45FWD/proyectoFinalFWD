@@ -113,7 +113,7 @@ export default function RegistroComp() {
           </button>
 
           <p className="login-link">
-            ¿Ya tienes cuenta? <a href="#">Inicia sesión aquí</a>
+            ¿Ya tienes cuenta? <a href="/">Inicia sesión aquí</a>
           </p>
         </form>
       </div>
