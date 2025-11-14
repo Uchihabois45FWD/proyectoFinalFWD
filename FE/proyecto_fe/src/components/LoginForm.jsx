@@ -1,44 +1,21 @@
 import React, { useState } from "react";
 import "../styles/loginForm.css";
+import { loginUser } from "../services/fetch";
 
 const LoginForm = () => {
-  const [correo, setCorreo] = useState("");
+  const [usuario, setUsuario] = useState("");
   const [contrasena, setContrasena] = useState("");
   const [recordarme, setRecordarme] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await fetch("http://127.0.0.1:8000/api/login/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: correo,
-          password: contrasena,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Credenciales inválidas");
-      }
-
-      const data = await response.json();
-      console.log("Respuesta del backend:", data);
-
-      // Aquí puedes manejar lo que devuelva tu API
-      // Ejemplo: si devuelve { "mensaje": "Login exitoso" }
-      alert(data.mensaje || "Login correcto");
-
-      // En el futuro, aquí guardarías el token:
-      // localStorage.setItem("token", data.token);
-    } catch (error) {
-      console.error("Error al iniciar sesión:", error.message);
-      alert("Error: " + error.message);
-    }
-  };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const data = await loginUser(usuario, contrasena);
+    alert(data.mensaje || "Login correcto");
+  } catch (error) {
+    alert("Error: " + error.message);
+  }
+};
 
   return (
     <div className="login-card">
@@ -46,12 +23,12 @@ const LoginForm = () => {
       <p>Accede a tu cuenta del Centro Cívico</p>
 
       <form onSubmit={handleSubmit}>
-        <label>Correo Electrónico</label>
+        <label>Usuario</label>
         <input
-          type="email"
-          value={correo}
-          onChange={(e) => setCorreo(e.target.value)}
-          placeholder="correo@ejemplo.com"
+          type="text"
+          value={usuario}
+          onChange={(e) => setUsuario(e.target.value)}
+          placeholder="Nombre de usuario"
         />
 
         <label>Contraseña</label>
@@ -88,24 +65,8 @@ const LoginForm = () => {
 
       <h4>Acceso de Demostración</h4>
       <div className="demo-buttons">
-        <button
-          className="btn-user"
-          onClick={() => {
-            setCorreo("user@example.com");
-            setContrasena("userpass");
-          }}
-        >
-          👤 Acceso como Usuario
-        </button>
-        <button
-          className="btn-admin"
-          onClick={() => {
-            setCorreo("admin@example.com");
-            setContrasena("adminpass");
-          }}
-        >
-          🔑 Acceso como Administrador
-        </button>
+        <button className="btn-user">👤 Acceso como Usuario</button>
+        <button className="btn-admin">🔑 Acceso como Administrador</button>
       </div>
     </div>
   );
