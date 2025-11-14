@@ -14,4 +14,14 @@ async function postData(obj,endpoint) {
         console.error(error);
    }
 }
-export {postData}
+async function getData(endpoint) {
+    try {
+        const peticion = await fetch(`http://127.0.0.1:8000/api/${endpoint}`)
+        const data = await peticion.json()
+        console.log(data);
+        return data
+    } catch (error) {
+        console.error(error)
+    }
+}
+export {postData,getData}
