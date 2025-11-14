@@ -1,5 +1,6 @@
 import { useState } from "react";
-import "../style/registro.css";
+import "../styles/registro.css";
+import { postData } from "../services/fetch";
 
 export default function RegistroComp() {
     const [username, setUsername] = useState("");

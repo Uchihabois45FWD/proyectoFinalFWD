@@ -1,15 +1,21 @@
 import React, { useState } from "react";
 import "../styles/loginForm.css";
+import { loginUser } from "../services/fetch";
 
 const LoginForm = () => {
-  const [correo, setCorreo] = useState("");
+  const [usuario, setUsuario] = useState("");
   const [contrasena, setContrasena] = useState("");
   const [recordarme, setRecordarme] = useState(false);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert(`Correo: ${correo}\nContraseña: ${contrasena}`);
-  };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const data = await loginUser(usuario, contrasena);
+    alert(data.mensaje || "Login correcto");
+  } catch (error) {
+    alert("Error: " + error.message);
+  }
+};
 
   return (
     <div className="login-card">
@@ -17,12 +23,12 @@ const LoginForm = () => {
       <p>Accede a tu cuenta del Centro Cívico</p>
 
       <form onSubmit={handleSubmit}>
-        <label>Correo Electrónico</label>
+        <label>Usuario</label>
         <input
-          type="email"
-          value={correo}
-          onChange={(e) => setCorreo(e.target.value)}
-          placeholder="correo@ejemplo.com"
+          type="text"
+          value={usuario}
+          onChange={(e) => setUsuario(e.target.value)}
+          placeholder="Nombre de usuario"
         />
 
         <label>Contraseña</label>
