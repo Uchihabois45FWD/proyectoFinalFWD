@@ -14,11 +14,26 @@ class Usuario(AbstractUser):
     rol = models.CharField(choices=ROL_OPCIONES, max_length=25)
 
 class Curso(models.Model):
+    DIAS_CURSO = (
+        ("lunes","Lunes"),
+        ("martes","Martes"),
+        ("miércoles","Miércoles"),
+        ("jueves","Jueves"),
+        ("viernes","Viernes")
+    )
+    imagen_curso = models.TextField()
     nombre_curso = models.CharField(max_length=40)
     descripcion_curso = models.CharField(max_length=40)
     fecha_inicio_curso = models.DateField()
     fecha_fin_curso = models.DateField()
     instructor = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    destacado = models.BooleanField(default=False)
+    limite_cupos = models.IntegerField()
+    primer_dia = models.CharField(choices=DIAS_CURSO,max_length=20)
+    ultimo_dia = models.CharField(choices=DIAS_CURSO,max_length=20)
+
+class Noticias(models.Model):
+    pass   
 
 class Inscripcion(models.Model):
     ESTADOS = (
@@ -61,3 +76,5 @@ class Organizador(models.Model):
     correo_contacto = models.EmailField()
     telefono_contacto = models.CharField(max_length=20)
     descripcion = models.TextField(blank=True, null=True)
+    
+    
