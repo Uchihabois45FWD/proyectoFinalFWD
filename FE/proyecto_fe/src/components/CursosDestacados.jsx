@@ -9,10 +9,10 @@ export default function CursosDestacados({titulo="Emprendimiento",descripcion="D
 
                     <div className="cont-datos">
                     <p className="dias-curso">{primer_dia} a {ultimo_dia}</p>
-                    <p className="dias-curso">{inscructor}</p>
-
+                    <br />
                     <p className="dias-curso">{cupos} cupos</p>
                     </div>
+                    <p className="dias-curso">{inscructor}</p>
                 </div>
     );
 }

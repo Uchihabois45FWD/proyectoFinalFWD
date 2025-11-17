@@ -9,6 +9,10 @@ const LoginForm = () => {
 
 const handleSubmit = async (e) => {
   e.preventDefault();
+    if (usuario.trim() === "" || contrasena.trim() === "") {
+      alert("Llene todos los campos");
+      return; 
+    }
   try {
     const data = await loginUser(usuario, contrasena);
     alert(data.mensaje || "Login correcto");
@@ -16,7 +20,6 @@ const handleSubmit = async (e) => {
     alert("Error: " + error.message);
   }
 };
-
   return (
     <div className="login-card">
       <h2>Iniciar Sesión</h2>

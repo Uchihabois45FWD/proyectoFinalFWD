@@ -1,25 +1,49 @@
-.cursos-section{
+.curso-card {
+    width: 330px;
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: 0px 8px 18px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
 
+.curso-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.12);
 }
-.curso-card{
-    background-color: #fff;
-    width: 300px;
-    height: auto;
-    border-radius: 20px;
-    h3{
-        color: #3b59b9;
-    }
-    p{
-        color: #a3acba;
-    }
-    .dias-curso{
-        color: #51b697;
-    }
-}
-.curso-icon{
 
+.curso-card h3 {
+    font-size: 1.2rem;
+    color: #1e293b;
+    margin-bottom: 8px;
+    font-weight: 600;
 }
-.cont-datos{
-    display:flex;
-    justify-content: space-between;
+
+.curso-card p {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin-bottom: 8px;
+}
+
+.cont-datos {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 6px;
+    margin-top: 10px;
+}
+
+.cont-datos p:nth-child(1) {
+    font-weight: 500;
+    color: #0f766e;
+}
+
+.cont-datos p:nth-child(2) {
+    font-weight: 500;
+    color: #0f766e;
+}
+
+.cont-datos p:nth-child(3) {
+    margin-left: auto;
+    font-weight: 600;
+    color: #0f766e;
 }
