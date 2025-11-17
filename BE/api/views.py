@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.generics import ListCreateAPIView
-from .models import Usuario, Curso, Inscripcion, CategoriaEvento, Evento, AsistenteEvento,Organizador
+from .models import Usuario, Curso, Inscripcion, CategoriaEvento, Evento, AsistenteEvento,Organizador,Noticias
 from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -12,7 +12,8 @@ from .serializers import (
     CategoriaEventoSerializer,
     EventoSerializer,
     AsistenteEventoSerializer,
-    OrganizadorSerializer
+    OrganizadorSerializer,
+    NoticiasSerializer
 )
 
 class UsuarioCreateView(ListCreateAPIView):
@@ -42,6 +43,10 @@ class AsistenteEventoCreateView(ListCreateAPIView):
 class OrganizadorCreateView(ListCreateAPIView):
     queryset = Organizador.objects.all()
     serializer_class = OrganizadorSerializer
+
+class NoticiasCreateView(ListCreateAPIView):
+    queryset = Noticias.objects.all()
+    serializer_class = NoticiasSerializer
 
 class UsuarioLoginView(APIView):
     def post(self,request):

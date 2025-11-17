@@ -31,9 +31,13 @@ class Curso(models.Model):
     limite_cupos = models.IntegerField()
     primer_dia = models.CharField(choices=DIAS_CURSO,max_length=20)
     ultimo_dia = models.CharField(choices=DIAS_CURSO,max_length=20)
+    
 
 class Noticias(models.Model):
-    pass   
+    imagen_noticia = models.TextField()
+    titulo_noticia = models.CharField(max_length=40)
+    descripcion_noticia = models.CharField(max_length=40)
+    dia_de_notificacion = models.DateField(auto_now_add=True)
 
 class Inscripcion(models.Model):
     ESTADOS = (
