@@ -38,13 +38,6 @@ export default function RegistroComp() {
 
     return (
         <div className="registro-bg">
-            <header className="registro-header">
-                <h1>Centro Cívico La Capri</h1>
-                <div className="registro-nav">
-                    <button className="link">Iniciar Sesión</button>
-                    <button className="btn-sec">Registro</button>
-                </div>
-            </header>
 
             <div className="registro-card">
                 <h2>Crear Cuenta</h2>

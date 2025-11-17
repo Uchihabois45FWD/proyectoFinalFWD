@@ -4,6 +4,7 @@ from .models import Usuario, Curso, Inscripcion, CategoriaEvento, Evento, Asiste
 from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework import status
 
 from .serializers import (
     UsuarioSerializer,
@@ -13,7 +14,8 @@ from .serializers import (
     EventoSerializer,
     AsistenteEventoSerializer,
     OrganizadorSerializer,
-    NoticiasSerializer
+    NoticiasSerializer,
+    LoginSerializer
 )
 
 class UsuarioCreateView(ListCreateAPIView):
@@ -49,15 +51,17 @@ class NoticiasCreateView(ListCreateAPIView):
     serializer_class = NoticiasSerializer
 
 class UsuarioLoginView(APIView):
-    def post(self,request):
-        usuario = request.data.get("username")
-        clave = request.data.get("password")
-        
-        usuario_login = authenticate(username=usuario,password=clave)
-        
-        
-        if usuario_login is not None:
-            return Response({"mensaje":"Incio de sesion exitoso"})
+    def post(self, request):
+        serializer = LoginSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.validated_data["user"]
+            return Response({
+                "mensaje": "Inicio de sesión exitoso",
+                "usuario": user.username,
+                "nombre": user.first_name,
+                "apellido": user.last_name,
+                "email": user.email
+            }, status=status.HTTP_200_OK)
         else:
-            return Response({"mensaje":"Nonono"})
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             

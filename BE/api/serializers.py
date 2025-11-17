@@ -1,5 +1,6 @@
 from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
+from django.contrib.auth import authenticate
 from .models import Usuario
 from .models import Curso
 from .models import Inscripcion
@@ -9,26 +10,42 @@ from .models import AsistenteEvento
 from .models import Organizador
 from .models import Noticias
 
-class UsuarioSerializer(ModelSerializer):
+class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
-        fields = ["id","username","email","first_name","last_name","password","fecha_nacimiento","direccion","rol","num_telefono"]
-        
-    def create(self,validated_data):
+        fields = [
+            "id", "username", "email", "first_name", "last_name", "password",
+            "fecha_nacimiento", "direccion", "rol", "num_telefono"
+        ]
+
+    def create(self, validated_data):
         clave = validated_data.pop("password")
         usuario = Usuario(**validated_data)
         usuario.set_password(clave)
         usuario.save()
         return usuario
-    
+
     def validate(self, data):
-            if len(data['password']) <4:
-                raise serializers.ValidationError({"password": "La clave debe tener mas de 4 caracteres."})
-            
-            if len(data["num_telefono"]) > 8:
-                raise serializers.ValidationError({"num_telefono": "El numero de telefono debe tener 8 caracteres ."})
-            
-            return data
+        if len(data["password"]) < 6:
+            raise serializers.ValidationError({"password": "La contraseña debe tener al menos 6 caracteres."})
+
+        if not data["num_telefono"].isdigit():
+            raise serializers.ValidationError({"num_telefono": "El número de teléfono debe contener solo dígitos."})
+        if len(data["num_telefono"]) != 8:
+            raise serializers.ValidationError({"num_telefono": "El número de teléfono debe tener exactamente 8 dígitos."})
+
+        if len(data["direccion"]) < 5:
+            raise serializers.ValidationError({"direccion": "La dirección debe tener al menos 5 caracteres."})
+
+        if not data["first_name"].isalpha():
+            raise serializers.ValidationError({"first_name": "El nombre debe contener solo letras."})
+        if not data["last_name"].isalpha():
+            raise serializers.ValidationError({"last_name": "El apellido debe contener solo letras."})
+
+        if "@" not in data["email"] or "." not in data["email"]:
+            raise serializers.ValidationError({"email": "El correo electrónico no es válido."})
+
+        return data
             
                  
 
@@ -69,3 +86,24 @@ class NoticiasSerializer(ModelSerializer):
     class Meta:
         model = Noticias 
         fields = "__all__"
+
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
+
+    def validate(self, data):
+        username = data.get("username")
+        password = data.get("password")
+
+        if not username or not password:
+            raise serializers.ValidationError("Debes ingresar usuario y contraseña.")
+
+        if len(password) < 6:
+            raise serializers.ValidationError({"password": "La contraseña debe tener al menos 6 caracteres."})
+
+        user = authenticate(username=username, password=password)
+        if not user:
+            raise serializers.ValidationError("Credenciales inválidas.")
+
+        data["user"] = user
+        return data

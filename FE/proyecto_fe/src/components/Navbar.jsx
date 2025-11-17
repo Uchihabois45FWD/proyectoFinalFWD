@@ -8,7 +8,7 @@ const Navbar = () => {
         <span className="navbar-title">Centro Cívico La Capri</span>
       </div>
       <div className="navbar-right">
-        <a href="/login">Iniciar Sesión</a>
+        <a href="/">Iniciar Sesión</a>
         <a href="/registro">Registro</a>
       </div>
     </nav>
