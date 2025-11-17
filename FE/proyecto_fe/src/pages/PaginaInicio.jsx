@@ -11,6 +11,8 @@ function PaginaInicio() {
         async function traerCursos() {
             const peticion = await getData("crear-curso/")
             setCursos(peticion)
+            console.log(peticion);
+            
         }
         traerCursos()
     },[])

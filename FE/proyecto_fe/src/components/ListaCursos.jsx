@@ -8,9 +8,10 @@ const ListaCursos = ({cursos}) =>{
                     <CursosDestacados
                         titulo={curso.nombre_curso}
                         descripcion={curso.descripcion_curso}
-                        diaInicio={curso.primer_dia}
-                        diaFin={curso.ultimo_dia}
+                        primer_dia={curso.primer_dia}
+                        ultimo_dia={curso.ultimo_dia}
                         cupos={curso.limite_cupos}
+                        inscructor={curso.nombre_instructor + ' ' + curso.apellido_instructor}
                     />
                 )
             })}
