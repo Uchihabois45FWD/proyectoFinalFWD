@@ -8,7 +8,10 @@ const Cursos=()=>{
         async function traerCursos() {
             const info = await getData("crear-curso/")
             setListaCursos(info)
+            console.log(info);
+            
         }
+
         traerCursos()
     },[])
     return(
