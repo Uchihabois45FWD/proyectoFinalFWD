@@ -28,6 +28,9 @@ export default function RegistroComp() {
             "num_telefono": telefono,
             "password": pass
         }
+        if(username.trim() == "" || nombre.trim() == "" || apellidos.trim() == "" || correo.trim() == "" ){
+            alert("Llene todos los campos")
+        }
         await postData(data, "crear-usuario/")
 
     };

@@ -20,6 +20,17 @@ class UsuarioSerializer(ModelSerializer):
         usuario.set_password(clave)
         usuario.save()
         return usuario
+    
+    def validate(self, data):
+            if len(data['password']) <4:
+                raise serializers.ValidationError({"password": "La clave debe tener mas de 4 caracteres."})
+            
+            if len(data["num_telefono"]) > 8:
+                raise serializers.ValidationError({"num_telefono": "El numero de telefono debe tener 8 caracteres ."})
+            
+            return data
+            
+                 
 
 class CursoSerializer(serializers.ModelSerializer):
     nombre_instructor = serializers.CharField(source="instructor.first_name", read_only=True)
