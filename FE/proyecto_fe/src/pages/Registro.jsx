@@ -1,9 +1,13 @@
+import Footer from '../components/Footer'
+import Navbar from '../components/Navbar'
 import RegistroComp from '../components/RegistroComp'
 
 function Registro() {
   return (
     <div>
-        <RegistroComp/>
+        <Navbar/>
+        <RegistroComp/>,
+        <Footer/>
     </div>
   )
 }
