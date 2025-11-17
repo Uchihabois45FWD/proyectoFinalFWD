@@ -1,4 +1,5 @@
 from rest_framework.serializers import ModelSerializer
+from rest_framework import serializers
 from .models import Usuario
 from .models import Curso
 from .models import Inscripcion
@@ -6,6 +7,7 @@ from .models import CategoriaEvento
 from .models import Evento
 from .models import AsistenteEvento
 from .models import Organizador
+from .models import Noticias
 
 class UsuarioSerializer(ModelSerializer):
     class Meta:
@@ -19,7 +21,10 @@ class UsuarioSerializer(ModelSerializer):
         usuario.save()
         return usuario
 
-class CursoSerializer(ModelSerializer):
+class CursoSerializer(serializers.ModelSerializer):
+    nombre_instructor = serializers.CharField(source="instructor.first_name", read_only=True)
+    apellido_instructor = serializers.CharField(source="instructor.last_name", read_only=True)
+
     class Meta:
         model = Curso
         fields = "__all__"
@@ -47,4 +52,9 @@ class AsistenteEventoSerializer(ModelSerializer):
 class OrganizadorSerializer(ModelSerializer):
     class Meta:
         model = Organizador
+        fields = "__all__"
+
+class NoticiasSerializer(ModelSerializer):
+    class Meta:
+        model = Noticias 
         fields = "__all__"

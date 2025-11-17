@@ -7,7 +7,8 @@ from .views import (
     EventoCreateView,
     AsistenteEventoCreateView,
     OrganizadorCreateView,
-    UsuarioLoginView
+    UsuarioLoginView,
+    NoticiasCreateView
 )
 
 urlpatterns = [
@@ -18,5 +19,6 @@ urlpatterns = [
     path("crear-evento/", EventoCreateView.as_view()),
     path("crear-asistente-evento/", AsistenteEventoCreateView.as_view()),
     path("crear-organizador/", OrganizadorCreateView.as_view()),
+    path("crear-noticia/", NoticiasCreateView.as_view()),
     path("login/", UsuarioLoginView.as_view()),
 ]
