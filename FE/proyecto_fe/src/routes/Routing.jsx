@@ -1,7 +1,7 @@
 import {BrowserRouter as Router,Routes,Route} from "react-router-dom"
 import Inicio from "../pages/Inicio"
 import Registro from "../pages/Registro"
-import Cursos from "../pages/Cursos"
+import PaginaInicio from "../pages/PaginaInicio"
 
 const Routing = () =>{
     return(
@@ -9,7 +9,7 @@ const Routing = () =>{
             <Routes>
                 <Route path="/" element={<Inicio/>}/>
                 <Route path="/registro" element={<Registro/>}/>
-                <Route path="/cursos" element={<Cursos/>}/>
+                <Route path="/inicio" element={<PaginaInicio/>}/>
             </Routes>
         </Router>
     )

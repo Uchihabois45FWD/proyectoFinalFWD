@@ -1,0 +1,25 @@
+.cursos-section{
+
+}
+.curso-card{
+    background-color: #fff;
+    width: 300px;
+    height: auto;
+    border-radius: 20px;
+    h3{
+        color: #3b59b9;
+    }
+    p{
+        color: #a3acba;
+    }
+    .dias-curso{
+        color: #51b697;
+    }
+}
+.curso-icon{
+
+}
+.cont-datos{
+    display:flex;
+    justify-content: space-between;
+}

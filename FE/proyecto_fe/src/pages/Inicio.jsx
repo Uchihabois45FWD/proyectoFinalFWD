@@ -13,7 +13,13 @@ const Inicio = () => {
       </main>
       <Footer />
     </div>
+    
+    
   );
 };
 
 export default Inicio;
+
+
+
+

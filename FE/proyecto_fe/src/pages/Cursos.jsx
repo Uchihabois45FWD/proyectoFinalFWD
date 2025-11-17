@@ -23,8 +23,9 @@ const Cursos=()=>{
                         <p>{curso.primer_dia}</p>
                         <p>{curso.ultimo_dia}</p>
                     </div>
-            ))}
+            ))} 
         </>
     )
 }
 export default Cursos
+ 
