@@ -28,7 +28,8 @@ export default function RegistroComp() {
             "num_telefono": telefono,
             "password": pass
         }
-        if(username.trim() == "" || nombre.trim() == "" || apellidos.trim() == "" || correo.trim() == "" ){
+        if(username.trim() == "" || nombre.trim() == "" || apellidos.trim() == "" || correo.trim() == "" || direccion.trim() == "" ||
+        direccion.trim() == "" || fechaNacimiento.trim() == "" || rol.trim() == "" || telefono.trim() == "" || pass.trim() == "" ){
             alert("Llene todos los campos")
         }
         await postData(data, "crear-usuario/")
