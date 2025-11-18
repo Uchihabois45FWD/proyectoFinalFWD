@@ -63,7 +63,7 @@ class UsuarioLoginView(APIView):
                 "nombre": user.first_name,
                 "apellido": user.last_name,
                 "email": user.email,
-                "token": token.access_token
+                "token": token
             }, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
