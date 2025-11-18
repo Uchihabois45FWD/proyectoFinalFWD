@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from .serializers import (
     UsuarioSerializer,
@@ -52,15 +53,17 @@ class NoticiasCreateView(ListCreateAPIView):
 
 class UsuarioLoginView(APIView):
     def post(self, request):
-        serializer = LoginSerializer(data=request.data)
-        if serializer.is_valid():
+        serializer = LoginSerializer(data=request.data) # el traductorsh
+        if serializer.is_valid(): # si existe el usuario
             user = serializer.validated_data["user"]
+            token = str(RefreshToken.for_user(user))
             return Response({
                 "mensaje": "Inicio de sesión exitoso",
                 "usuario": user.username,
                 "nombre": user.first_name,
                 "apellido": user.last_name,
-                "email": user.email
+                "email": user.email,
+                "token": token.access_token
             }, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
