@@ -48,4 +48,23 @@ async function loginUser(usuario, password) {
     throw error;
   }
 }
-export {postData,getData,loginUser}
+
+    const fetchNoticiasDestacadas = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/api/noticias/destacadas/');
+        
+        if (!response.ok) {
+          throw new Error('Error al cargar las noticias destacadas');
+        }
+        
+        const data = await response.json();
+        setNoticias(data);
+      } catch (err) {
+        setError(err.message);
+        console.error('Error fetching noticias:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+export {postData,getData,loginUser,fetchNoticiasDestacadas}
