@@ -1,4 +1,4 @@
-.noticia-card {
+.curso-card {
     width: 330px;
     background: #ffffff;
     border-radius: 14px;
@@ -7,43 +7,57 @@
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.noticia-card:hover {
+.curso-card:hover {
     transform: translateY(-4px);
     box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.12);
 }
 
-.noticia-card h3 {
+.curso-card h3 {
     font-size: 1.2rem;
     color: #1e293b;
     margin-bottom: 8px;
     font-weight: 600;
 }
 
-.noticia-card p {
+.curso-card p {
     font-size: 0.9rem;
     color: #64748b;
     margin-bottom: 8px;
 }
 
-.cont-datos-noticia {
+.cont-datos {
     display: flex;
     flex-wrap: wrap;
     row-gap: 6px;
     margin-top: 10px;
 }
 
-.cont-datos-noticia p:nth-child(1) {
+.cont-datos p:nth-child(1) {
     font-weight: 500;
     color: #0f766e;
 }
 
-.cont-datos-noticia p:nth-child(2) {
+.cont-datos p:nth-child(2) {
     font-weight: 500;
     color: #0f766e;
 }
 
-.cont-datos-noticia p:nth-child(3) {
+.cont-datos p:nth-child(3) {
     margin-left: auto;
     font-weight: 600;
     color: #0f766e;
+}
+
+.curso-icon {
+    width: 50px;
+    height: 50px;
+    background-color: #0f766e;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.dias-curso {
+    font-weight: 500;
+    color: #0f766e;
+    margin-top: 10px;
 }

@@ -28,3 +28,12 @@
     gap: 20px;
     justify-content: center;
 }
+.cont-noticias{
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+.titulo-noticias{
+    text-align: center;
+    color: #6c7685;
+}
