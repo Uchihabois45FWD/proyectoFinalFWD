@@ -1,19 +1,18 @@
-export default function PerfilView({ usuario, activarEdicion }) {
+export default function PerfilView({usuario}) {
     return (
         <div className="perfil-view">
 
             <img
-                src={usuario.foto}
                 alt="Foto de perfil"
                 className="foto-perfil"
             />
 
-            <h2>{usuario.nombre}</h2>
-            <p><strong>Correo:</strong> {usuario.correo}</p>
-            <p><strong>Teléfono:</strong> {usuario.telefono}</p>
-            <p><strong>Bio:</strong> {usuario.bio}</p>
+            <h2>{usuario.username}</h2>
+            <p><strong>Correo:</strong> {usuario.email}</p>
+            <p><strong>Teléfono:</strong> {usuario.num_telefono}</p>
+            <p><strong>Direccion:</strong> {usuario.direccion}</p>
 
-            <button onClick={activarEdicion} className="btn-editar">
+            <button className="btn-editar">
                 Editar perfil
             </button>
 

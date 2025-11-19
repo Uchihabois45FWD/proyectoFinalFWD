@@ -61,9 +61,5 @@ function PaginaInicio() {
         </>
     )
 }
-<<<<<<< HEAD
-export default PaginaInicio
-=======
 
 export default PaginaInicio
->>>>>>> a18c6f0119b0d62942a2a58f372f56282d8006eb

@@ -1,32 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PerfilView from "../components/PerfilView";
 import PerfilEdit from "../components/PerfilEdit";
+import { getData } from "../services/fetch";
 
 export default function PerfilPage() {
+    const [usuario,setUsuario] = useState([])
 
-    const [modoEdicion, setModoEdicion] = useState(false);
-
-  
-    const guardarCambios = (datosActualizados) => {
-        setUsuario(datosActualizados);
-        setModoEdicion(false);
-    };
+    useEffect(()=>{
+        async function traerUsuario() {
+            const peticion = await getData(`usuario-id/${localStorage.getItem("id_usuario")}/`)
+            setUsuario(peticion[0])
+        }
+        traerUsuario()
+    },[])
+    
 
     return (
         <div className="perfil-page">
 
-            {!modoEdicion ? (
                 <PerfilView
                     usuario={usuario}
-                    activarEdicion={() => setModoEdicion(true)}
                 />
-            ) : (
-                <PerfilEdit
-                    usuario={usuario}
-                    guardarCambios={guardarCambios}
-                    cancelar={() => setModoEdicion(false)}
-                />
-            )}
+            
 
         </div>
     );

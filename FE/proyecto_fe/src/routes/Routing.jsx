@@ -4,6 +4,7 @@ import Registro from "../pages/Registro"
 import PaginaInicio from "../pages/PaginaInicio"
 import Cursos from "../pages/Cursos"
 import Noticias from "../pages/Noticias"
+import PerfilPage from "../pages/Perfil"
 
 const Routing = () =>{
     return(
@@ -14,6 +15,7 @@ const Routing = () =>{
                 <Route path="/inicio" element={<PaginaInicio/>}/>
                 <Route path="/cursos" element={<Cursos />} />
                 <Route path="/noticias" element={<Noticias/>}/>
+                <Route path="/perfil" element={<PerfilPage/>}/>
             </Routes>
         </Router>
     )
