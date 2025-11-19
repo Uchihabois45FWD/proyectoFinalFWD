@@ -10,7 +10,8 @@ function PaginaInicio() {
     useEffect(()=>{
         async function traerCursos() {
             const peticion = await getData("crear-curso/")
-            setCursos(peticion)
+            const destacados = peticion.filter((destacado)=>destacado.destacado === true)
+            setCursos(destacados)
             console.log(peticion);
             
         }
@@ -30,5 +31,4 @@ function PaginaInicio() {
 
   )
 }
-
 export default PaginaInicio
