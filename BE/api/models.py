@@ -38,6 +38,7 @@ class Noticias(models.Model):
     titulo_noticia = models.CharField(max_length=40)
     descripcion_noticia = models.CharField(max_length=40)
     dia_de_notificacion = models.DateField(auto_now_add=True)
+    destacado = models.BooleanField(default=False)
 
 class Inscripcion(models.Model):
     ESTADOS = (
