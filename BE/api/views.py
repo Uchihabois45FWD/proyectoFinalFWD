@@ -63,8 +63,15 @@ class UsuarioLoginView(APIView):
                 "nombre": user.first_name,
                 "apellido": user.last_name,
                 "email": user.email,
-                "token": token
+                "token": token,
+                "id_usuario": user.id
             }, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            
+
+class UsuarioPorIdView(ListCreateAPIView):
+    serializer_class = UsuarioSerializer
+    
+    def get_queryset(self):
+        id_usuario = self.kwargs["id_usuario"] # llega por la url
+        return Usuario.objects.filter(id=id_usuario)

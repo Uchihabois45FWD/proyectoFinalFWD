@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import "../styles/loginForm.css";
 import { loginUser } from "../services/fetch";
-
+import { useNavigate } from "react-router-dom";
 const LoginForm = () => {
   const [usuario, setUsuario] = useState("");
   const [contrasena, setContrasena] = useState("");
   const [recordarme, setRecordarme] = useState(false);
+  const navigate = useNavigate()
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -16,6 +17,8 @@ const handleSubmit = async (e) => {
   try {
     const data = await loginUser(usuario, contrasena);
     alert(data.mensaje || "Login correcto");
+    localStorage.setItem("id_usuario",data.id_usuario)
+    navigate("/perfil")
   } catch (error) {
     alert("Error: " + error.message);
   }
