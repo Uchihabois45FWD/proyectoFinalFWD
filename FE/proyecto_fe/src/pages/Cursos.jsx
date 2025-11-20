@@ -1,64 +1,75 @@
-import { useEffect, useState } from "react"
-import { getData } from "../services/fetch"
+import { useEffect, useState } from "react";
+import { getData } from "../services/fetch";
+import CursosDestacados from "../components/CursosDestacados";
 
 const Cursos = () => {
-  const [listaCursos, setListaCursos] = useState([])
-  const [view, setView] = useState("destacados") 
+  const [listaCursos, setListaCursos] = useState([]);
+  const [view, setView] = useState("todos");
 
   useEffect(() => {
     async function traerCursos() {
-      const info = await getData("crear-curso/")
-      setListaCursos(info || [])
-      console.log(info)
+      const info = await getData("crear-curso/");
+      setListaCursos(info || []);
+      console.log(info);
     }
 
-    traerCursos()
-  }, [])
+    traerCursos();
+  }, []);
 
   const toggleDestacado = (id) => {
-    setListaCursos(prev =>
-      prev.map(c => {
-        const match = c.id === id || c.pk === id
-        return match ? { ...c, destacado: !c?.destacado } : c
+    setListaCursos((prev) =>
+      prev.map((c) => {
+        const match = c.id === id || c.pk === id;
+        return match ? { ...c, destacado: !c.destacado } : c;
       })
-    )
-  }
+    );
+  };
 
-  const filtrados = listaCursos.filter(c =>
-    view === "destacados" ? !!c?.destacado : !c?.destacado
-  )
+  const filtrados = listaCursos.filter((c) => {
+    if (view === "todos") return true;
+    if (view === "destacados") return c.destacado === true;
+    return c.destacado !== true; // explorar
+  });
 
   return (
     <>
-      <div>
-        <button type="button" onClick={() => setView("destacados")}>
-          Destacados
+      <div style={{ display: "flex", gap: "12px", marginBottom: "20px" }}>
+        <button type="button" onClick={() => setView("todos")}>
+          Todos los cursos
         </button>
+
+        <button type="button" onClick={() => setView("destacados")}>
+          Cursos destacados
+        </button>
+
         <button type="button" onClick={() => setView("explorar")}>
           Explorar cursos
         </button>
       </div>
 
       {filtrados.length === 0 ? (
-        <p>No hay cursos</p>
+        <p>No hay cursos para mostrar.</p>
       ) : (
-        filtrados.map((curso) => (
-          <div key={curso.id}>
-            <p>{curso.nombre_curso}</p>
-            <p>{curso.descripcion_curso}</p>
-            <p>{curso.fecha_inicio_curso}</p>
-            <p>{curso.fecha_fin_curso}</p>
-            <p>{curso.limite_cupos}</p>
-            <p>{curso.primer_dia}</p>
-            <p>{curso.ultimo_dia}</p>
-
-            <button type="button" onClick={() => toggleDestacado(curso.id ?? curso.pk)}>
-              {curso?.destacado ? "Quitar destacado" : "Destacar"}
-            </button>
-          </div>
-        ))
+        <div className="contenedor-cursos">
+          {filtrados.map((curso) => (
+            <CursosDestacados
+              key={curso.id ?? curso.pk}
+              titulo={curso.nombre_curso}
+              descripcion={curso.descripcion_curso}
+              primer_dia={curso.primer_dia}
+              ultimo_dia={curso.ultimo_dia}
+              cupos={curso.limite_cupos}
+              inscructor={curso.nombre_instructor}
+              destacado={curso.destacado}
+              onToggleDestacado={() =>
+                toggleDestacado(curso.id ?? curso.pk)
+              }
+            />
+          ))}
+        </div>
       )}
     </>
-  )
-}
-export default Cursos
+  );
+};
+
+export default Cursos;
