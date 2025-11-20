@@ -5,6 +5,7 @@ import PaginaInicio from "../pages/PaginaInicio"
 import Cursos from "../pages/Cursos"
 import Noticias from "../pages/Noticias"
 import PerfilPage from "../pages/Perfil"
+import CursoDetalle from "../pages/CursoDetalle"
 
 const Routing = () =>{
     return(
@@ -16,6 +17,7 @@ const Routing = () =>{
                 <Route path="/cursos" element={<Cursos />} />
                 <Route path="/noticias" element={<Noticias/>}/>
                 <Route path="/perfil" element={<PerfilPage/>}/>
+                <Route path="/curso/:id" element={<CursoDetalle />} />
             </Routes>
         </Router>
     )

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { getData } from "../services/fetch"
 import CursosDestacados from "../components/CursosDestacados"
 import NoticiasDestacadas from "../components/NoticiasDestacadas"
+import { Link } from "react-router-dom"
 
 function PaginaInicio() {
     const [cursos, setCursos] = useState([])
@@ -34,15 +35,16 @@ function PaginaInicio() {
             <h3 className='titulo-cursos'>Cursos destacados</h3>
             <div className="cont-cursos">
                 {cursos.map((curso) => (
-                    <CursosDestacados
-                        key={curso.id}
-                        titulo={curso.nombre_curso}
-                        descripcion={curso.descripcion_curso}
-                        primer_dia={curso.primer_dia}
-                        ultimo_dia={curso.ultimo_dia}
-                        cupos={curso.limite_cupos}
-                        inscructor={curso.nombre_instructor + ' ' + curso.apellido_instructor}
-                    />
+                    <Link key={curso.id} to={`/curso/${curso.id}`}>
+                        <CursosDestacados
+                            titulo={curso.nombre_curso}
+                            descripcion={curso.descripcion_curso}
+                            primer_dia={curso.primer_dia}
+                            ultimo_dia={curso.ultimo_dia}
+                            cupos={curso.limite_cupos}
+                            inscructor={curso.nombre_instructor + ' ' + curso.apellido_instructor}
+                        />
+                    </Link>
                 ))}
             </div>
 
