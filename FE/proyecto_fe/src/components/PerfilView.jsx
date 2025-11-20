@@ -1,3 +1,5 @@
+import "../styles/perfil.css";
+
 export default function PerfilView({usuario}) {
     return (
         <div className="perfil-view">

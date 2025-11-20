@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import PerfilView from "../components/PerfilView";
 import PerfilEdit from "../components/PerfilEdit";
 import { getData } from "../services/fetch";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 export default function PerfilPage() {
     const [usuario,setUsuario] = useState([])
@@ -13,16 +15,17 @@ export default function PerfilPage() {
         }
         traerUsuario()
     },[])
-    
+
 
     return (
-        <div className="perfil-page">
-
+        <div className="perfil-layout">
+            <Navbar />
+            <div className="perfil-page">
                 <PerfilView
                     usuario={usuario}
                 />
-            
-
+            </div>
+            <Footer />
         </div>
     );
 }

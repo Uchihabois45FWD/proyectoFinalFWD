@@ -1,0 +1,56 @@
+.perfil-view {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 30px;
+    background: linear-gradient(to right, #002242, #019682);
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    font-family: Arial, sans-serif;
+    color: white;
+    animation: fadeIn 0.5s ease-in-out;
+    position: relative;
+    top: 100px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.foto-perfil {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    margin-bottom: 20px;
+    transition: transform 0.3s;
+}
+
+.foto-perfil:hover {
+    transform: scale(1.05);
+}
+
+.perfil-view h2 {
+    color: #fff;
+    margin-bottom: 15px;
+    font-size: 28px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.perfil-view p {
+    color: #f0f0f0;
+    margin-bottom: 10px;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+.btn-editar:hover {
+    background-color: #0056b3;
+}
