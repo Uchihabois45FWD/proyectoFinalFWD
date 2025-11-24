@@ -5,6 +5,7 @@ import { getData } from "../services/fetch"
 import CursosDestacados from "../components/CursosDestacados"
 import NoticiasDestacadas from "../components/NoticiasDestacadas"
 import { Link } from "react-router-dom"
+import Navbar from "../components/Navbar"
 
 function PaginaInicio() {
     const [cursos, setCursos] = useState([])
@@ -28,10 +29,10 @@ function PaginaInicio() {
 
     return (
         <>
+            <Navbar />
             <div>
                 <Hero />
             </div>
-
             <h3 className='titulo-cursos'>Cursos destacados</h3>
             <div className="cont-cursos">
                 {cursos.map((curso) => (
