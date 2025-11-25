@@ -1,6 +1,9 @@
 body{
-    background-color: #f8fafc;
+    background-image: url('../assets/Logo.png');
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    background-size: 90vw;
+    background-position: center;
+    background-repeat: no-repeat;;         
 }

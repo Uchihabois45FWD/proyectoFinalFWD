@@ -9,7 +9,8 @@ from .views import (
     OrganizadorCreateView,
     UsuarioLoginView,
     NoticiasCreateView,
-    UsuarioPorIdView
+    UsuarioPorIdView,
+    EditarUsuarioView
 )
 
 urlpatterns = [
@@ -22,5 +23,6 @@ urlpatterns = [
     path("crear-organizador/", OrganizadorCreateView.as_view()),
     path("crear-noticia/", NoticiasCreateView.as_view()),
     path("login/", UsuarioLoginView.as_view()),
-    path("usuario-id/<int:id_usuario>/",UsuarioPorIdView.as_view())
+    path("usuario-id/<int:id_usuario>/",UsuarioPorIdView.as_view()),
+    path('actualizar-usuario/',EditarUsuarioView.as_view()),
 ]

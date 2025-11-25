@@ -23,25 +23,19 @@ export default function PerfilEdit({ usuario, guardarCambios, cancelar }) {
             <label>Nombre</label>
             <input
                 name="nombre"
-                value={formData.nombre}
+                value={formData.first_name}
                 onChange={handleChange}
             />
             <label>Correo</label>
             <input
                 name="correo"
-                value={formData.correo}
+                value={formData.email}
                 onChange={handleChange}
             />
             <label>Teléfono</label>
             <input
                 name="telefono"
-                value={formData.telefono}
-                onChange={handleChange}
-            />
-            <label>Biografía</label>
-            <textarea
-                name="bio"
-                value={formData.bio}
+                value={formData.num_telefono}
                 onChange={handleChange}
             />
             <div className="acciones">
