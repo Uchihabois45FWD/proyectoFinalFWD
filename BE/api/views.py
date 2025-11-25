@@ -76,3 +76,34 @@ class UsuarioPorIdView(ListCreateAPIView):
     def get_queryset(self):
         id_usuario = self.kwargs["id_usuario"] # llega por la url
         return Usuario.objects.filter(id=id_usuario)
+
+class EditarUsuarioView(APIView):
+    def patch(self,request):
+        id_usuario = request.data.get("id_usuario")  # lo que va a identificar al usuario 
+        nombre_usuario = request.data.get("username") 
+        correo_usuario = request.data.get("email")
+        telefono_usuario = request.data.get("num_telefono")
+        direccion_usuario = request.data.get("direccion")
+
+        try:
+            usuario = Usuario.objects.get(id=id_usuario)  # traemos al usuario por el id
+
+            """
+                Si nos dieron el dato lo actualizamos
+
+                sino, se queda igual
+            """
+            if nombre_usuario:
+                usuario.username = nombre_usuario
+            if correo_usuario:
+                usuario.email = correo_usuario
+            if telefono_usuario:
+                usuario.num_telefono = telefono_usuario
+            if direccion_usuario:
+                usuario.direccion = direccion_usuario
+            
+            usuario.save() # confirmamos y guardamos en la bashee de datoz
+            return Response({"mensaje": "Usuario actualizado correctamente."}, status=status.HTTP_200_OK)
+        except Usuario.DoesNotExist:    
+            return Response({"error": "Usuario no encontrado."}, status=status.HTTP_404_NOT_FOUND)
+        

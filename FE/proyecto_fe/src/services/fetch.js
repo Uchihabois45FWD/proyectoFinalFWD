@@ -67,4 +67,16 @@ async function loginUser(usuario, password) {
       }
     };
 
-export {postData,getData,loginUser,fetchNoticiasDestacadas}
+async function patchData(obj,endpoint) {
+  const peticion = await fetch(`http://127.0.0.1:8000/${endpoint}/`,{
+    method: "PATCH",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify(obj)
+  })
+  const data = await peticion.json()
+  console.log(data);
+  return data
+}
+export {postData,getData,loginUser,fetchNoticiasDestacadas,patchData}

@@ -2,28 +2,41 @@ import React, { useState } from "react";
 import "../styles/loginForm.css";
 import { loginUser } from "../services/fetch";
 import { useNavigate } from "react-router-dom";
+
 const LoginForm = () => {
   const [usuario, setUsuario] = useState("");
   const [contrasena, setContrasena] = useState("");
   const [recordarme, setRecordarme] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     if (usuario.trim() === "" || contrasena.trim() === "") {
       alert("Llene todos los campos");
-      return; 
+      return;
     }
-  try {
-    const data = await loginUser(usuario, contrasena);
-    alert(data.mensaje || "Login correcto");
-    localStorage.setItem("id_usuario",data.id_usuario)
-    localStorage.setItem("rol",data.rol)
-    navigate("/perfil")
-  } catch (error) {
-    alert("Error: " + error.message);
-  }
-};
+    try {
+      const data = await loginUser(usuario, contrasena);
+      alert(data.mensaje || "Login correcto");
+      localStorage.setItem("id_usuario", data.id_usuario);
+      if (data.rol) {
+        localStorage.setItem("user_role", data.rol);
+      } else {
+        localStorage.setItem("user_role", "usuario");
+      }
+      navigate("/perfil");
+    } catch (error) {
+      alert("Error: " + error.message);
+    }
+  };
+
+  const setDemoUserRole = (role) => {
+    localStorage.setItem("user_role", role);
+    localStorage.setItem("id_usuario", role === "administrador" ? "1" : "2");
+    alert(`Sesión iniciada como ${role}`);
+    window.location.href = "/inicio";
+  };
+
   return (
     <div className="login-card">
       <h2>Iniciar Sesión</h2>
@@ -72,8 +85,18 @@ const handleSubmit = async (e) => {
 
       <h4>Acceso de Demostración</h4>
       <div className="demo-buttons">
-        <button className="btn-user">👤 Acceso como Usuario</button>
-        <button className="btn-admin">🔑 Acceso como Administrador</button>
+        <button
+          className="btn-user"
+          onClick={() => setDemoUserRole("usuario")}
+        >
+          👤 Acceso como Usuario
+        </button>
+        <button
+          className="btn-admin"
+          onClick={() => setDemoUserRole("administrador")}
+        >
+          🔑 Acceso como Administrador
+        </button>
       </div>
     </div>
   );

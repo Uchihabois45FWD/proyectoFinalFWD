@@ -23,6 +23,7 @@ export default function PerfilPage() {
             <div className="perfil-page">
                 <PerfilView
                     usuario={usuario}
+                    usuarioEdit={usuario}
                 />
             </div>
             <Footer />
