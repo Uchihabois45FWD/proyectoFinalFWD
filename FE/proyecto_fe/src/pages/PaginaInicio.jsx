@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { getData } from "../services/fetch"
 import CursosDestacados from "../components/CursosDestacados"
 import NoticiasDestacadas from "../components/NoticiasDestacadas"
-import { Link } from "react-router-dom"   // 🔹 Faltaba importar Link
+import { Link } from "react-router-dom"   
 
 
 function PaginaInicio() {
@@ -26,7 +26,7 @@ function PaginaInicio() {
         async function traerNoticias() {
             try {
                 const peticion = await getData("crear-noticia/")
-                const destacados = peticion.filter((noticia) => noticia.destacado === true) // 🔹 Filtrar igual que cursos
+                const destacados = peticion.filter((noticia) => noticia.destacado === true) 
                 setNoticias(destacados)
                 console.log("Noticias:", peticion)
             } catch (error) {
@@ -54,7 +54,7 @@ function PaginaInicio() {
                             primer_dia={curso.primer_dia}
                             ultimo_dia={curso.ultimo_dia}
                             cupos={curso.limite_cupos}
-                            instructor={curso.nombre_instructor + ' ' + curso.apellido_instructor}  // 🔹 corregido "inscructor" → "instructor"
+                            instructor={curso.nombre_instructor + ' ' + curso.apellido_instructor}  
                         />
                     </Link>
                 ))}

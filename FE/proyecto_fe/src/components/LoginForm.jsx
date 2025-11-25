@@ -18,6 +18,7 @@ const handleSubmit = async (e) => {
     const data = await loginUser(usuario, contrasena);
     alert(data.mensaje || "Login correcto");
     localStorage.setItem("id_usuario",data.id_usuario)
+    localStorage.setItem("rol",data.rol)
     navigate("/perfil")
   } catch (error) {
     alert("Error: " + error.message);

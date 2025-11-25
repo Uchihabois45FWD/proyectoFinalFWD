@@ -38,12 +38,6 @@ export default function PerfilEdit({ usuario, guardarCambios, cancelar }) {
                 value={formData.telefono}
                 onChange={handleChange}
             />
-            <label>Biografía</label>
-            <textarea
-                name="bio"
-                value={formData.bio}
-                onChange={handleChange}
-            />
             <div className="acciones">
                 <button type="submit" className="btn-guardar">Guardar</button>
                 <button type="button" className="btn-cancelar" onClick={cancelar}>
