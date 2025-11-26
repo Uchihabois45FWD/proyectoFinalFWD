@@ -13,16 +13,27 @@ function PaginaInicio() {
 
     useEffect(() => {
         async function traerCursos() {
-            const peticion = await getData("crear-curso/")
-            const destacados = peticion.filter((destacado)=>destacado.destacado === true)
-            setCursos(destacados)
-            console.log(peticion);
+            try {
+                const peticion = await getData("crear-curso/")
+                const destacados = peticion.filter((curso) => curso.destacado === true)
+                setCursos(destacados)
+                console.log("Cursos:", peticion)
+            } catch (error) {
+                console.error("Error al traer cursos:", error)
+            }
         }
+
         async function traerNoticias() {
-            const peticion = await getData("crear-noticia/")
-            setNoticias(peticion)
-            console.log(peticion);
+            try {
+                const peticion = await getData("crear-noticia/")
+                const destacados = peticion.filter((noticia) => noticia.destacado === true) 
+                setNoticias(destacados)
+                console.log("Noticias:", peticion)
+            } catch (error) {
+                console.error("Error al traer noticias:", error)
+            }
         }
+
         traerCursos()
         traerNoticias()
     }, [])
@@ -43,7 +54,7 @@ function PaginaInicio() {
                             primer_dia={curso.primer_dia}
                             ultimo_dia={curso.ultimo_dia}
                             cupos={curso.limite_cupos}
-                            inscructor={curso.nombre_instructor + ' ' + curso.apellido_instructor}
+                            instructor={curso.nombre_instructor + ' ' + curso.apellido_instructor}  
                         />
                     </Link>
                 ))}
@@ -51,7 +62,7 @@ function PaginaInicio() {
 
             <h3 className='titulo-noticias'>Noticias destacadas</h3>
             <div className="cont-noticias">
-                {noticias.filter(noticia => noticia.destacado).map((noticia) => (
+                {noticias.map((noticia) => (
                     <NoticiasDestacadas
                         key={noticia.id}
                         titulo={noticia.titulo_noticia}
@@ -64,4 +75,5 @@ function PaginaInicio() {
         </>
     )
 }
+
 export default PaginaInicio

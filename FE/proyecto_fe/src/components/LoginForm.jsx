@@ -7,6 +7,7 @@ const LoginForm = () => {
   const [usuario, setUsuario] = useState("");
   const [contrasena, setContrasena] = useState("");
   const [recordarme, setRecordarme] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -53,11 +54,15 @@ const LoginForm = () => {
 
         <label>Contraseña</label>
         <input
-          type="password"
+          type={showPassword ? "text" : "password"}
           value={contrasena}
           onChange={(e) => setContrasena(e.target.value)}
           placeholder="••••••••"
         />
+
+        <button type="button" onClick={() => setShowPassword(!showPassword)}>
+          {showPassword ? "Ocultar contraseña" : "Ver contraseña"}
+        </button>
 
         <div className="remember-row">
           <input

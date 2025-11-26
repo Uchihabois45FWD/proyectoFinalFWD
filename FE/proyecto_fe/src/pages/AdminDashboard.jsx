@@ -78,6 +78,8 @@ const UsersList = ({ users, onUserUpdate, onUserDelete }) => {
     });
   };
 
+
+const UsersList = ({ users }) => {
   return (
     <div className="section">
       <h2>Usuarios</h2>
@@ -167,6 +169,11 @@ const UsersList = ({ users, onUserUpdate, onUserDelete }) => {
                   <button onClick={() => handleDelete(user.id)} className="btn-delete">Eliminar</button>
                 </>
               )}
+            <div key={user.id} className="list-item" onClick={()=>{
+              console.log(user.id)
+            }}>
+              <span>Usuario:</span> {user.username} - <span>Email:</span> {user.email} -{" "}
+              <span>Rol:</span> {user.rol}
             </div>
           ))
         )}

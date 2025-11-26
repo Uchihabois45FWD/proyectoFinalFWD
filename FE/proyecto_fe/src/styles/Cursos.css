@@ -1,0 +1,43 @@
+.cursos-container {
+    padding: 2rem;
+    background-color: #f9fafb;
+    min-height: 100vh;
+}
+
+.botones-container {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.botones-container button {
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    padding: 0.7rem 1.2rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.botones-container button:hover {
+    background-color: #1e40af;
+}
+
+.botones-container button:focus {
+    outline: 2px solid #93c5fd;
+}
+
+.cursos-lista {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 5rem;
+}
+
+.mensaje-vacio {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #6b7280;
+    margin-top: 2rem;
+}

@@ -1,5 +1,5 @@
 import "../styles/CursosDestacados.css"
-
+import { useState } from "react";
 export default function CursosDestacados({
   titulo = "Emprendimiento",
   descripcion = "Descripcion",
@@ -8,7 +8,8 @@ export default function CursosDestacados({
   cupos = "20",
   inscructor = "Pepe Viyuela",
   destacado = false,
-  onToggleDestacado
+  onToggleDestacado,
+  admin
 }) {
   return (
     <div className="curso-card" data-destacado={destacado}>
@@ -22,12 +23,16 @@ export default function CursosDestacados({
         <p className="dias-curso">{cupos} cupos</p>
       </div>
       <p className="dias-curso">{inscructor}</p>
-
-      {onToggleDestacado && (
-        <button type="button" onClick={onToggleDestacado}>
-          {destacado ? "Quitar destacado" : "Destacar"}
-        </button>
+      {admin == "instructor" || admin == "admin" &&(
+        <>
+          {onToggleDestacado && (
+            <button type="button" onClick={onToggleDestacado}>
+              {destacado ? "Quitar destacado" : "Destacar"}
+            </button>
+          )}
+        </>
       )}
+      
     </div>
   );
 }
