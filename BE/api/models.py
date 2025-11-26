@@ -21,6 +21,11 @@ class Curso(models.Model):
         ("jueves","Jueves"),
         ("viernes","Viernes")
     )
+    MODALIDADES = (
+        ("presencial","Presencial"),
+        ("virtual","Virtual"),
+        ("bimodal","Bimodal"),
+    )
     imagen_curso = models.TextField()
     nombre_curso = models.CharField(max_length=40)
     descripcion_curso = models.CharField(max_length=40)
@@ -29,8 +34,10 @@ class Curso(models.Model):
     instructor = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     destacado = models.BooleanField(default=False)
     limite_cupos = models.IntegerField()
+    modalidad = models.CharField(max_length=20,choices=MODALIDADES)
     primer_dia = models.CharField(choices=DIAS_CURSO,max_length=20)
     ultimo_dia = models.CharField(choices=DIAS_CURSO,max_length=20)
+    certificado = models.BooleanField(default=False)
     
 
 class Noticias(models.Model):
@@ -82,4 +89,15 @@ class Organizador(models.Model):
     telefono_contacto = models.CharField(max_length=20)
     descripcion = models.TextField(blank=True, null=True)
     
+
+class ComentariosCursos(models.Model):
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
+    contenido_comentario = models.TextField()
+    fecha_comentario = models.DateTimeField(auto_now_add=True)
+    calificacion = models.IntegerField()
     
+class InscripcionCurso(models.Model):
+    curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    fecha_inscripcion = models.DateTimeField(auto_now_add=True) 

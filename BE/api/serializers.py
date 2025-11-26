@@ -9,6 +9,8 @@ from .models import Evento
 from .models import AsistenteEvento
 from .models import Organizador
 from .models import Noticias
+from .models import ComentariosCursos
+from .models import InscripcionCurso
 
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
@@ -107,3 +109,13 @@ class LoginSerializer(serializers.Serializer):
 
         data["user"] = user
         return data
+
+class ComentariosCursosSerializer(ModelSerializer):
+    class Meta:
+        model = ComentariosCursos
+        fields = "__all__"
+
+class InscripcionCursoSerializer(ModelSerializer):
+    class Meta:
+        model = InscripcionCurso
+        fields = "__all__"

@@ -54,7 +54,10 @@ export default function CursoDetalle() {
                 <h1>{curso.nombre_curso}</h1>
                 <p><strong>Descripción:</strong> {curso.descripcion_curso}</p>
                 <p><strong>Instructor:</strong> {curso.nombre_instructor} {curso.apellido_instructor}</p>
-                <p><strong>Fechas:</strong> {curso.fecha_inicio_curso} - {curso.fecha_fin_curso}</p>
+                
+                <p><strong>Fecha de inicio:</strong> {curso.fecha_inicio_curso}</p>
+                <p><strong>Fecha de fin:</strong> {curso.fecha_fin_curso}</p>
+                
                 <p><strong>Días:</strong> {curso.primer_dia} a {curso.ultimo_dia}</p>
                 <p><strong>Cupos:</strong> {curso.limite_cupos}</p>
 

@@ -3,6 +3,7 @@ import { getData } from "../services/fetch";
 import "../styles/AdminDashboard.css";
 import Navbar from "../components/Navbar";
 
+
 const UsersList = ({ users }) => {
   return (
     <div className="section">
@@ -12,7 +13,9 @@ const UsersList = ({ users }) => {
           <p>No hay usuarios para mostrar.</p>
         ) : (
           users.map((user) => (
-            <div key={user.id} className="list-item">
+            <div key={user.id} className="list-item" onClick={()=>{
+              console.log(user.id)
+            }}>
               <span>Usuario:</span> {user.username} - <span>Email:</span> {user.email} -{" "}
               <span>Rol:</span> {user.rol}
             </div>

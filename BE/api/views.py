@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.generics import ListCreateAPIView
-from .models import Usuario, Curso, Inscripcion, CategoriaEvento, Evento, AsistenteEvento,Organizador,Noticias
+from .models import Usuario, Curso, Inscripcion, CategoriaEvento, Evento, AsistenteEvento,Organizador,Noticias, ComentariosCursos, InscripcionCurso
 from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -16,7 +16,9 @@ from .serializers import (
     AsistenteEventoSerializer,
     OrganizadorSerializer,
     NoticiasSerializer,
-    LoginSerializer
+    LoginSerializer,
+    ComentariosCursosSerializer,
+    InscripcionCursoSerializer,
 )
 
 class UsuarioCreateView(ListCreateAPIView):
@@ -106,4 +108,11 @@ class EditarUsuarioView(APIView):
             return Response({"mensaje": "Usuario actualizado correctamente."}, status=status.HTTP_200_OK)
         except Usuario.DoesNotExist:    
             return Response({"error": "Usuario no encontrado."}, status=status.HTTP_404_NOT_FOUND)
-        
+    
+class ComentariosCursosCreateView(ListCreateAPIView):
+    queryset = ComentariosCursos.objects.all()
+    serializer_class = ComentariosCursosSerializer
+    
+class InscripcionCursoCreateView(ListCreateAPIView):
+    queryset = InscripcionCurso.objects.all()
+    serializer_class = InscripcionCursoSerializer
