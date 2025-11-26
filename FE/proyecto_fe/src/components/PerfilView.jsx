@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../styles/perfil.css";
 import PerfilEdit from "./PerfilEdit";
 import { patchData } from "../services/fetch";
 
-export default function PerfilView({ usuario }) {
+export default function PerfilView({ usuario, onUpdate }) {
     const [editando, setEditando] = useState(false);
 
     const [formData, setFormData] = useState({
@@ -13,6 +13,16 @@ export default function PerfilView({ usuario }) {
         num_telefono: usuario.num_telefono,
         direccion: usuario.direccion
     });
+
+    useEffect(() => {
+        setFormData({
+            id_usuario: localStorage.getItem("id_usuario"),
+            username: usuario.username,
+            email: usuario.email,
+            num_telefono: usuario.num_telefono,
+            direccion: usuario.direccion
+        });
+    }, [usuario]);
 
     function handleChange(e) {
         const { name, value } = e.target;
@@ -25,6 +35,10 @@ export default function PerfilView({ usuario }) {
     async function actualizarUsuario() {
         const peticion = await patchData(formData, 'api/actualizar-usuario');
         console.log('Usuario actualizado:', peticion);
+        if (peticion.mensaje === "Usuario actualizado correctamente.") {
+            // Update the parent component's state with the new data
+            onUpdate(formData);
+        }
         setEditando(false);
     }
 

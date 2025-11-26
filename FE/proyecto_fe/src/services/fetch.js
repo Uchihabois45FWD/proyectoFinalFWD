@@ -79,4 +79,29 @@ async function patchData(obj,endpoint) {
   console.log(data);
   return data
 }
-export {postData,getData,loginUser,fetchNoticiasDestacadas,patchData}
+
+async function deleteData(endpoint) {
+  const peticion = await fetch(`http://127.0.0.1:8000/${endpoint}/`,{
+    method: "DELETE",
+    headers: {
+        "Content-Type": "application/json"
+    }
+  })
+  const data = await peticion.json()
+  console.log(data);
+  return data
+}
+
+async function putData(obj,endpoint) {
+  const peticion = await fetch(`http://127.0.0.1:8000/${endpoint}/`,{
+    method: "PUT",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify(obj)
+  })
+  const data = await peticion.json()
+  console.log(data);
+  return data
+}
+export {postData,getData,loginUser,fetchNoticiasDestacadas,patchData,deleteData,putData}

@@ -16,6 +16,9 @@ export default function PerfilPage() {
         traerUsuario()
     },[])
 
+    const handleUsuarioUpdate = (updatedUsuario) => {
+        setUsuario(updatedUsuario);
+    };
 
     return (
         <div className="perfil-layout">
@@ -24,6 +27,7 @@ export default function PerfilPage() {
                 <PerfilView
                     usuario={usuario}
                     usuarioEdit={usuario}
+                    onUpdate={handleUsuarioUpdate}
                 />
             </div>
             <Footer />

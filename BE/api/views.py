@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from .models import Usuario, Curso, Inscripcion, CategoriaEvento, Evento, AsistenteEvento,Organizador,Noticias
 from django.contrib.auth import authenticate
 from rest_framework.response import Response
@@ -64,7 +64,8 @@ class UsuarioLoginView(APIView):
                 "apellido": user.last_name,
                 "email": user.email,
                 "token": token,
-                "id_usuario": user.id
+                "id_usuario": user.id,
+                "rol": user.rol
             }, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -78,8 +79,8 @@ class UsuarioPorIdView(ListCreateAPIView):
 
 class EditarUsuarioView(APIView):
     def patch(self,request):
-        id_usuario = request.data.get("id_usuario")  # lo que va a identificar al usuario 
-        nombre_usuario = request.data.get("username") 
+        id_usuario = request.data.get("id_usuario")  # lo que va a identificar al usuario
+        nombre_usuario = request.data.get("username")
         correo_usuario = request.data.get("email")
         telefono_usuario = request.data.get("num_telefono")
         direccion_usuario = request.data.get("direccion")
@@ -100,9 +101,13 @@ class EditarUsuarioView(APIView):
                 usuario.num_telefono = telefono_usuario
             if direccion_usuario:
                 usuario.direccion = direccion_usuario
-            
+
             usuario.save() # confirmamos y guardamos en la bashee de datoz
             return Response({"mensaje": "Usuario actualizado correctamente."}, status=status.HTTP_200_OK)
-        except Usuario.DoesNotExist:    
+        except Usuario.DoesNotExist:
             return Response({"error": "Usuario no encontrado."}, status=status.HTTP_404_NOT_FOUND)
+
+class UsuarioDetailView(RetrieveUpdateDestroyAPIView):
+    queryset = Usuario.objects.all()
+    serializer_class = UsuarioSerializer
         

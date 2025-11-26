@@ -10,7 +10,8 @@ from .views import (
     UsuarioLoginView,
     NoticiasCreateView,
     UsuarioPorIdView,
-    EditarUsuarioView
+    EditarUsuarioView,
+    UsuarioDetailView
 )
 
 urlpatterns = [
@@ -25,4 +26,5 @@ urlpatterns = [
     path("login/", UsuarioLoginView.as_view()),
     path("usuario-id/<int:id_usuario>/",UsuarioPorIdView.as_view()),
     path('actualizar-usuario/',EditarUsuarioView.as_view()),
+    path('usuario/<int:pk>/', UsuarioDetailView.as_view()),
 ]
