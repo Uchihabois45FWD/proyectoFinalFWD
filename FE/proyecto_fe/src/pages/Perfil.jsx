@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import PerfilView from "../components/PerfilView";
 import PerfilEdit from "../components/PerfilEdit";
-import { getData } from "../services/fetch";
+import { getData, getUser } from "../services/fetch";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
@@ -10,7 +10,7 @@ export default function PerfilPage() {
 
     useEffect(()=>{
         async function traerUsuario() {
-            const peticion = await getData(`usuario-id/${localStorage.getItem("id_usuario")}/`)
+            const peticion = await getUser()
             setUsuario(peticion[0])
         }
         traerUsuario()

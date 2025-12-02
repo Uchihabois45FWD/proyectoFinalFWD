@@ -7,15 +7,14 @@ import Noticias from "../pages/Noticias"
 import PerfilPage from "../pages/Perfil"
 import CursoDetalle from "../pages/CursoDetalle"
 import AdminDashboard from "../pages/AdminDashboard"
+import NoticiasDetalle from "../pages/NoticiasDetalle";
 
 const ProtectedRoute = ({ children }) => {
-    // Check user role stored in localStorage or fetch from API
-    const userRole = localStorage.getItem("user_role"); // Assumed to be set on login
+    const userRole = localStorage.getItem("user_role"); 
 
     if (userRole === "administrador") {
         return children;
     } else {
-        // Redirect non-admin users to home page or other page
         return <Navigate to="/inicio" replace />;
     }
 };
@@ -31,7 +30,9 @@ const Routing = () =>{
                 <Route path="/noticias" element={<Noticias/>}/>
                 <Route path="/perfil" element={<PerfilPage/>}/>
                 <Route path="/curso/:id" element={<CursoDetalle />} />
+                <Route path="/noticias/:id" element={<NoticiasDetalle />} />
                 <Route path="/admin" element={
+                    
                     <ProtectedRoute>
                         <AdminDashboard />
                     </ProtectedRoute>

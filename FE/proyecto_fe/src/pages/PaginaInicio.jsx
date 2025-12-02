@@ -61,8 +61,9 @@ function PaginaInicio() {
             </div>
 
             <h3 className='titulo-noticias'>Noticias destacadas</h3>
-            <div className="cont-noticias">
+            <div className="cont-noticias"> 
                 {noticias.map((noticia) => (
+                    <Link key={noticia.id} to={`/noticias/${noticia.id}`}>
                     <NoticiasDestacadas
                         key={noticia.id}
                         titulo={noticia.titulo_noticia}
@@ -70,6 +71,7 @@ function PaginaInicio() {
                         primer_dia={noticia.dia_de_notificacion}
                         dia_publicacion={noticia.dia_de_notificacion}
                     />
+                    </Link>
                 ))}
             </div>
         </>

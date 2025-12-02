@@ -1,33 +1,52 @@
+// ...existing code...
 import React, { useState } from "react";
 import "../styles/loginForm.css";
 import { loginUser } from "../services/fetch";
 import { useNavigate } from "react-router-dom";
 
-const LoginForm = () => {
+export default function LoginForm() {
   const [usuario, setUsuario] = useState("");
   const [contrasena, setContrasena] = useState("");
   const [recordarme, setRecordarme] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (usuario.trim() === "" || contrasena.trim() === "") {
-      alert("Llene todos los campos");
+    if (!usuario.trim() || !contrasena.trim()) {
+      alert("Complete usuario y contraseña");
       return;
     }
+    setSubmitting(true);
     try {
-      const data = await loginUser(usuario, contrasena);
-      alert(data.mensaje || "Login correcto");
-      localStorage.setItem("id_usuario", data.id_usuario);
-      if (data.rol) {
-        localStorage.setItem("user_role", data.rol);
-      } else {
-        localStorage.setItem("user_role", "usuario");
+      const data = await loginUser(usuario.trim(), contrasena);
+      localStorage.setItem("auth_token", data.access);
+      // loginUser guarda token si el backend lo devuelve
+      // guardar identificador/rol si vienen en la respuesta
+      if (data?.id_usuario) localStorage.setItem("id_usuario", String(data.id_usuario));
+      if (data?.user_id) localStorage.setItem("id_usuario", String(data.user_id));
+      if (data?.id) localStorage.setItem("id_usuario", String(data.id));
+      if (data?.rol) localStorage.setItem("user_role", data.rol);
+      else if (!localStorage.getItem("user_role")) localStorage.setItem("user_role", "usuario");
+
+      // opcional: recordar (ya se usa localStorage por defecto)
+      if (!recordarme) {
+        // si no quiere recordar, podría guardarse en sessionStorage en su lugar
+        // aquí mantenemos token en localStorage por simplicidad
       }
+
+      alert(data.mensaje || "Inicio de sesión correcto");
       navigate("/perfil");
-    } catch (error) {
-      alert("Error: " + error.message);
+    } catch (err) {
+      const resp = err?.response || {};
+      const msg =
+        typeof resp === "string"
+          ? resp
+          : resp.detail || resp.mensaje || err.message || "Error al iniciar sesión";
+      alert(String(msg));
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -35,7 +54,7 @@ const LoginForm = () => {
     localStorage.setItem("user_role", role);
     localStorage.setItem("id_usuario", role === "administrador" ? "1" : "2");
     alert(`Sesión iniciada como ${role}`);
-    window.location.href = "/inicio";
+    navigate("/inicio");
   };
 
   return (
@@ -50,6 +69,7 @@ const LoginForm = () => {
           value={usuario}
           onChange={(e) => setUsuario(e.target.value)}
           placeholder="Nombre de usuario"
+          disabled={submitting}
         />
 
         <label>Contraseña</label>
@@ -58,6 +78,7 @@ const LoginForm = () => {
           value={contrasena}
           onChange={(e) => setContrasena(e.target.value)}
           placeholder="••••••••"
+          disabled={submitting}
         />
 
         <button type="button" onClick={() => setShowPassword(!showPassword)}>
@@ -69,12 +90,14 @@ const LoginForm = () => {
             type="checkbox"
             checked={recordarme}
             onChange={() => setRecordarme(!recordarme)}
+            id="remember"
+            disabled={submitting}
           />
-          <span>Recordarme</span>
+          <label htmlFor="remember">Recordarme</label>
         </div>
 
-        <button type="submit" className="btn-login">
-          Iniciar Sesión
+        <button type="submit" className="btn-login" disabled={submitting}>
+          {submitting ? "Ingresando..." : "Iniciar Sesión"}
         </button>
 
         <p className="register-link">
@@ -90,21 +113,13 @@ const LoginForm = () => {
 
       <h4>Acceso de Demostración</h4>
       <div className="demo-buttons">
-        <button
-          className="btn-user"
-          onClick={() => setDemoUserRole("usuario")}
-        >
+        <button type="button" className="btn-user" onClick={() => setDemoUserRole("usuario")}>
           👤 Acceso como Usuario
         </button>
-        <button
-          className="btn-admin"
-          onClick={() => setDemoUserRole("administrador")}
-        >
+        <button type="button" className="btn-admin" onClick={() => setDemoUserRole("administrador")}>
           🔑 Acceso como Administrador
         </button>
       </div>
     </div>
   );
-};
-
-export default LoginForm;
+}
