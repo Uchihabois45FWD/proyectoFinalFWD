@@ -111,6 +111,8 @@ async function deleteData(endpoint) {
     try { return JSON.parse(text); } catch { return text; }
   } catch (err) {
     console.error("deleteData error:", err);
+  }
+}
 export async function postData(endpoint, payload = {}) {
   const url = buildUrl(endpoint);
   const headers = { "Content-Type": "application/json", ...getAuthHeader() };
@@ -185,3 +187,5 @@ export async function loginUser(username, password) {
 export async function fetchNoticiasDestacadas() {
   return getData("noticias/destacadas/");
 }
+
+
