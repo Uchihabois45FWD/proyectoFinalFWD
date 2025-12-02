@@ -89,7 +89,6 @@ export async function getUser() {
   }
 }
 
-<<<<<<< HEAD
 async function deleteData(endpoint) {
   try {
     const ep = String(endpoint || "").trim().replace(/^\/+|\/+$/g, "");
@@ -112,7 +111,6 @@ async function deleteData(endpoint) {
     try { return JSON.parse(text); } catch { return text; }
   } catch (err) {
     console.error("deleteData error:", err);
-=======
 export async function postData(endpoint, payload = {}) {
   const url = buildUrl(endpoint);
   const headers = { "Content-Type": "application/json", ...getAuthHeader() };
@@ -132,14 +130,11 @@ export async function postData(endpoint, payload = {}) {
     return data;
   } catch (err) {
     console.error("postData error:", err);
->>>>>>> a7cf9e2329487bf3f41b6cc7b18a055e7a7515fe
     throw err;
   }
 }
 
-<<<<<<< HEAD
 export {postData,getData,loginUser,fetchNoticiasDestacadas,patchData,deleteData}
-=======
 export async function patchData(endpoint, payload = {}) {
   const url = buildUrl(endpoint);
   const headers = { "Content-Type": "application/json", ...getAuthHeader() };
@@ -190,4 +185,3 @@ export async function loginUser(username, password) {
 export async function fetchNoticiasDestacadas() {
   return getData("noticias/destacadas/");
 }
->>>>>>> a7cf9e2329487bf3f41b6cc7b18a055e7a7515fe

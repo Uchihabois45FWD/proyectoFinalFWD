@@ -1,11 +1,8 @@
 from django.shortcuts import render
-<<<<<<< HEAD
 from rest_framework.generics import ListCreateAPIView, DestroyAPIView, RetrieveUpdateDestroyAPIView
 from .models import Usuario, Curso, Inscripcion, CategoriaEvento, Evento, AsistenteEvento,Organizador,Noticias, ComentariosCursos, InscripcionCurso
-=======
 from rest_framework.generics import ListCreateAPIView
 from .models import Usuario, Curso, Inscripcion, CategoriaEvento, Evento, AsistenteEvento, Organizador, Noticias, ComentariosCursos, InscripcionCurso
->>>>>>> a7cf9e2329487bf3f41b6cc7b18a055e7a7515fe
 from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from rest_framework.views import APIView
