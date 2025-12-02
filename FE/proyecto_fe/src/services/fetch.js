@@ -81,27 +81,29 @@ async function patchData(obj,endpoint) {
 }
 
 async function deleteData(endpoint) {
-  const peticion = await fetch(`http://127.0.0.1:8000/${endpoint}/`,{
-    method: "DELETE",
-    headers: {
-        "Content-Type": "application/json"
+  try {
+    const ep = String(endpoint || "").trim().replace(/^\/+|\/+$/g, "");
+    const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+    const headers = { "Content-Type": "application/json" };
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+    const res = await fetch(`http://127.0.0.1:8000/${ep}/`, { method: "DELETE", headers });
+    console.log("DELETE", `http://127.0.0.1:8000/${ep}/`, res.status);
+    if (!res.ok) {
+      const text = await res.text();
+      let body;
+      try { body = JSON.parse(text); } catch { body = text; }
+      const err = new Error(body?.detail || body || `HTTP ${res.status}`);
+      err.status = res.status;
+      err.body = body;
+      throw err;
     }
-  })
-  const data = await peticion.json()
-  console.log(data);
-  return data
+    if (res.status === 204) return { success: true };
+    const text = await res.text();
+    try { return JSON.parse(text); } catch { return text; }
+  } catch (err) {
+    console.error("deleteData error:", err);
+    throw err;
+  }
 }
 
-async function putData(obj,endpoint) {
-  const peticion = await fetch(`http://127.0.0.1:8000/${endpoint}/`,{
-    method: "PUT",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify(obj)
-  })
-  const data = await peticion.json()
-  console.log(data);
-  return data
-}
-export {postData,getData,loginUser,fetchNoticiasDestacadas,patchData,deleteData,putData}
+export {postData,getData,loginUser,fetchNoticiasDestacadas,patchData,deleteData}

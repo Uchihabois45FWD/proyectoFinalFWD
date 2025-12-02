@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import "../styles/perfil.css";
-import PerfilEdit from "./PerfilEdit";
-import { patchData } from "../services/fetch";
+import "../../styles/perfil.css";
+import { patchData } from "../../services/fetch";
 
 export default function PerfilView({ usuario, onUpdate }) {
     const [editando, setEditando] = useState(false);

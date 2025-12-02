@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import ListCreateAPIView, DestroyAPIView, RetrieveUpdateDestroyAPIView
 from .models import Usuario, Curso, Inscripcion, CategoriaEvento, Evento, AsistenteEvento,Organizador,Noticias, ComentariosCursos, InscripcionCurso
 from django.contrib.auth import authenticate
 from rest_framework.response import Response
@@ -116,3 +116,13 @@ class ComentariosCursosCreateView(ListCreateAPIView):
 class InscripcionCursoCreateView(ListCreateAPIView):
     queryset = InscripcionCurso.objects.all()
     serializer_class = InscripcionCursoSerializer
+
+class EliminarUsuarioView(DestroyAPIView):
+    queryset = Usuario.objects.all()
+    serializer_class = UsuarioSerializer
+    lookup_field = 'id'
+
+class UsuarioDetailView(RetrieveUpdateDestroyAPIView):
+    queryset = Usuario.objects.all()
+    serializer_class = UsuarioSerializer
+    pk_url_kwarg = "id_usuario"

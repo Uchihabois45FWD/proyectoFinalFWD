@@ -1,4 +1,4 @@
-import "../styles/CursosDestacados.css"
+import "../../styles/CursosDestacados.css"
 import { useState } from "react";
 export default function CursosDestacados({
   titulo = "Emprendimiento",

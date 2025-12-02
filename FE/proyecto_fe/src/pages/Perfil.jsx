@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import PerfilView from "../components/PerfilView";
-import PerfilEdit from "../components/PerfilEdit";
+import PerfilView from "../components/Usuario/PerfilView";
 import { getData } from "../services/fetch";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import Navbar from "../components/Global/Navbar";
+import Footer from "../components/Global/Footer";
 
 export default function PerfilPage() {
     const [usuario,setUsuario] = useState([])

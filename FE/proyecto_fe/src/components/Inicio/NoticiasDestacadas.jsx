@@ -1,4 +1,4 @@
-import "../styles/NoticiasDestacadas.css"
+import "../../styles/NoticiasDestacadas.css"
 
 export default function NoticiasDestacadas({titulo="Noticia", descripcion="Descripción",dia_publicacion=""}) {
     return (

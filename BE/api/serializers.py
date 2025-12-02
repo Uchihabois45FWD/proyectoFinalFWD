@@ -52,12 +52,24 @@ class UsuarioSerializer(serializers.ModelSerializer):
                  
 
 class CursoSerializer(serializers.ModelSerializer):
-    nombre_instructor = serializers.CharField(source="instructor.first_name", read_only=True)
-    apellido_instructor = serializers.CharField(source="instructor.last_name", read_only=True)
+    nombre_instructor = serializers.SerializerMethodField()
+    apellido_instructor = serializers.SerializerMethodField()
 
     class Meta:
         model = Curso
         fields = "__all__"
+
+    def get_nombre_instructor(self, obj):
+        try:
+            return obj.instructor.first_name if obj.instructor else "Sin instructor"
+        except:
+            return "Sin instructor"
+
+    def get_apellido_instructor(self, obj):
+        try:
+            return obj.instructor.last_name if obj.instructor else "Sin instructor"
+        except:
+            return "Sin instructor"
 
 class InscripcionSerializer(ModelSerializer):
     class Meta:

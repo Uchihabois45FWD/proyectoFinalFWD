@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import "../styles/loginForm.css";
-import { loginUser } from "../services/fetch";
+import "../../styles/loginForm.css";
+import { loginUser } from "../../services/fetch";
 import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
