@@ -11,6 +11,7 @@ from .models import Organizador
 from .models import Noticias
 from .models import ComentariosCursos
 from .models import InscripcionCurso
+from .models import ComentariosNoticias
 
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
@@ -123,11 +124,20 @@ class LoginSerializer(serializers.Serializer):
         return data
 
 class ComentariosCursosSerializer(ModelSerializer):
+    usuario_nombre = serializers.CharField(source="usuario.username", read_only=True)
     class Meta:
         model = ComentariosCursos
-        fields = "__all__"
+        fields = ["id", "usuario", "usuario_nombre", "curso", "contenido_comentario", "fecha_comentario", "calificacion"]
 
 class InscripcionCursoSerializer(ModelSerializer):
     class Meta:
         model = InscripcionCurso
         fields = "__all__"
+
+class ComentariosNoticiasSerializer(serializers.ModelSerializer):
+    usuario_nombre = serializers.CharField(source='usuario.username', read_only=True)
+    
+    class Meta:
+        model = ComentariosNoticias
+        fields = ['id', 'noticia', 'usuario', 'usuario_nombre', 'contenido_comentario', 'fecha_comentario']
+        read_only_fields = ['id', 'fecha_comentario', 'usuario_nombre']

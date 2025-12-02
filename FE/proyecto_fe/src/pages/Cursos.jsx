@@ -3,8 +3,9 @@ import { getData } from "../services/fetch";
 import CursosDestacados from "../components/Inicio/CursosDestacados";
 import Navbar from "../components/Global/Navbar";
 import "../styles/Cursos.css";
-
+import { useNavigate } from "react-router-dom";
 const Cursos = () => {
+  const navigate = useNavigate();
   const [listaCursos, setListaCursos] = useState([]);
   const [view, setView] = useState("todos");
   const [rolUsuario] = useState(localStorage.getItem("rol"));
@@ -57,6 +58,10 @@ const Cursos = () => {
         ) : (
           <div className="cursos-lista">
             {filtrados.map((curso) => (
+              <>
+              <div
+                onClick={() => navigate(`/curso/${curso.id ?? curso.pk}`)}
+              >
               <CursosDestacados
                 key={curso.id ?? curso.pk}
                 titulo={curso.nombre_curso}
@@ -71,6 +76,8 @@ const Cursos = () => {
                   toggleDestacado(curso.id ?? curso.pk)
                 }
               />
+              </div>
+              </>
             ))}
           </div>
         )}

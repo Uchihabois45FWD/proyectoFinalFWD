@@ -1,26 +1,43 @@
-.hero-section{
-    background-color: #eaf9f7;
+.hero-section {
+    background: linear-gradient(to right, #e8f6fa, #f1fff8);
+    padding: 45px 20px;
+    border-radius: 14px;
+    margin: 40px auto 0;
+    width: 82%;
+    max-width: 1100px;
     position: relative;
-    bottom: 22px;
-
-    h1{
-        color: #1f41af;
-        text-align: center;
-    }
-    p{
-        color: #6cc2ad;
-        text-align: center;
-    }
+    bottom: 10px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
-.hero-button{
+
+.hero-section h1 {
+    color: #1f41af;
+    font-size: 2rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.hero-section p {
+    color: #6cc2ad;
+    font-size: 1rem;
+    margin-bottom: 22px;
+}
+
+.hero-button {
     background-color: #098874;
     color: #fff;
-    padding: 10px;
+    padding: 10px 32px;
     border: none;
+    border-radius: 22px;
+    display: inline-flex;
+    justify-content: center;                                
     margin: 0 auto;
-    display: flex;
-    border-radius: 20px;
+    font-size: 0.95rem;
+    cursor: pointer;
 }
+
+
 .titulo-cursos{
     text-align: center;
     color: #6c7685;

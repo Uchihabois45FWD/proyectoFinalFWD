@@ -158,7 +158,6 @@ input:focus {
   text-decoration: underline;
 }
 
-/* ===== Responsive ===== */
 @media (max-width: 650px) {
   .registro-card {
     padding: 1.5rem;

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.conf import settings
 
 
 class Usuario(AbstractUser):
@@ -101,3 +102,16 @@ class InscripcionCurso(models.Model):
     curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     fecha_inscripcion = models.DateTimeField(auto_now_add=True) 
+    
+    
+class ComentariosNoticias(models.Model):
+    noticia = models.ForeignKey('Noticias', on_delete=models.CASCADE, related_name='comentarios')
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    contenido_comentario = models.TextField()
+    fecha_comentario = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-fecha_comentario']
+
+    def __str__(self):
+        return f"Comentario de {self.usuario.username} en {self.noticia.titulo_noticia}"
