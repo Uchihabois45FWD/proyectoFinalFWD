@@ -1,38 +1,320 @@
+/* ===========================================
+   UNIVERSAL NAVBAR STYLES
+   =========================================== */
+
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(to right, #0055a5, #00bfa6);
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
   color: white;
-  padding: 0.8rem 2rem;
+  padding: 0.75rem 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Left Section - Logo/Brand */
 .navbar-left {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.75rem;
+  flex-shrink: 0;
 }
 
 .navbar-logo {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
 }
 
 .navbar-title {
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: 1.25rem;
   color: white;
   text-decoration: none;
+  transition: color 0.2s ease;
+  white-space: nowrap;
 }
 
-.navbar-right a {
-  color: white;
+.navbar-title:hover {
+  color: #e2e8f0;
+}
+
+/* Center Section - Navigation Links */
+.navbar-center {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex: 1;
+  justify-content: center;
+  margin: 0 2rem;
+}
+
+.nav-link {
+  color: #e2e8f0;
   text-decoration: none;
-  margin-left: 1.5rem;
   font-weight: 500;
-  transition: opacity 0.2s ease-in-out;
+  font-size: 0.95rem;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  position: relative;
+  white-space: nowrap;
+  right: 110px;
 }
 
-.navbar-right a:hover {
-  opacity: 0.8;
+.nav-link:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.nav-link.active {
+  color: white;
+  background: rgba(255, 65, 108, 0.8);
+  font-weight: 600;
+}
+
+.admin-link {
+  background: linear-gradient(135deg, #ff416c, #ff6b81);
+  color: white !important;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(255, 65, 108, 0.3);
+}
+
+.admin-link:hover {
+  background: linear-gradient(135deg, #e03e5f, #ff5a7a);
+  box-shadow: 0 4px 12px rgba(255, 65, 108, 0.4);
+}
+
+/* Right Section - User Menu/Auth Links */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+/* User Menu for Logged-in Users */
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.user-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: white;
+  line-height: 1.2;
+}
+
+.user-role-badge {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  text-transform: capitalize;
+  font-weight: 500;
+}
+
+.logout-btn {
+  background: rgba(239, 68, 68, 0.8);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.logout-btn:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
+/* Guest Links for Non-logged Users */
+.guest-links {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.guest-links .nav-link {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.guest-links .nav-link:first-child {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.guest-links .nav-link:first-child:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.guest-links .nav-link:last-child {
+  background: linear-gradient(135deg, #ff416c, #ff6b81);
+  color: white;
+}
+
+.guest-links .nav-link:last-child:hover {
+  background: linear-gradient(135deg, #e03e5f, #ff5a7a);
+  box-shadow: 0 4px 12px rgba(255, 65, 108, 0.3);
+}
+
+/* ===========================================
+   RESPONSIVE DESIGN
+   =========================================== */
+
+@media (max-width: 1024px) {
+  .navbar-center {
+    margin: 0 1rem;
+    gap: 1.5rem;
+  }
+
+  .nav-link {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0.6rem 1rem;
+  }
+
+  .navbar-center {
+    display: none; /* Hide center nav on mobile */
+  }
+
+  .navbar-title {
+    font-size: 1.1rem;
+  }
+
+  .user-name {
+    display: none; /* Hide name on mobile */
+  }
+
+  .user-role-badge {
+    font-size: 0.7rem;
+  }
+
+  .logout-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  .guest-links {
+    gap: 0.5rem;
+  }
+
+  .guest-links .nav-link {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .navbar-left {
+    gap: 0.5rem;
+  }
+
+  .navbar-title {
+    font-size: 1rem;
+  }
+
+  .navbar-logo {
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+  }
+
+  .user-menu {
+    gap: 0.5rem;
+  }
+
+  .logout-btn {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.75rem;
+  }
+
+  .guest-links .nav-link {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* ===========================================
+   ACCESSIBILITY & FOCUS STATES
+   =========================================== */
+
+.nav-link:focus,
+.logout-btn:focus {
+  outline: 2px solid #ff416c;
+  outline-offset: 2px;
+}
+
+.nav-link:focus:not(:focus-visible),
+.logout-btn:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ===========================================
+   ANIMATIONS & TRANSITIONS
+   =========================================== */
+
+.navbar {
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Smooth transitions for role changes */
+.user-menu,
+.guest-links {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

@@ -14,10 +14,16 @@ export default function ListaCursos({ courses = [], onSaveCourse, onDeleteCourse
     setEditingId(idFromCourse(course));
     setForm({
       nombre_curso: course?.nombre_curso ?? "",
-      descripcion: course?.descripcion ?? "",
+      descripcion_curso: course?.descripcion_curso ?? "",
       instructor: course?.instructor ?? "",
-      cupos: course?.cupos ?? "",
-      modalidad: course?.modalidad ?? ""
+      limite_cupos: course?.limite_cupos ?? course?.cupos ?? "",
+      modalidad: course?.modalidad ?? "",
+      fecha_inicio_curso: course?.fecha_inicio_curso ? course.fecha_inicio_curso.split('T')[0] : "",
+      fecha_fin_curso: course?.fecha_fin_curso ? course.fecha_fin_curso.split('T')[0] : "",
+      primer_dia: course?.primer_dia ?? "",
+      ultimo_dia: course?.ultimo_dia ?? "",
+      certificado: course?.certificado ?? false,
+      destacado: course?.destacado ?? false
     });
   };
 
@@ -84,19 +90,127 @@ export default function ListaCursos({ courses = [], onSaveCourse, onDeleteCourse
             return (
               <div className="list-item" key={cid || course.nombre_curso || Math.random()}>
                 {editing ? (
-                  <div className="edit-row">
-                    <input value={form.nombre_curso} onChange={(e) => handleChange("nombre_curso", e.target.value)} placeholder="Nombre curso" />
-                    <input value={form.descripcion} onChange={(e) => handleChange("descripcion", e.target.value)} placeholder="Descripción" />
-                    <input value={form.instructor} onChange={(e) => handleChange("instructor", e.target.value)} placeholder="Instructor" />
-                    <input value={form.cupos} onChange={(e) => handleChange("cupos", e.target.value)} placeholder="Cupos" type="number" />
-                    <select value={form.modalidad} onChange={(e) => handleChange("modalidad", e.target.value)}>
-                      <option value="">Seleccionar modalidad</option>
-                      <option value="presencial">Presencial</option>
-                      <option value="virtual">Virtual</option>
-                      <option value="hibrida">Híbrida</option>
-                    </select>
-                    <div className="actions">
-                      <button onClick={saveEdit} disabled={savingId === cid} className="btn-save">{savingId === cid ? "Guardando..." : "Guardar"}</button>
+                  <div className="edit-form">
+                    <div className="form-section">
+                      <h4>Información Básica</h4>
+                      <div className="form-row">
+                        <input
+                          value={form.nombre_curso}
+                          onChange={(e) => handleChange("nombre_curso", e.target.value)}
+                          placeholder="Nombre del curso"
+                          className="form-input"
+                        />
+                        <textarea
+                          value={form.descripcion_curso}
+                          onChange={(e) => handleChange("descripcion_curso", e.target.value)}
+                          placeholder="Descripción del curso"
+                          className="form-textarea"
+                          rows="3"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-section">
+                      <h4>Detalles del Curso</h4>
+                      <div className="form-row">
+                        <input
+                          value={form.instructor}
+                          onChange={(e) => handleChange("instructor", e.target.value)}
+                          placeholder="ID del instructor"
+                          type="number"
+                          className="form-input"
+                        />
+                        <input
+                          value={form.limite_cupos}
+                          onChange={(e) => handleChange("limite_cupos", e.target.value)}
+                          placeholder="Cupos disponibles"
+                          type="number"
+                          className="form-input"
+                        />
+                      </div>
+
+                      <div className="form-row">
+                        <select
+                          value={form.modalidad}
+                          onChange={(e) => handleChange("modalidad", e.target.value)}
+                          className="form-select"
+                        >
+                          <option value="">Seleccionar modalidad</option>
+                          <option value="presencial">Presencial</option>
+                          <option value="virtual">Virtual</option>
+                          <option value="bimodal">Bimodal</option>
+                        </select>
+
+                        <select
+                          value={form.primer_dia}
+                          onChange={(e) => handleChange("primer_dia", e.target.value)}
+                          className="form-select"
+                        >
+                          <option value="">Primer día</option>
+                          <option value="lunes">Lunes</option>
+                          <option value="martes">Martes</option>
+                          <option value="miércoles">Miércoles</option>
+                          <option value="jueves">Jueves</option>
+                          <option value="viernes">Viernes</option>
+                        </select>
+
+                        <select
+                          value={form.ultimo_dia}
+                          onChange={(e) => handleChange("ultimo_dia", e.target.value)}
+                          className="form-select"
+                        >
+                          <option value="">Último día</option>
+                          <option value="lunes">Lunes</option>
+                          <option value="martes">Martes</option>
+                          <option value="miércoles">Miércoles</option>
+                          <option value="jueves">Jueves</option>
+                          <option value="viernes">Viernes</option>
+                        </select>
+                      </div>
+
+                      <div className="form-row">
+                        <input
+                          value={form.fecha_inicio_curso}
+                          onChange={(e) => handleChange("fecha_inicio_curso", e.target.value)}
+                          type="date"
+                          className="form-input"
+                        />
+                        <input
+                          value={form.fecha_fin_curso}
+                          onChange={(e) => handleChange("fecha_fin_curso", e.target.value)}
+                          type="date"
+                          className="form-input"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-section">
+                      <h4>Opciones Adicionales</h4>
+                      <div className="form-row checkboxes">
+                        <label className="checkbox-label">
+                          <input
+                            type="checkbox"
+                            checked={form.certificado}
+                            onChange={(e) => handleChange("certificado", e.target.checked)}
+                          />
+                          <span>🏆 Incluye certificado</span>
+                        </label>
+
+                        <label className="checkbox-label">
+                          <input
+                            type="checkbox"
+                            checked={form.destacado}
+                            onChange={(e) => handleChange("destacado", e.target.checked)}
+                          />
+                          <span>⭐ Marcar como destacado</span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div className="form-actions">
+                      <button onClick={saveEdit} disabled={savingId === cid} className="btn-save">
+                        {savingId === cid ? "Guardando..." : "Guardar Cambios"}
+                      </button>
                       <button onClick={cancelEdit} className="btn-cancel">Cancelar</button>
                     </div>
                   </div>
@@ -115,10 +229,66 @@ export default function ListaCursos({ courses = [], onSaveCourse, onDeleteCourse
                   </div>
                 ) : (
                   <div className="view-row">
-                    <span><strong>ID:</strong> {cid}</span>
-                    <span><strong>Curso:</strong> {course?.nombre_curso ?? "-"}</span>
-                    <span><strong>Instructor:</strong> {course?.instructor ?? "-"}</span>
-                    <span><strong>Cupos:</strong> {course?.cupos ?? "-"}</span>
+                    <div className="course-info">
+                      <div className="course-header">
+                        <h3 className="course-name">{course?.nombre_curso ?? "-"}</h3>
+                        {course?.destacado && <span className="featured-badge">⭐ Destacado</span>}
+                      </div>
+
+                      <div className="course-details">
+                        <p className="course-description">{course?.descripcion_curso ?? "Sin descripción"}</p>
+
+                        <div className="course-meta">
+                          <div className="meta-item">
+                            <span className="meta-label">👨‍🏫 Instructor:</span>
+                            <span className="meta-value">{course?.nombre_instructor ?? course?.instructor ?? "Sin asignar"}</span>
+                          </div>
+
+                          <div className="meta-item">
+                            <span className="meta-label">📅 Fechas:</span>
+                            <span className="meta-value">
+                              {course?.fecha_inicio_curso ? (() => {
+                                const date = new Date(course.fecha_inicio_curso + 'T00:00:00');
+                                return date.toLocaleDateString('es-ES', {
+                                  day: '2-digit',
+                                  month: '2-digit',
+                                  year: 'numeric'
+                                });
+                              })() : "-"} -
+                              {course?.fecha_fin_curso ? (() => {
+                                const date = new Date(course.fecha_fin_curso + 'T00:00:00');
+                                return date.toLocaleDateString('es-ES', {
+                                  day: '2-digit',
+                                  month: '2-digit',
+                                  year: 'numeric'
+                                });
+                              })() : "-"}
+                            </span>
+                          </div>
+
+                          <div className="meta-item">
+                            <span className="meta-label">📚 Modalidad:</span>
+                            <span className="meta-value">{course?.modalidad ?? "No especificada"}</span>
+                          </div>
+
+                          <div className="meta-item">
+                            <span className="meta-label">👥 Cupos:</span>
+                            <span className="meta-value">{course?.limite_cupos ?? course?.cupos ?? "0"}</span>
+                          </div>
+
+                          <div className="meta-item">
+                            <span className="meta-label">📆 Días:</span>
+                            <span className="meta-value">{course?.primer_dia ?? "-"} - {course?.ultimo_dia ?? "-"}</span>
+                          </div>
+
+                          <div className="meta-item">
+                            <span className="meta-label">🏆 Certificado:</span>
+                            <span className="meta-value">{course?.certificado ? "Sí" : "No"}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
                     <div className="actions">
                       <button onClick={() => startEdit(course)} className="btn-edit">Editar</button>
                       <button onClick={() => askDelete(course)} className="btn-delete" disabled={deletingId === cid}>{deletingId === cid ? "Eliminando..." : "Eliminar"}</button>

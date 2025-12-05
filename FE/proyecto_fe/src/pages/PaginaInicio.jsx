@@ -6,10 +6,13 @@ import CursosDestacados from "../components/Inicio/CursosDestacados"
 import NoticiasDestacadas from "../components/Inicio/NoticiasDestacadas"
 import { Link } from "react-router-dom"
 import Navbar from "../components/Global/Navbar"
+import WelcomeNotification from "../components/Global/WelcomeNotification"
 
 function PaginaInicio() {
     const [cursos, setCursos] = useState([])
     const [noticias, setNoticias] = useState([])
+    const [showWelcome, setShowWelcome] = useState(false)
+    const [userName, setUserName] = useState("")
 
     useEffect(() => {
         async function traerCursos() {
@@ -26,7 +29,7 @@ function PaginaInicio() {
         async function traerNoticias() {
             try {
                 const peticion = await getData("crear-noticia/")
-                const destacados = peticion.filter((noticia) => noticia.destacado === true) 
+                const destacados = peticion.filter((noticia) => noticia.destacado === true)
                 setNoticias(destacados)
                 console.log("Noticias:", peticion)
             } catch (error) {
@@ -34,13 +37,32 @@ function PaginaInicio() {
             }
         }
 
+        // Check if user just logged in
+        const justLoggedIn = sessionStorage.getItem("justLoggedIn")
+        if (justLoggedIn) {
+            const name = localStorage.getItem("user_name") || localStorage.getItem("username") || "Usuario"
+            setUserName(name)
+            setShowWelcome(true)
+            sessionStorage.removeItem("justLoggedIn")
+        }
+
         traerCursos()
         traerNoticias()
     }, [])
 
+    const handleCloseWelcome = () => {
+        setShowWelcome(false)
+    }
+
     return (
         <>
             <Navbar />
+            {showWelcome && (
+                <WelcomeNotification
+                    userName={userName}
+                    onClose={handleCloseWelcome}
+                />
+            )}
             <div>
                 <Hero />
             </div>
