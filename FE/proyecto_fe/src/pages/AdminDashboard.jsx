@@ -44,12 +44,14 @@ const AdminDashboard = () => {
     })();
   }, []);
 
-  // Save user: do API patch here and update state
+  // Guardar usuario
   const handleSaveUser = async (id, formValues) => {
     try {
       const payload = { id_usuario: Number(id), ...formValues };
       const res = await patchData(payload, "api/actualizar-usuario");
-      const updated = (res && (res.id_usuario || res.id || res.pk)) ? res : { id_usuario: id, ...formValues };
+      const updated = (res && (res.id_usuario || res.id || res.pk)) 
+        ? res 
+        : { id_usuario: id, ...formValues };
       setUsers(prev => prev.map(u => (String(idFromUser(u)) === String(id) ? { ...u, ...updated } : u)));
       return updated;
     } catch (err) {
@@ -59,8 +61,25 @@ const AdminDashboard = () => {
   };
 
   const handleDeleteUser = (id) => {
-    // el propio hijo ya hizo la llamada DELETE; aquí solo quitamos del estado
     setUsers(prev => prev.filter(u => String(idFromUser(u)) !== String(id)));
+  };
+
+  // Guardar curso
+  const handleSaveCourse = async (id, formValues) => {
+    try {
+      const payload = { id_curso: Number(id), ...formValues };
+      const res = await patchData(payload, `api/actualizar-curso/${id}`);
+      const updated = (res && (res.id_curso || res.id || res.pk)) 
+        ? res 
+        : { id_curso: id, ...formValues };
+      setCourses(prev =>
+        prev.map(c => (String(idFromCourse(c)) === String(id) ? { ...c, ...updated } : c))
+      );
+      return updated;
+    } catch (err) {
+      console.error("handleSaveCourse error:", err);
+      throw err;
+    }
   };
 
   const handleDeleteCourse = async (id) => {
@@ -84,7 +103,11 @@ const AdminDashboard = () => {
         )}
 
         {loadingCourses ? <p>Cargando cursos...</p> : errorCourses ? <p>{errorCourses}</p> : (
-          <ListaCursos courses={courses} onDeleteCourse={handleDeleteCourse} />
+          <ListaCursos 
+            courses={courses} 
+            onSaveCourse={handleSaveCourse} 
+            onDeleteCourse={handleDeleteCourse} 
+          />
         )}
       </div>
     </>

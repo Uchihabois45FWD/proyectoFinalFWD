@@ -1,5 +1,4 @@
 from django.urls import path
-from . import views
 from .views import (
     UsuarioDetailView,
     UsuarioCreateView,
@@ -13,7 +12,10 @@ from .views import (
     NoticiasCreateView,
     EditarUsuarioView,
     ComentariosCursosCreateView,
-    EliminarUsuarioView
+    EliminarUsuarioView,
+    EditarCursoView,
+    EliminarCursoView,
+    CursoDetailView
 )
 
 urlpatterns = [
@@ -26,9 +28,11 @@ urlpatterns = [
     path("crear-organizador/", OrganizadorCreateView.as_view()),
     path("crear-noticia/", NoticiasCreateView.as_view()),
     path("login/", UsuarioLoginView.as_view()),
-    path("usuario-id/<int:id_usuario>/", UsuarioDetailView.as_view(), name='usuario-por-id'),
+    path("usuario-id/<int:pk>/", UsuarioDetailView.as_view(), name="usuario-detail"),
     path('actualizar-usuario/', EditarUsuarioView.as_view()),
     path("crear-comentario-curso/", ComentariosCursosCreateView.as_view()),
-    path("eliminar-usuario/<int:id>/", EliminarUsuarioView.as_view()),
-    path('comentarios-noticias/', views.comentarios_noticias, name='comentarios-noticias'),
+    path("eliminar-usuario/<int:pk>/", EliminarUsuarioView.as_view()),
+    path("actualizar-curso/<int:id_curso>/", EditarCursoView.as_view(), name="actualizar-curso"),
+    path("eliminar-curso/<int:id>/", EliminarCursoView.as_view(), name="eliminar-curso"),
+    path("curso-detail/<int:pk>/", CursoDetailView.as_view(), name="curso-detail"),
 ]

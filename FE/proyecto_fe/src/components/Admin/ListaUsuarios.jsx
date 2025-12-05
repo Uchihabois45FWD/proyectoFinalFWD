@@ -62,7 +62,8 @@ export default function ListaUsuarios({ users = [], onSaveUser, onDeleteUser }) 
     setDeletingId(id);
     try {
       const res = await deleteData(`api/eliminar-usuario/${id}`);
-      console.log("delete res:", res);
+      // Manejo seguro: puede ser null o {success:true}
+      console.log("delete res:", res || { success: true });
       onDeleteUser(id);
       setConfirmDeleteId(null);
     } catch (err) {
@@ -101,7 +102,9 @@ export default function ListaUsuarios({ users = [], onSaveUser, onDeleteUser }) 
                       <option value="administrador">Administrador</option>
                     </select>
                     <div className="actions">
-                      <button onClick={saveEdit} disabled={savingId === uid} className="btn-save">{savingId === uid ? "Guardando..." : "Guardar"}</button>
+                      <button onClick={saveEdit} disabled={savingId === uid} className="btn-save">
+                        {savingId === uid ? "Guardando..." : "Guardar"}
+                      </button>
                       <button onClick={cancelEdit} className="btn-cancel">Cancelar</button>
                     </div>
                   </div>
@@ -114,7 +117,9 @@ export default function ListaUsuarios({ users = [], onSaveUser, onDeleteUser }) 
                       </div>
                     </div>
                     <div className="confirm-actions">
-                      <button onClick={() => confirmDelete(user)} className="btn-delete" disabled={deletingId === uid}>{deletingId === uid ? "Eliminando..." : "Confirmar"}</button>
+                      <button onClick={() => confirmDelete(user)} className="btn-delete" disabled={deletingId === uid}>
+                        {deletingId === uid ? "Eliminando..." : "Confirmar"}
+                      </button>
                       <button onClick={cancelDelete} className="btn-cancel">Cancelar</button>
                     </div>
                   </div>
@@ -126,7 +131,9 @@ export default function ListaUsuarios({ users = [], onSaveUser, onDeleteUser }) 
                     <span><strong>Rol:</strong> {user?.rol ?? "-"}</span>
                     <div className="actions">
                       <button onClick={() => startEdit(user)} className="btn-edit">Editar</button>
-                      <button onClick={() => askDelete(user)} className="btn-delete" disabled={deletingId === uid}>{deletingId === uid ? "Eliminando..." : "Eliminar"}</button>
+                      <button onClick={() => askDelete(user)} className="btn-delete" disabled={deletingId === uid}>
+                        {deletingId === uid ? "Eliminando..." : "Eliminar"}
+                      </button>
                     </div>
                   </div>
                 )}

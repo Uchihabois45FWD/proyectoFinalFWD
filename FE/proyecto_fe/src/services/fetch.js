@@ -1,191 +1,158 @@
-const API_BASE = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api/";
+// fetch.js
 
-async function parseResponse(res) {
-  if (res.status === 204) return null;
-  const text = await res.text();
-  try { return JSON.parse(text); } catch { return text; }
-}
-
-function saveAuthFromResponse(data) {
-  // Normaliza y guarda token y tipo para distintos backends (DRF Token, JWT, custom)
-  if (!data) return;
-  // DRF TokenAuth returns { "key": "..." }
-  if (data.key) {
-    localStorage.setItem("token", data.key);
-    localStorage.setItem("token_type", "Token");
-  }
-  // Simple token name
-  else if (data.token) {
-    localStorage.setItem("token", data.token);
-    // asumir Bearer por defecto
-    localStorage.setItem("token_type", data.token_type || "Bearer");
-  }
-  // JWT (djoser / simplejwt) returns access/refresh
-  else if (data.access) {
-    localStorage.setItem("token", data.access);
-    localStorage.setItem("token_type", "Bearer");
-    if (data.user_id) localStorage.setItem("user_id", String(data.user_id));
-  }
-  // guardar user id si viene en la respuesta
-  if (data.user_id) localStorage.setItem("user_id", String(data.user_id));
-  if (data.id) localStorage.setItem("user_id", String(data.id));
-}
-
-function getAuthHeader() {
-  const token = localStorage.getItem("token");
-  const tokenType = localStorage.getItem("token_type") || "Bearer";
-  if (!token) return {};
-  if (tokenType === "Token") return { Authorization: `Token ${token}` };
-  return { Authorization: `${tokenType} ${token}` }; // e.g. Bearer <token>
-}
-
-function buildUrl(endpoint) {
-  if (!endpoint) return API_BASE;
-  return endpoint.startsWith("http") ? endpoint : `${API_BASE.replace(/\/+$/, "")}/${endpoint.replace(/^\/+/, "")}`;
-}
-
-export async function getData(endpoint) {
-  const url = buildUrl(endpoint);
-  const headers = { ...getAuthHeader() };
+async function postData(endpoint, obj) {
   try {
-    const res = await fetch(url, { headers });
-    const data = await parseResponse(res);
-    console.log("GET", url, res.status, data);
-    if (!res.ok) {
-      const err = new Error(`GET ${endpoint} failed ${res.status}`);
-      err.response = data;
-      throw err;
-    }
-    return data;
-  } catch (err) {
-    console.error("getData error:", err);
-    throw err;
-  }
-}
-
-export async function getUser() {
-  try {
-    const token = localStorage.getItem("token");
-    const id = localStorage.getItem("id_usuario");
-    console.log(token);
-    const peticion = await fetch(`http://127.0.0.1:8000/api/usuario-id/${id}/`, {
-      method: "GET",
+    const peticion = await fetch(`http://localhost:8000/api/${endpoint}`, {
+      method: "POST",
       headers: {
-        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
       },
+      body: JSON.stringify(obj)
     });
-
-    // si el token es inválido, Django devuelve 401
-    if (peticion.status === 401) {
-      console.error("Token inválido o expirado");
-      return null;
-    }
-
     const data = await peticion.json();
+    console.log(data);
     return data;
-
   } catch (error) {
-    console.error(error);
+    console.error("Error en postData:", error);
+    throw error;
+  }
+}
+
+async function getData(endpoint) {
+  try {
+    const peticion = await fetch(`http://localhost:8000/api/${endpoint}`);
+    if (!peticion.ok) {
+      const text = await peticion.text();
+      throw new Error(`Error ${peticion.status}: ${text}`);
+    }
+    const data = await peticion.json();
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error("Error en getData:", error);
+    return null;
+  }
+}
+
+async function loginUser(usuario, password) {
+  try {
+    const response = await fetch("http://localhost:8000/api/login/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        username: usuario,
+        password: password
+      })
+    });
+    const data = await response.json();
+    console.log("Respuesta del backend (login):", data);
+    if (!response.ok) {
+      throw new Error(data.mensaje || "Credenciales inválidas");
+    }
+    return data;
+  } catch (error) {
+    console.error("Error en login:", error.message);
+    throw error;
+  }
+}
+
+const fetchNoticiasDestacadas = async () => {
+  try {
+    const response = await fetch("http://localhost:8000/api/noticias/destacadas/");
+    if (!response.ok) {
+      throw new Error("Error al cargar las noticias destacadas");
+    }
+    const data = await response.json();
+    setNoticias(data);
+  } catch (err) {
+    setError(err.message);
+    console.error("Error fetching noticias:", err);
+  } finally {
+    setLoading(false);
+  }
+};
+
+async function patchData(obj, endpoint) {
+  try {
+    const peticion = await fetch(`http://localhost:8000/${endpoint}/`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(obj)
+    });
+    if (!peticion.ok) {
+      const text = await peticion.text();
+      throw new Error(`Error ${peticion.status}: ${text}`);
+    }
+    const data = await peticion.json();
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error("Error en patchData:", error);
+    throw error;
   }
 }
 
 async function deleteData(endpoint) {
   try {
-    const ep = String(endpoint || "").trim().replace(/^\/+|\/+$/g, "");
-    const token = localStorage.getItem("token") || sessionStorage.getItem("token");
-    const headers = { "Content-Type": "application/json" };
-    if (token) headers["Authorization"] = `Bearer ${token}`;
-    const res = await fetch(`http://127.0.0.1:8000/${ep}/`, { method: "DELETE", headers });
-    console.log("DELETE", `http://127.0.0.1:8000/${ep}/`, res.status);
-    if (!res.ok) {
-      const text = await res.text();
-      let body;
-      try { body = JSON.parse(text); } catch { body = text; }
-      const err = new Error(body?.detail || body || `HTTP ${res.status}`);
-      err.status = res.status;
-      err.body = body;
-      throw err;
-    }
-    if (res.status === 204) return { success: true };
-    const text = await res.text();
-    try { return JSON.parse(text); } catch { return text; }
-  } catch (err) {
-    console.error("deleteData error:", err);
-  }
-}
-export async function postData(endpoint, payload = {}) {
-  const url = buildUrl(endpoint);
-  const headers = { "Content-Type": "application/json", ...getAuthHeader() };
-  try {
-    const res = await fetch(url, {
-      method: "POST",
-      headers,
-      body: JSON.stringify(payload),
+    const peticion = await fetch(`http://localhost:8000/${endpoint}/`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json"
+      }
     });
-    const data = await parseResponse(res);
-    console.log("POST", url, payload, res.status, data);
-    if (!res.ok) {
-      const err = new Error(`POST ${endpoint} failed ${res.status}`);
-      err.response = data;
-      throw err;
+
+    if (peticion.status === 204) {
+      // No hay contenido, pero la eliminación fue exitosa
+      return { success: true };
     }
-    return data;
-  } catch (err) {
-    console.error("postData error:", err);
-    throw err;
+
+    const text = await peticion.text();
+    try {
+      const data = text ? JSON.parse(text) : { success: true };
+      console.log(data);
+      return data;
+    } catch {
+      // Si el body no es JSON válido, devolvemos éxito genérico
+      return { success: true };
+    }
+  } catch (error) {
+    console.error("Error en deleteData:", error);
+    return { success: false, error: error.message };
   }
 }
 
-export {postData,getData,loginUser,fetchNoticiasDestacadas,patchData,deleteData}
-export async function patchData(endpoint, payload = {}) {
-  const url = buildUrl(endpoint);
-  const headers = { "Content-Type": "application/json", ...getAuthHeader() };
+async function putData(obj, endpoint) {
   try {
-    const res = await fetch(url, {
-      method: "PATCH",
-      headers,
-      body: JSON.stringify(payload),
-    });  
-    const data = await parseResponse(res);
-    console.log("PATCH", url, payload, res.status, data);
-    if (!res.ok) {
-      const err = new Error(`PATCH ${endpoint} failed ${res.status}`);
-      err.response = data;
-      throw err;
-    }
-    return data;
-  } catch (err) {
-    console.error("patchData error:", err);
-    throw err;
-  }
-}
-
-export async function loginUser(username, password) {
-  const url = buildUrl("login/");
-  try {
-    const res = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
+    const peticion = await fetch(`http://localhost:8000/${endpoint}/`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(obj)
     });
-    const data = await parseResponse(res);
-    console.log("loginUser", res.status, data);
-    if (!res.ok) {
-      const err = new Error(data?.detail || data?.mensaje || "Login failed");
-      err.response = data;
-      throw err;
+    if (!peticion.ok) {
+      const text = await peticion.text();
+      throw new Error(`Error ${peticion.status}: ${text}`);
     }
-    // guarda credenciales normalizadas
-    saveAuthFromResponse(data);
+    const data = await peticion.json();
+    console.log(data);
     return data;
-  } catch (err) {
-    console.error("loginUser error:", err);
-    throw err;
+  } catch (error) {
+    console.error("Error en putData:", error);
+    throw error;
   }
 }
 
-export async function fetchNoticiasDestacadas() {
-  return getData("noticias/destacadas/");
-}
-
-
+export {
+  postData,
+  getData,
+  loginUser,
+  fetchNoticiasDestacadas,
+  patchData,
+  deleteData,
+  putData
+};

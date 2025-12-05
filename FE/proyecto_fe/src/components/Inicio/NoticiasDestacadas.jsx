@@ -1,8 +1,5 @@
-<<<<<<< HEAD:FE/proyecto_fe/src/components/Inicio/NoticiasDestacadas.jsx
-import "../../styles/NoticiasDestacadas.css"
-=======
 import { useNavigate } from "react-router-dom";
-import "../styles/NoticiasDestacadas.css";
+import '../../styles/NoticiasDestacadas.css';
 
 export default function NoticiasDestacadas({
     id,
@@ -15,7 +12,6 @@ export default function NoticiasDestacadas({
     const handleClick = () => {
         navigate(`/noticias/${id}`);
     };
->>>>>>> a7cf9e2329487bf3f41b6cc7b18a055e7a7515fe:FE/proyecto_fe/src/components/NoticiasDestacadas.jsx
 
     return (
         <div className="curso-card" onClick={handleClick} style={{ cursor: "pointer" }}>
