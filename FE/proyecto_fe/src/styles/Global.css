@@ -1,9 +1,14 @@
-body{
-    background-image: url('../assets/Logo.png');
-    box-sizing: border-box;
+/* ================================
+   ESTILOS DEL BODY
+   ================================ */
+body {
     margin: 0;
     padding: 0;
-    background-size: 90vw;
-    background-position: center;
-    background-repeat: no-repeat;;         
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+    background-image: url('../assets/Logo.png');
+    background-size: contain; /* más limpio que usar 90vw */
+    background-position: center center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
 }

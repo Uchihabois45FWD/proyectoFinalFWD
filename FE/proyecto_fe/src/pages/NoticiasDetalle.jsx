@@ -14,10 +14,8 @@ export default function NoticiasDetalle() {
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
 
-    // elimina etiquetas HTML para evitar enviar/almacenar html
     const stripTags = (html) => {
         if (!html) return "";
-        // crea elemento temporal para decodificar/limpiar
         const div = document.createElement("div");
         div.innerHTML = html;
         return div.textContent || div.innerText || "";
@@ -93,11 +91,9 @@ export default function NoticiasDetalle() {
             })
             console.log("POST comentario response:", saved);
 
-            // Solo añadir si la respuesta es el objeto comentario esperado
             if (saved && typeof saved === "object" && (saved.id || saved.pk || saved.contenido_comentario)) {
                 setComentarios((prev) => [saved, ...prev]);
             } else {
-                // si server devuelve string (html o mensaje) o formato inesperado, recargar lista desde API
                 console.warn("Respuesta inesperada al crear comentario, recargando lista:", saved);
                 await loadComentarios();
             }

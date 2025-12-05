@@ -1,38 +1,50 @@
+
+/* Barra de navegación con fondo oscuro y texto blanco */
 .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: center;
-  background: linear-gradient(to right, #0055a5, #00bfa6);
-  color: white;
-  padding: 0.8rem 2rem;
+  padding: 0 20px;
+  background: #00735e; /* fondo oscuro, no transparente */
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.6);
+  z-index: 1000;
 }
 
-.navbar-left {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
+/* Título y enlaces en blanco */
+.navbar .navbar-title,
+.navbar a,
+.navbar .nav-link,
+.navbar button,
+.navbar input {
+  color: #ffffff;
 }
 
-.navbar-logo {
-  width: 28px;
-  height: 28px;
-}
-
-.navbar-title {
-  font-weight: 700;
-  font-size: 1.1rem;
-  color: white;
+/* Estilos de enlace y hover */
+.navbar a,
+.navbar .nav-link {
   text-decoration: none;
+  font-weight: 600;
+  transition: opacity .15s ease, transform .12s ease;
+}
+.navbar a:hover,
+.navbar .nav-link:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
 }
 
-.navbar-right a {
-  color: white;
-  text-decoration: none;
-  margin-left: 1.5rem;
-  font-weight: 500;
-  transition: opacity 0.2s ease-in-out;
+/* Forzar color blanco si hay reglas que lo sobreescriben */
+.navbar, .navbar a, .navbar .navbar-title {
+  color: #fff !important;
 }
 
-.navbar-right a:hover {
-  opacity: 0.8;
+/* ajuste responsive (opcional) */
+@media (max-width: 600px) {
+  .navbar { padding: 0 12px; height: 56px; }
+  .navbar .navbar-title { font-size: 1rem; }
 }

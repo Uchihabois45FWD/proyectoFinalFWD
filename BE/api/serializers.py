@@ -1,17 +1,21 @@
-from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
 from django.contrib.auth import authenticate
-from .models import Usuario
-from .models import Curso
-from .models import Inscripcion
-from .models import CategoriaEvento
-from .models import Evento
-from .models import AsistenteEvento
-from .models import Organizador
-from .models import Noticias
-from .models import ComentariosCursos
-from .models import InscripcionCurso
-from .models import ComentariosNoticias
+from .models import (
+    Usuario,
+    Curso,
+    Inscripcion,
+    CategoriaEvento,
+    Evento,
+    AsistenteEvento,
+    Organizador,
+    Noticias,
+    ComentariosCursos,
+    InscripcionCurso,
+    ComentariosNoticias,
+)
+
+
+# ------------------- Usuario -------------------
 
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
@@ -20,6 +24,9 @@ class UsuarioSerializer(serializers.ModelSerializer):
             "id", "username", "email", "first_name", "last_name", "password",
             "fecha_nacimiento", "direccion", "rol", "num_telefono"
         ]
+        extra_kwargs = {
+            'password': {'required': False, 'allow_blank': True}
+        }
 
     def create(self, validated_data):
         clave = validated_data.pop("password")
@@ -28,29 +35,49 @@ class UsuarioSerializer(serializers.ModelSerializer):
         usuario.save()
         return usuario
 
+    def update(self, instance, validated_data):
+        password = validated_data.pop("password", None)
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        if password:
+            instance.set_password(password)
+        instance.save()
+        return instance
+
     def validate(self, data):
-        if len(data["password"]) < 6:
-            raise serializers.ValidationError({"password": "La contraseña debe tener al menos 6 caracteres."})
+        # Password solo se valida si está presente y es requerido (create)
+        if "password" in data and data["password"]:
+            if len(data["password"]) < 6:
+                raise serializers.ValidationError({"password": "La contraseña debe tener al menos 6 caracteres."})
 
-        if not data["num_telefono"].isdigit():
-            raise serializers.ValidationError({"num_telefono": "El número de teléfono debe contener solo dígitos."})
-        if len(data["num_telefono"]) != 8:
-            raise serializers.ValidationError({"num_telefono": "El número de teléfono debe tener exactamente 8 dígitos."})
+        # Validación de teléfono (solo si está presente)
+        if "num_telefono" in data and data["num_telefono"]:
+            if not data["num_telefono"].isdigit():
+                raise serializers.ValidationError({"num_telefono": "El número de teléfono debe contener solo dígitos."})
+            if len(data["num_telefono"]) != 8:
+                raise serializers.ValidationError({"num_telefono": "El número de teléfono debe tener exactamente 8 dígitos."})
 
-        if len(data["direccion"]) < 5:
+        # Validación de dirección
+        if "direccion" in data and data["direccion"] and len(data["direccion"]) < 5:
             raise serializers.ValidationError({"direccion": "La dirección debe tener al menos 5 caracteres."})
 
-        if not data["first_name"].isalpha():
+        # Validación de nombre
+        if "first_name" in data and data["first_name"] and not data["first_name"].isalpha():
             raise serializers.ValidationError({"first_name": "El nombre debe contener solo letras."})
-        if not data["last_name"].isalpha():
+        
+        # Validación de apellido
+        if "last_name" in data and data["last_name"] and not data["last_name"].isalpha():
             raise serializers.ValidationError({"last_name": "El apellido debe contener solo letras."})
 
-        if "@" not in data["email"] or "." not in data["email"]:
-            raise serializers.ValidationError({"email": "El correo electrónico no es válido."})
+        # Validación de email
+        if "email" in data and data["email"]:
+            if "@" not in data["email"] or "." not in data["email"]:
+                raise serializers.ValidationError({"email": "El correo electrónico no es válido."})
 
         return data
-            
-                 
+
+
+# ------------------- Curso -------------------
 
 class CursoSerializer(serializers.ModelSerializer):
     nombre_instructor = serializers.CharField(source="instructor.first_name", read_only=True)
@@ -60,35 +87,75 @@ class CursoSerializer(serializers.ModelSerializer):
         model = Curso
         fields = "__all__"
 
-class InscripcionSerializer(ModelSerializer):
+
+# ------------------- Inscripciones -------------------
+
+class InscripcionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Inscripcion
         fields = "__all__"
 
-class CategoriaEventoSerializer(ModelSerializer):
+
+class InscripcionCursoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = InscripcionCurso
+        fields = "__all__"
+
+
+# ------------------- Eventos -------------------
+
+class CategoriaEventoSerializer(serializers.ModelSerializer):
     class Meta:
         model = CategoriaEvento
         fields = "__all__"
 
-class EventoSerializer(ModelSerializer):
+
+class EventoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Evento
         fields = "__all__"
 
-class AsistenteEventoSerializer(ModelSerializer):
+
+class AsistenteEventoSerializer(serializers.ModelSerializer):
     class Meta:
         model = AsistenteEvento
         fields = "__all__"
 
-class OrganizadorSerializer(ModelSerializer):
+
+class OrganizadorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Organizador
         fields = "__all__"
+ 
 
-class NoticiasSerializer(ModelSerializer):
+# ------------------- Noticias -------------------
+
+class NoticiasSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Noticias 
+        model = Noticias
         fields = "__all__"
+
+
+class ComentariosNoticiasSerializer(serializers.ModelSerializer):
+    usuario_nombre = serializers.CharField(source='usuario.username', read_only=True)
+
+    class Meta:
+        model = ComentariosNoticias
+        fields = ['id', 'noticia', 'usuario', 'usuario_nombre', 'contenido_comentario', 'fecha_comentario']
+        read_only_fields = ['id', 'fecha_comentario', 'usuario_nombre', 'usuario']
+
+
+# ------------------- Comentarios Cursos -------------------
+
+class ComentariosCursosSerializer(serializers.ModelSerializer):
+    usuario_nombre = serializers.CharField(source="usuario.username", read_only=True)
+
+    class Meta:
+        model = ComentariosCursos
+        fields = ["id", "usuario", "usuario_nombre", "curso", "contenido_comentario", "fecha_comentario", "calificacion"]
+
+
+# ------------------- Login -------------------
 
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
@@ -110,22 +177,3 @@ class LoginSerializer(serializers.Serializer):
 
         data["user"] = user
         return data
-
-class ComentariosCursosSerializer(ModelSerializer):
-    usuario_nombre = serializers.CharField(source="usuario.username", read_only=True)
-    class Meta:
-        model = ComentariosCursos
-        fields = ["id", "usuario", "usuario_nombre", "curso", "contenido_comentario", "fecha_comentario", "calificacion"]
-
-class InscripcionCursoSerializer(ModelSerializer):
-    class Meta:
-        model = InscripcionCurso
-        fields = "__all__"
-
-class ComentariosNoticiasSerializer(serializers.ModelSerializer):
-    usuario_nombre = serializers.CharField(source='usuario.username', read_only=True)
-    
-    class Meta:
-        model = ComentariosNoticias
-        fields = ['id', 'noticia', 'usuario', 'usuario_nombre', 'contenido_comentario', 'fecha_comentario']
-        read_only_fields = ['id', 'fecha_comentario', 'usuario_nombre']

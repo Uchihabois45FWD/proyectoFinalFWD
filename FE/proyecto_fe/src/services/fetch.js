@@ -1,32 +1,37 @@
 const API_BASE = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api/";
 
+/* ================================
+   Helpers
+   ================================ */
 async function parseResponse(res) {
   if (res.status === 204) return null;
   const text = await res.text();
-  try { return JSON.parse(text); } catch { return text; }
+  try {
+    return JSON.parse(text);
+  } catch {
+    return text;
+  }
 }
 
 function saveAuthFromResponse(data) {
-  // Normaliza y guarda token y tipo para distintos backends (DRF Token, JWT, custom)
   if (!data) return;
-  // DRF TokenAuth returns { "key": "..." }
+
   if (data.key) {
+    // DRF TokenAuth
     localStorage.setItem("token", data.key);
     localStorage.setItem("token_type", "Token");
-  }
-  // Simple token name
-  else if (data.token) {
+  } else if (data.token) {
+    // Simple token
     localStorage.setItem("token", data.token);
-    // asumir Bearer por defecto
     localStorage.setItem("token_type", data.token_type || "Bearer");
-  }
-  // JWT (djoser / simplejwt) returns access/refresh
-  else if (data.access) {
+  } else if (data.access) {
+    // JWT
     localStorage.setItem("token", data.access);
     localStorage.setItem("token_type", "Bearer");
     if (data.user_id) localStorage.setItem("user_id", String(data.user_id));
   }
-  // guardar user id si viene en la respuesta
+
+  // Guardar user_id si viene en la respuesta
   if (data.user_id) localStorage.setItem("user_id", String(data.user_id));
   if (data.id) localStorage.setItem("user_id", String(data.id));
 }
@@ -35,15 +40,20 @@ function getAuthHeader() {
   const token = localStorage.getItem("token");
   const tokenType = localStorage.getItem("token_type") || "Bearer";
   if (!token) return {};
-  if (tokenType === "Token") return { Authorization: `Token ${token}` };
-  return { Authorization: `${tokenType} ${token}` }; // e.g. Bearer <token>
+  return { Authorization: tokenType === "Token" ? `Token ${token}` : `${tokenType} ${token}` };
 }
 
 function buildUrl(endpoint) {
-  if (!endpoint) return API_BASE;
-  return endpoint.startsWith("http") ? endpoint : `${API_BASE.replace(/\/+$/, "")}/${endpoint.replace(/^\/+/, "")}`;
+  const ep = String(endpoint || "").trim();
+  if (!ep) return API_BASE;
+  return ep.startsWith("http")
+    ? ep
+    : `${API_BASE.replace(/\/+$/, "")}/${ep.replace(/^\/+/, "")}`;
 }
 
+/* ================================
+   Requests
+   ================================ */
 export async function getData(endpoint) {
   const url = buildUrl(endpoint);
   const headers = { ...getAuthHeader() };
@@ -66,26 +76,55 @@ export async function getData(endpoint) {
 export async function getUser() {
   try {
     const token = localStorage.getItem("token");
-    const id = localStorage.getItem("id_usuario");
-    console.log(token);
-    const peticion = await fetch(`http://127.0.0.1:8000/api/usuario-id/${id}/`, {
+    const id = localStorage.getItem("user_id") || localStorage.getItem("id_usuario");
+    if (!id) throw new Error("No user ID found in storage");
+
+    const res = await fetch(`${API_BASE.replace(/\/+$/, "")}/usuario-id/${id}/`, {
       method: "GET",
-      headers: {
-        "Authorization": `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
     });
 
-    // si el token es inválido, Django devuelve 401
-    if (peticion.status === 401) {
+    if (res.status === 401) {
       console.error("Token inválido o expirado");
       return null;
     }
-
-    const data = await peticion.json();
-    return data;
-
+    return await res.json();
   } catch (error) {
-    console.error(error);
+    console.error("getUser error:", error);
+    return null;
+  }
+}
+
+export async function deleteData(endpoint) {
+  try {
+    const ep = String(endpoint || "").trim().replace(/^\/+|\/+$/g, "");
+    const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+    const headers = { "Content-Type": "application/json" };
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+
+    const url = `${API_BASE.replace(/\/+$/, "")}/${ep}`;
+    const res = await fetch(url, { method: "DELETE", headers });
+    console.log("DELETE", url, res.status);
+
+    if (!res.ok) {
+      const text = await res.text();
+      let body;
+      try {
+        body = JSON.parse(text);
+      } catch {
+        body = text;
+      }
+      const err = new Error(body?.detail || body || `HTTP ${res.status}`);
+      err.status = res.status;
+      err.body = body;
+      throw err;
+    }
+
+    if (res.status === 204) return { success: true };
+    return await parseResponse(res);
+  } catch (err) {
+    console.error("deleteData error:", err);
+    throw err;
   }
 }
 
@@ -120,7 +159,7 @@ export async function patchData(endpoint, payload = {}) {
       method: "PATCH",
       headers,
       body: JSON.stringify(payload),
-    });  
+    });
     const data = await parseResponse(res);
     console.log("PATCH", url, payload, res.status, data);
     if (!res.ok) {
@@ -150,7 +189,6 @@ export async function loginUser(username, password) {
       err.response = data;
       throw err;
     }
-    // guarda credenciales normalizadas
     saveAuthFromResponse(data);
     return data;
   } catch (err) {

@@ -1,121 +1,183 @@
+/* ================================
+   VARIABLES GLOBALES
+   ================================ */
+:root {
+    --font-primary: 'Segoe UI', sans-serif;
+    --color-bg-card: #ffffff;
+    --color-heading: #1d3557;
+    --color-text: #555;
+    --color-label: #333;
+    --color-border: #ccc;
+    --color-primary: #003b91;
+    --color-secondary: #00a59c;
+    --color-user: #00a96e;
+    --color-admin: #d9534f;
+    --radius-md: 10px;
+    --radius-sm: 6px;
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+
+/* ================================
+   TARJETA LOGIN
+   ================================ */
 .login-card {
-  background: white;
-  padding: 2rem 2.5rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  width: 380px;
-  margin: 3rem auto;
-  text-align: center;
+    background: var(--color-bg-card);
+    padding: 2rem 2.5rem;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    width: 380px;
+    margin: 3rem auto;
+    text-align: center;
+    font-family: var(--font-primary);
 }
 
 .login-card h2 {
-  font-size: 1.5rem;
-  margin-bottom: 0.3rem;
-  color: #1d3557;
+    font-size: 1.5rem;
+    margin-bottom: 0.4rem;
+    color: var(--color-heading);
+    font-weight: 700;
 }
 
 .login-card p {
-  margin-bottom: 1rem;
-  color: #555;
-  font-size: 0.95rem;
+    margin-bottom: 1rem;
+    color: var(--color-text);
+    font-size: 0.95rem;
 }
 
+
+/* ================================
+   FORMULARIO
+   ================================ */
 .login-card form {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
 }
 
 .login-card label {
-  text-align: left;
-  font-weight: 600;
-  font-size: 0.9rem;
-  color: #333;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--color-label);
 }
 
 .login-card input[type="email"],
 .login-card input[type="password"] {
-  padding: 0.6rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 0.9rem;
+    padding: 0.6rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+.login-card input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px rgba(0, 59, 145, 0.2);
+    outline: none;
+}
+
+
+/* ================================
+   RECORDAR CONTRASEÑA
+   ================================ */
 .remember-row {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  margin-top: 0.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.2rem;
 }
 
+
+/* ================================
+   BOTÓN LOGIN
+   ================================ */
 .btn-login {
-  margin-top: 1rem;
-  background: linear-gradient(to right, #003b91, #00a59c);
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 0.6rem;
-  cursor: pointer;
-  font-weight: 600;
+    margin-top: 1rem;
+    background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 0.7rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: opacity 0.3s ease, transform 0.2s ease;
 }
 
 .btn-login:hover {
-  opacity: 0.9;
+    opacity: 0.9;
+    transform: translateY(-2px);
 }
 
+
+/* ================================
+   ENLACES
+   ================================ */
 .register-link a {
-  color: #003b91;
-  font-weight: 600;
-  text-decoration: none;
+    color: var(--color-primary);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease;
 }
 
 .register-link a:hover {
-  text-decoration: underline;
+    text-decoration: underline;
+    color: var(--color-secondary);
 }
 
 .forgot-password a {
-  color: #00a59c;
-  font-size: 0.85rem;
-  text-decoration: none;
+    color: var(--color-secondary);
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: color 0.2s ease;
 }
 
 .forgot-password a:hover {
-  text-decoration: underline;
+    text-decoration: underline;
+    color: var(--color-primary);
 }
 
+
+/* ================================
+   SEPARADOR
+   ================================ */
 hr {
-  margin: 1.5rem 0;
-  border: none;
-  border-top: 1px solid #ddd;
+    margin: 1.5rem 0;
+    border: none;
+    border-top: 1px solid #ddd;
 }
 
+
+/* ================================
+   BOTONES DEMO
+   ================================ */
 .demo-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.btn-user,
+.btn-admin {
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 0.6rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: opacity 0.3s ease, transform 0.2s ease;
 }
 
 .btn-user {
-  background: #00a96e;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 0.6rem;
-  cursor: pointer;
-  font-weight: 600;
+    background: var(--color-user);
 }
 
 .btn-admin {
-  background: #d9534f;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 0.6rem;
-  cursor: pointer;
-  font-weight: 600;
+    background: var(--color-admin);
 }
 
 .btn-user:hover,
 .btn-admin:hover {
-  opacity: 0.9;
+    opacity: 0.9;
+    transform: translateY(-2px);
 }
