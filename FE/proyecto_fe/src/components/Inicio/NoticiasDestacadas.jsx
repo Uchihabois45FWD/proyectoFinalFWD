@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import "../styles/NoticiasDestacadas.css";
+import '../../styles/NoticiasDestacadas.css';
 
 export default function NoticiasDestacadas({
     id,

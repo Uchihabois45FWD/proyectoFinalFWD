@@ -1,11 +1,11 @@
 import "../styles/Hero.css"
-import Hero from '../components/Hero'
+import Hero from '../components/Global/Hero'
 import { useEffect, useState } from "react"
 import { getData } from "../services/fetch"
-import CursosDestacados from "../components/CursosDestacados"
-import NoticiasDestacadas from "../components/NoticiasDestacadas"
+import CursosDestacados from "../components/Inicio/CursosDestacados"
+import NoticiasDestacadas from "../components/Inicio/NoticiasDestacadas"
 import { Link } from "react-router-dom"
-import Navbar from "../components/Navbar"
+import Navbar from "../components/Global/Navbar"
 
 function PaginaInicio() {
     const [cursos, setCursos] = useState([])

@@ -1,6 +1,6 @@
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import LoginForm from "../components/LoginForm";
+import Navbar from "../components/Global/Navbar";
+import Footer from "../components/Global/Footer";
+import LoginForm from "../components/Login y Register/LoginForm";
 import "../styles/loginPage.css";
 
 const Inicio = () => {

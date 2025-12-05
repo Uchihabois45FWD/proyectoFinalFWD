@@ -1,87 +1,96 @@
 import React, { useEffect, useState } from "react";
-import { getData } from "../services/fetch";
+import Navbar from "../components/Global/Navbar";
+import ListaUsuarios from "../components/Admin/ListaUsuarios.jsx";
+import ListaCursos from "../components/Admin/ListaCursos.jsx";
+import { getData, patchData, deleteData } from "../services/fetch";
 import "../styles/AdminDashboard.css";
-import Navbar from "../components/Navbar";
 
-
-const UsersList = ({ users }) => {
-  return (
-    <div className="section">
-      <h2>Usuarios</h2>
-      <div className="list">
-        {users.length === 0 ? (
-          <p>No hay usuarios para mostrar.</p>
-        ) : (
-          users.map((user) => (
-            <div key={user.id} className="list-item" onClick={()=>{
-              console.log(user.id)
-            }}>
-              <span>Usuario:</span> {user.username} - <span>Email:</span> {user.email} -{" "}
-              <span>Rol:</span> {user.rol}
-            </div>
-          ))
-        )}
-      </div>
-    </div>
-  );
-};
-
-const CoursesList = ({ courses }) => {
-  return (
-    <div className="section">
-      <h2>Cursos</h2>
-      <div className="list">
-        {courses.length === 0 ? (
-          <p>No hay cursos para mostrar.</p>
-        ) : (
-          courses.map((course) => (
-            <div key={course.id} className="list-item">
-              <span>Curso:</span> {course.nombre_curso} - <span>Instructor ID:</span>{" "}
-              {course.instructor}
-            </div>
-          ))
-        )}
-      </div>
-    </div>
-  );
-};
+const idFromUser = (user) => (user?.id_usuario ?? user?.id ?? user?.pk ?? "");
+const idFromCourse = (c) => (c?.id_curso ?? c?.id ?? c?.pk ?? "");
 
 const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
   const [courses, setCourses] = useState([]);
-  const [loadingUsers, setLoadingUsers] = useState(true);
+  const [loadingUsers, setLoadingUsers] = useState(true); 
   const [loadingCourses, setLoadingCourses] = useState(true);
   const [errorUsers, setErrorUsers] = useState(null);
   const [errorCourses, setErrorCourses] = useState(null);
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      setLoadingUsers(true);
+    (async () => {
       try {
-        const data = await getData("crear-usuario/");
-        setUsers(data);
-      } catch (error) {
+        setLoadingUsers(true);
+        const res = await getData("crear-usuario");
+        setUsers(Array.isArray(res) ? res : []);
+      } catch (err) {
+        console.error("Error loading users:", err);
         setErrorUsers("Error al cargar usuarios");
       } finally {
         setLoadingUsers(false);
       }
-    };
+    })();
 
-    const fetchCourses = async () => {
-      setLoadingCourses(true);
+    (async () => {
       try {
-        const data = await getData("crear-curso/");
-        setCourses(data);
-      } catch (error) {
+        setLoadingCourses(true);
+        const res = await getData("crear-curso");
+        setCourses(Array.isArray(res) ? res : []);
+      } catch (err) {
+        console.error("Error loading courses:", err);
         setErrorCourses("Error al cargar cursos");
       } finally {
         setLoadingCourses(false);
       }
-    };
-
-    fetchUsers();
-    fetchCourses();
+    })();
   }, []);
+
+  // Guardar usuario
+  const handleSaveUser = async (id, formValues) => {
+    try {
+      const payload = { id_usuario: Number(id), ...formValues };
+      const res = await patchData(payload, "api/actualizar-usuario");
+      const updated = (res && (res.id_usuario || res.id || res.pk)) 
+        ? res 
+        : { id_usuario: id, ...formValues };
+      setUsers(prev => prev.map(u => (String(idFromUser(u)) === String(id) ? { ...u, ...updated } : u)));
+      return updated;
+    } catch (err) {
+      console.error("handleSaveUser error:", err);
+      throw err;
+    }
+  };
+
+  const handleDeleteUser = (id) => {
+    setUsers(prev => prev.filter(u => String(idFromUser(u)) !== String(id)));
+  };
+
+  // Guardar curso
+  const handleSaveCourse = async (id, formValues) => {
+    try {
+      const payload = { id_curso: Number(id), ...formValues };
+      const res = await patchData(payload, `api/actualizar-curso/${id}`);
+      const updated = (res && (res.id_curso || res.id || res.pk)) 
+        ? res 
+        : { id_curso: id, ...formValues };
+      setCourses(prev =>
+        prev.map(c => (String(idFromCourse(c)) === String(id) ? { ...c, ...updated } : c))
+      );
+      return updated;
+    } catch (err) {
+      console.error("handleSaveCourse error:", err);
+      throw err;
+    }
+  };
+
+  const handleDeleteCourse = async (id) => {
+    try {
+      await deleteData(`api/curso-id/${id}`);
+      setCourses(prev => prev.filter(c => String(idFromCourse(c)) !== String(id)));
+    } catch (err) {
+      console.error("handleDeleteCourse error:", err);
+      throw err;
+    }
+  };
 
   return (
     <>
@@ -89,20 +98,16 @@ const AdminDashboard = () => {
       <div className="admin-dashboard">
         <h1>Administrador - Panel de Control</h1>
 
-        {loadingUsers ? (
-          <p>Cargando usuarios...</p>
-        ) : errorUsers ? (
-          <p>{errorUsers}</p>
-        ) : (
-          <UsersList users={users} />
+        {loadingUsers ? <p>Cargando usuarios...</p> : errorUsers ? <p>{errorUsers}</p> : (
+          <ListaUsuarios users={users} onSaveUser={handleSaveUser} onDeleteUser={handleDeleteUser} />
         )}
 
-        {loadingCourses ? (
-          <p>Cargando cursos...</p>
-        ) : errorCourses ? (
-          <p>{errorCourses}</p>
-        ) : (
-          <CoursesList courses={courses} />
+        {loadingCourses ? <p>Cargando cursos...</p> : errorCourses ? <p>{errorCourses}</p> : (
+          <ListaCursos 
+            courses={courses} 
+            onSaveCourse={handleSaveCourse} 
+            onDeleteCourse={handleDeleteCourse} 
+          />
         )}
       </div>
     </>

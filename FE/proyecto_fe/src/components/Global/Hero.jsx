@@ -1,4 +1,4 @@
-import "../styles/Hero.css"
+import "../../styles/Hero.css"
 import { useNavigate } from "react-router-dom"
 
 export default function Hero() {

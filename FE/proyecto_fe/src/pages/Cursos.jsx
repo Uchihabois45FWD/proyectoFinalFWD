@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getData } from "../services/fetch";
-import CursosDestacados from "../components/CursosDestacados";
-import Navbar from "../components/Navbar";
+import CursosDestacados from "../components/Inicio/CursosDestacados";
+import Navbar from "../components/Global/Navbar";
 import "../styles/Cursos.css";
 import { useNavigate } from "react-router-dom";
 const Cursos = () => {

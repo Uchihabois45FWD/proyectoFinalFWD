@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getData, postData } from "../services/fetch";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import Navbar from "../components/Global/Navbar";
+import Footer from "../components/Global/Footer";
 import "../styles/cursoDetalle.css";
 
 export default function CursoDetalle() {

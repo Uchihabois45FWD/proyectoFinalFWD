@@ -1,7 +1,7 @@
 // ...existing code...
 import React, { useState } from "react";
-import "../styles/loginForm.css";
-import { loginUser } from "../services/fetch";
+import "../../styles/loginForm.css";
+import { loginUser } from "../../services/fetch";
 import { useNavigate } from "react-router-dom";
 
 export default function LoginForm() {

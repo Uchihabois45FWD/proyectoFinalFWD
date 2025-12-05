@@ -1,8 +1,8 @@
 // ...existing code...
 import { useState } from "react";
+import "../../styles/registro.css";
+import { postData } from "../../services/fetch";
 import { useNavigate } from "react-router-dom";
-import "../styles/registro.css";
-import { postData } from "../services/fetch";
 
 export default function RegistroComp() {
     const navigate = useNavigate();

@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getData, postData } from "../services/fetch";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+
 import "../styles/noticiaDetalle.css";
+import Navbar from "../components/Global/Navbar";
+import Footer from "../components/Global/Footer";
 
 export default function NoticiasDetalle() {
     const { id } = useParams();
