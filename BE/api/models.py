@@ -89,7 +89,7 @@ class Evento(models.Model):
     Usuario, on_delete=models.CASCADE, related_name="eventos_organizados"
     )
 
-class Organizador(models.Model):
+class Organizacion(models.Model):
     usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
     nombre_organizacion = models.CharField(max_length=100)
     correo_contacto = models.EmailField()

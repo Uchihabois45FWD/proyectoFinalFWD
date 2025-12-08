@@ -6,7 +6,7 @@ from .models import Curso
 from .models import Inscripcion
 from .models import Categoria
 from .models import Evento
-from .models import Organizador
+from .models import Organizacion
 from .models import Noticias
 from .models import ComentariosCursos
 from .models import InscripcionCurso
@@ -103,9 +103,9 @@ class EventoSerializer(ModelSerializer):
         model = Evento
         fields = "__all__"
 
-class OrganizadorSerializer(ModelSerializer):
+class OrganizacionSerializer(ModelSerializer):
     class Meta:
-        model = Organizador
+        model = Organizacion
         fields = "__all__"
 
 
