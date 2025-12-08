@@ -99,6 +99,7 @@ class EditarUsuarioView(APIView):
         correo_usuario = request.data.get("email")
         telefono_usuario = request.data.get("num_telefono")
         direccion_usuario = request.data.get("direccion")
+        rol_usuario = request.data.get("rol")
         imagen_perfil = request.FILES.get("imagen_perfil")
         try:
             # traemos al usuario por el id
@@ -115,6 +116,8 @@ class EditarUsuarioView(APIView):
                 usuario.num_telefono = telefono_usuario
             if direccion_usuario:
                 usuario.direccion = direccion_usuario
+            if rol_usuario:
+                usuario.rol = rol_usuario
             if imagen_perfil:
                 usuario.imagen_perfil = imagen_perfil
             usuario.save()  # confirmamos y guardamos en la base de datos
@@ -160,20 +163,43 @@ class EditarCursoView(APIView):
             curso = Curso.objects.get(id=id_curso)
             # Actualizamos solo los campos que nos envíen
             nombre_curso = request.data.get("nombre_curso")
-            descripcion_curso = request.data.get("descripcion")
+            descripcion_curso = request.data.get("descripcion_curso")
             instructor = request.data.get("instructor")
-            cupos = request.data.get("cupos")
+            limite_cupos = request.data.get("limite_cupos")
             modalidad = request.data.get("modalidad")
-            if nombre_curso:
+            fecha_inicio_curso = request.data.get("fecha_inicio_curso")
+            fecha_fin_curso = request.data.get("fecha_fin_curso")
+            primer_dia = request.data.get("primer_dia")
+            ultimo_dia = request.data.get("ultimo_dia")
+            certificado = request.data.get("certificado")
+            destacado = request.data.get("destacado")
+
+            if nombre_curso is not None:
                 curso.nombre_curso = nombre_curso
-            if descripcion_curso:
+            if descripcion_curso is not None:
                 curso.descripcion = descripcion_curso
-            if instructor:
-                curso.instructor = instructor
-            if cupos is not None:
-                curso.cupos = cupos
-            if modalidad:
+            if instructor is not None:
+                try:
+                    curso.instructor = Usuario.objects.get(id=instructor)
+                except Usuario.DoesNotExist:
+                    return Response({"error": "Instructor no encontrado."}, status=status.HTTP_400_BAD_REQUEST)
+            if limite_cupos is not None:
+                curso.limite_cupos = limite_cupos
+            if modalidad is not None:
                 curso.modalidad = modalidad
+            if fecha_inicio_curso is not None:
+                curso.fecha_inicio_curso = fecha_inicio_curso
+            if fecha_fin_curso is not None:
+                curso.fecha_fin_curso = fecha_fin_curso
+            if primer_dia is not None:
+                curso.primer_dia = primer_dia
+            if ultimo_dia is not None:
+                curso.ultimo_dia = ultimo_dia
+            if certificado is not None:
+                curso.certificado = certificado
+            if destacado is not None:
+                curso.destacado = destacado
+
             curso.save()
             # Devolvemos el curso actualizado como JSON
             serializer = CursoSerializer(curso)

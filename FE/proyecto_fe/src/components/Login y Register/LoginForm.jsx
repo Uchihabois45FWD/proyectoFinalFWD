@@ -30,14 +30,23 @@ export default function LoginForm() {
       if (data?.rol) localStorage.setItem("user_role", data.rol);
       else if (!localStorage.getItem("user_role")) localStorage.setItem("user_role", "usuario");
 
+      // Set user name
+      if (data?.nombre) localStorage.setItem("user_name", data.nombre);
+      else if (data?.name) localStorage.setItem("user_name", data.name);
+      else if (data?.username) localStorage.setItem("user_name", data.username);
+      else localStorage.setItem("user_name", usuario.trim()); // fallback to login username
+
       // opcional: recordar (ya se usa localStorage por defecto)
       if (!recordarme) {
         // si no quiere recordar, podría guardarse en sessionStorage en su lugar
         // aquí mantenemos token en localStorage por simplicidad
       }
 
+      // Set flag for welcome notification
+      sessionStorage.setItem("justLoggedIn", "true");
+
       alert(data.mensaje || "Inicio de sesión correcto");
-      navigate("/perfil");
+      navigate("/inicio");
     } catch (err) {
       const resp = err?.response || {};
       const msg =
@@ -53,6 +62,8 @@ export default function LoginForm() {
   const setDemoUserRole = (role) => {
     localStorage.setItem("user_role", role);
     localStorage.setItem("id_usuario", role === "administrador" ? "1" : "2");
+    localStorage.setItem("user_name", role === "administrador" ? "Administrador" : "Usuario Demo");
+    sessionStorage.setItem("justLoggedIn", "true");
     alert(`Sesión iniciada como ${role}`);
     navigate("/inicio");
   };
