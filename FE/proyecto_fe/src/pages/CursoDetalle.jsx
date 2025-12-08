@@ -11,6 +11,7 @@ export default function CursoDetalle() {
     const [curso, setCurso] = useState(null);
     const [loading, setLoading] = useState(true);
     const [comentarios, setComentarios] = useState([]);
+    const [nuevoComentario, setNuevoComentario] = useState("");
 
     useEffect(() => {
         async function fetchCurso() {
@@ -54,12 +55,34 @@ export default function CursoDetalle() {
         try {
             await postData("crear-inscripcion/", {
                 usuario: idUsuario,
-                curso: cursoId
+                curso: cursoId 
             });
             alert("Inscripción exitosa!");
         } catch (error) {
             console.error("Error inscribiendo:", error);
             alert("Error al inscribirse.");
+        }
+    };
+    // esto
+    const handlePublicarComentario = async () => {
+        const idUsuario = localStorage.getItem("id_usuario");
+        if (!idUsuario) {
+            alert("Debes iniciar sesión para comentar.");
+            return;
+        }
+        try {
+            const comentario = {
+                curso: cursoId,
+                usuario: idUsuario,
+                contenido_comentario: nuevoComentario,
+                calificacion: 5 
+            }
+            await postData("crear-comentario-curso/", comentario);
+            setComentarios(prev => [...prev, comentario]);
+            setNuevoComentario("");
+        } catch (error) {
+            console.error("Error publicando comentario:", error);
+            alert("Error al publicar comentario.");
         }
     };
 
@@ -84,7 +107,17 @@ export default function CursoDetalle() {
                         <p><strong>Días:</strong> {curso.primer_dia} a {curso.ultimo_dia}</p>
                         <p><strong>Cupos disponibles:</strong> {curso.limite_cupos}</p>
                     </section>
-
+                
+                    {/* esto// */}
+                    <section className="curso-descripcion-larga">
+                        <h3>Comentar</h3>
+                        <input placeholder="Comentar" onChange={(e)=>{setNuevoComentario(e.target.value)}}/>
+                        <button
+                         onClick={handlePublicarComentario}
+                        className="btn-comentar">Publicar comentario</button>
+                    </section>
+                    
+                    
                     <section className="curso-comentarios">
                         <h3>Comentarios ({comentarios.length})</h3>
                         {comentarios.length === 0 ? (

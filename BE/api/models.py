@@ -111,8 +111,3 @@ class ComentariosNoticias(models.Model):
     contenido_comentario = models.TextField()
     fecha_comentario = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        ordering = ['-fecha_comentario']
-
-    def __str__(self):
-        return f"Comentario de {self.usuario.username} en {self.noticia.titulo_noticia}"
