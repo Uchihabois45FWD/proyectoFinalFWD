@@ -97,4 +97,6 @@
     font-size: 0.9rem;
     margin-bottom: 20px;
     box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    position: relative;
+    left: 130px;
 }

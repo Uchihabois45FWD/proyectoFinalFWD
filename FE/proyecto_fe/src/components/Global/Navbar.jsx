@@ -58,8 +58,8 @@ const Navbar = () => {
     if (!isLoggedIn) {
       return (
         <>
-          <Link to="/" className="nav-link">Iniciar Sesión</Link>
-          <Link to="/registro" className="nav-link">Registro</Link>
+          <Link to="/" className="nav-link-login">Iniciar Sesión</Link>
+          <Link to="/registro" className="nav-link-register">Registro</Link>
         </>
       );
     }
@@ -79,6 +79,8 @@ const Navbar = () => {
         return (
           <>
             {commonLinks}
+            <Link to="/perfil" className="nav-link">Mi Perfil</Link>
+            <Link to="/mis-cursos" className="nav-link">Mis Cursos</Link>
             <Link to="/admin" className="nav-link admin-link">Admin Dashboard</Link>
             <button onClick={handleLogout} className="nav-link logout-btn">Cerrar Sesión</button>
           </>

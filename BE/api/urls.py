@@ -4,9 +4,7 @@ from .views import (
     UsuarioCreateView,
     CursoCreateView,
     InscripcionCursoCreateView,
-    CategoriaEventoCreateView,
     EventoCreateView,
-    AsistenteEventoCreateView,
     OrganizadorCreateView,
     UsuarioLoginView,
     NoticiasCreateView,
@@ -15,16 +13,15 @@ from .views import (
     EliminarUsuarioView,
     EditarCursoView,
     EliminarCursoView,
-    CursoDetailView
+    CursoDetailView,
+    CategoriaCreateView
 )
 
 urlpatterns = [
     path("crear-usuario/", UsuarioCreateView.as_view(), name='crear-usuario'),
     path("crear-curso/", CursoCreateView.as_view()),
     path("crear-inscripcion/", InscripcionCursoCreateView.as_view()),
-    path("crear-categoria-evento/", CategoriaEventoCreateView.as_view()),
     path("crear-evento/", EventoCreateView.as_view()),
-    path("crear-asistente-evento/", AsistenteEventoCreateView.as_view()),
     path("crear-organizador/", OrganizadorCreateView.as_view()),
     path("crear-noticia/", NoticiasCreateView.as_view()),
     path("login/", UsuarioLoginView.as_view()),
@@ -35,4 +32,5 @@ urlpatterns = [
     path("actualizar-curso/<int:id_curso>/", EditarCursoView.as_view(), name="actualizar-curso"),
     path("eliminar-curso/<int:id>/", EliminarCursoView.as_view(), name="eliminar-curso"),
     path("curso-detail/<int:pk>/", CursoDetailView.as_view(), name="curso-detail"),
+    path("crear-categoria/", CategoriaCreateView.as_view())
 ]
