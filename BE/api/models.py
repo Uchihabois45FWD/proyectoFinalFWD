@@ -20,6 +20,9 @@ class Categoria(models.Model):
     nombre_categoria = models.CharField(max_length=50)
     descripcion_categoria = models.TextField(blank=True, null=True)
 
+    def __str__(self):
+        return self.nombre_categoria
+
 class CategoriaOpciones(models.Model):
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
     nombre_opcion = models.CharField(max_length=100)
