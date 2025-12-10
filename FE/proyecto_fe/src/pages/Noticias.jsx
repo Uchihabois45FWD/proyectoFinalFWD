@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react"
 import { getData } from "../services/fetch"
+import Navbar from "../components/Global/Navbar"
+import "../styles/noticias.css"
 
 const Noticias = () => {
     const [listaNoticias, setListaNoticias] = useState([])
@@ -15,18 +17,33 @@ const Noticias = () => {
     }, [])
 
     return (
-        <>
-            <h1>Noticias</h1>
-            {listaNoticias.map(noticia => (
-                <div key={noticia.id}>
-                    <img src={noticia.imagen_noticia} alt={noticia.titulo_noticia} />
-                    <h2>{noticia.titulo_noticia}</h2>
-                    <p>{noticia.descripcion_noticia}</p>
-                    <p>{noticia.dia_de_notificacion}</p>
-                    <p>{noticia.destacado ? "Destacado" : "No destacado"}</p>
+        <div>
+            <Navbar />
+            <div className="noticias-page">
+                <h1 className="noticias-titulo">Noticias</h1>
+                <div className="noticias-contenedor">
+                    {listaNoticias.map(noticia => (
+                        <div key={noticia.id} className="noticia-card">
+                            <img
+                                src={noticia.imagen_noticia}
+                                alt={noticia.titulo_noticia}
+                                className="noticia-imagen"
+                            />
+                            <div className="noticia-content">
+                                <h2 className="noticia-titulo">{noticia.titulo_noticia}</h2>
+                                <p className="noticia-descripcion">{noticia.descripcion_noticia}</p>
+                                <div className="noticia-meta">
+                                    <p className="noticia-fecha">{noticia.dia_de_notificacion}</p>
+                                    <p className="noticia-destacado">
+                                        {noticia.destacado ? "Destacado" : "No destacado"}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
                 </div>
-            ))}
-        </>
+            </div>
+        </div>
     )
 }
 

@@ -79,17 +79,6 @@
 
 
 /* ================================
-   RECORDAR CONTRASEÑA
-   ================================ */
-.remember-row {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    margin-top: 0.2rem;
-}
-
-
-/* ================================
    BOTÓN LOGIN
    ================================ */
 .btn-login {
@@ -107,6 +96,12 @@
 .btn-login:hover {
     opacity: 0.9;
     transform: translateY(-2px);
+}
+
+
+
+.btn-verPass{
+  background-color: #3084d6; 
 }
 
 

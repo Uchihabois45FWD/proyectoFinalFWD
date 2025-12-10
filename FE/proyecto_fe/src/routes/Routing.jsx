@@ -32,7 +32,6 @@ const Routing = () =>{
                 <Route path="/curso/:id" element={<CursoDetalle />} />
                 <Route path="/noticias/:id" element={<NoticiasDetalle />} />
                 <Route path="/admin" element={
-                    
                     <ProtectedRoute>
                         <AdminDashboard />
                     </ProtectedRoute>

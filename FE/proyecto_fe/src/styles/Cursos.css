@@ -79,3 +79,34 @@
     margin-top: 2rem;
     font-style: italic;
 }
+.buscador-cursos {
+  width: 100%;
+  max-width: 420px;
+  padding: 10px 14px;
+  margin: 20px auto;
+  display: block;
+  background-color: #4b4d50;
+  border: 1px solid #000000 !important; /* 🔹 Borde oscuro */
+  color: rgb(153, 153, 153);
+  font-size: 15px;
+  outline: none;
+  transition: 0.2s ease;
+}
+
+/* Placeholder */
+.buscador-cursos::placeholder {
+  color: #000000;
+}
+
+/* Cuando pasas el mouse, el borde resalta más */
+.buscador-cursos:hover {
+  border-color: #676767;   /* 🔹 Todavía más oscuro */
+}
+
+/* Focus: borde más fuerte pero sin volverse blanco */
+.buscador-cursos:focus {
+  border-color: #000000; /* 🔹 Super oscuro y marcado */
+  background-color: #b6b6b7;
+  box-shadow: 0 0 6px rgba(211, 211, 211, 0.4); /* Sombra oscura */
+  color: rgb(0, 0, 0);
+}
