@@ -5,6 +5,7 @@ import { getData, patchData, deleteData } from "../services/fetch";
 import "../styles/AdminDashboard.css";
 import AgregarCursosModal from "../components/Admin/AgregarCursosModal.jsx";
 import AgregarEventosModal from "../components/Admin/AgregarEventosModal.jsx";
+import Navbar from "../components/Global/Navbar.jsx";
 
 const idFromUser = (user) => (user?.id_usuario ?? user?.id ?? user?.pk ?? "");
 const idFromCourse = (c) => (c?.id_curso ?? c?.id ?? c?.pk ?? "");
@@ -22,6 +23,11 @@ const AdminDashboard = () => {
 
   const [activeSection, setActiveSection] = useState("dashboard");
   const [sidebarVisible, setSidebarVisible] = useState(true);
+
+  // Estados para modales
+  const [verModalCurso, setVerModalCurso] = useState(false);
+  const [verModalEventos, setVerModalEventos] = useState(false);
+  const [eventos, setEventos] = useState([]);
 
   // Cargar usuarios
   useEffect(() => {

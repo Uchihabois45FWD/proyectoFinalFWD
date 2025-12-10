@@ -3,6 +3,12 @@
    ================================ */
 :root {
     --font-primary: 'Segoe UI', sans-serif;
+    --color-bg: #f9fafb;
+    --color-primary: #2563eb;
+    --color-primary-dark: #1e40af;
+    --color-focus: #93c5fd;
+    --color-text: #2c2c2c;
+    --color-muted: #6b7280;
     --color-gradient-start: #e8f6fa;
     --color-gradient-end: #f1fff8;
     --color-heading: #1f41af;
@@ -10,13 +16,10 @@
     --color-button: #098874;
     --color-button-hover: #06695a;
     --color-section-title: #6c7685;
-    --radius-md: 14px;
+    --radius-md: 8px;
     --radius-pill: 22px;
-    --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+    --shadow-sm: 0 2px 6px rgba(0,0,0,0.08);
     --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.1);
-    --color-text: #2c2c2c;
-    --color-muted: #6b7280;
-    --color-bg: #f9fafb;
 }
 
 /* ================================
@@ -27,7 +30,7 @@ body {
     padding: 0;
     box-sizing: border-box;
     font-family: var(--font-primary);
-    background: linear-gradient(to right, var(--color-gradient-start), var(--color-gradient-end));
+    background: linear-gradient(135deg, var(--color-gradient-start), var(--color-gradient-end));
     min-height: 100vh;
     color: var(--color-text);
 }
