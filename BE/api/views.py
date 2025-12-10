@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.generics import ListCreateAPIView, DestroyAPIView, RetrieveUpdateDestroyAPIView
-from .models import Usuario, Curso, Inscripcion, CategoriaEvento, Evento, AsistenteEvento, Organizador, Noticias, ComentariosCursos, ComentariosNoticias, InscripcionCurso
+from .models import Usuario, Curso, Inscripcion, Categoria, Evento, Organizacion,Noticias, ComentariosCursos, InscripcionCurso, CategoriaOpciones, ComentariosNoticias
 from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -10,15 +10,15 @@ from .serializers import (
     UsuarioSerializer,
     CursoSerializer,
     InscripcionSerializer,
-    CategoriaEventoSerializer,
+    CategoriaSerializer,
     EventoSerializer,
-    AsistenteEventoSerializer,
-    OrganizadorSerializer,
+    OrganizacionSerializer,
     NoticiasSerializer,
     LoginSerializer,
     ComentariosCursosSerializer,
     ComentariosNoticiasSerializer,
     InscripcionCursoSerializer,
+    CategoriaOpcionesSerializer
 )
 
 
@@ -36,25 +36,18 @@ class InscripcionCreateView(ListCreateAPIView):
     queryset = Inscripcion.objects.all()
     serializer_class = InscripcionSerializer
 
-
-class CategoriaEventoCreateView(ListCreateAPIView):
-    queryset = CategoriaEvento.objects.all()
-    serializer_class = CategoriaEventoSerializer
+class CategoriaCreateView(ListCreateAPIView):
+    queryset = Categoria.objects.all()
+    serializer_class = CategoriaSerializer
 
 
 class EventoCreateView(ListCreateAPIView):
     queryset = Evento.objects.all()
     serializer_class = EventoSerializer
-
-
-class AsistenteEventoCreateView(ListCreateAPIView):
-    queryset = AsistenteEvento.objects.all()
-    serializer_class = AsistenteEventoSerializer
-
-
-class OrganizadorCreateView(ListCreateAPIView):
-    queryset = Organizador.objects.all()
-    serializer_class = OrganizadorSerializer
+    
+class OrganizacionCreateView(ListCreateAPIView):
+    queryset = Organizacion.objects.all()
+    serializer_class = OrganizacionSerializer
 
 
 class NoticiasCreateView(ListCreateAPIView):
@@ -229,3 +222,7 @@ class EliminarCursoView(DestroyAPIView):
 class CursoDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Curso.objects.all()
     serializer_class = UsuarioSerializer
+
+class CategoriaOpcionesCreateView(ListCreateAPIView):
+    queryset = CategoriaOpciones.objects.all()
+    serializer_class = CategoriaOpcionesSerializer

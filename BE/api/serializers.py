@@ -4,14 +4,14 @@ from django.contrib.auth import authenticate
 from .models import Usuario
 from .models import Curso
 from .models import Inscripcion
-from .models import CategoriaEvento
+from .models import Categoria
 from .models import Evento
-from .models import AsistenteEvento
-from .models import Organizador
+from .models import Organizacion
 from .models import Noticias
 from .models import ComentariosCursos
 from .models import InscripcionCurso
 from .models import ComentariosNoticias
+from .models import CategoriaOpciones
 
 
 class UsuarioSerializer(serializers.ModelSerializer):
@@ -89,27 +89,19 @@ class InscripcionSerializer(ModelSerializer):
         fields = "__all__"
 
 
-class CategoriaEventoSerializer(ModelSerializer):
+class CategoriaSerializer(ModelSerializer):
     class Meta:
-        model = CategoriaEvento
+        model = Categoria
         fields = "__all__"
-
 
 class EventoSerializer(ModelSerializer):
     class Meta:
         model = Evento
         fields = "__all__"
 
-
-class AsistenteEventoSerializer(ModelSerializer):
+class OrganizacionSerializer(ModelSerializer):
     class Meta:
-        model = AsistenteEvento
-        fields = "__all__"
-
-
-class OrganizadorSerializer(ModelSerializer):
-    class Meta:
-        model = Organizador
+        model = Organizacion
         fields = "__all__"
 
 
@@ -150,9 +142,13 @@ class InscripcionCursoSerializer(ModelSerializer):
         model = InscripcionCurso
         fields = "__all__"
 
-
 class ComentariosNoticiasSerializer(ModelSerializer):
     usuario_nombre = serializers.CharField(source='usuario.username', read_only=True)
     class Meta:
         model = ComentariosNoticias
         fields = ["id", "noticia", "usuario", "usuario_nombre", "contenido_comentario", "fecha_comentario"]
+        
+class CategoriaOpcionesSerializer(ModelSerializer):
+    class Meta:
+        model = CategoriaOpciones
+        fields = "__all__"

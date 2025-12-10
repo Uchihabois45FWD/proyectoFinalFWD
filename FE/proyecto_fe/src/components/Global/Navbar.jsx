@@ -8,6 +8,12 @@ const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
+    // Get current user from localStorage
+    const currentUser = {
+      name: localStorage.getItem("user_name") || localStorage.getItem("username") || "Administrador",
+      role: localStorage.getItem("user_role") || "administrador"
+    };
+
   useEffect(() => {
     const checkLoginStatus = () => {
       // Check both localStorage and sessionStorage for login data
@@ -60,8 +66,8 @@ const Navbar = () => {
     if (!isLoggedIn) {
       return (
         <>
-          <Link to="/" className="nav-link">Iniciar Sesión</Link>
-          <Link to="/registro" className="nav-link">Registro</Link>
+          <Link to="/" className="nav-link-login">Iniciar Sesión</Link>
+          <Link to="/registro" className="nav-link-register">Registro</Link>
         </>
       );
     }
@@ -69,10 +75,10 @@ const Navbar = () => {
     // Common links for all logged-in users
     const commonLinks = (
       <>
-        <Link to="/inicio" className="nav-link">Inicio</Link>
-        <Link to="/cursos" className="nav-link">Cursos</Link>
-        <Link to="/noticias" className="nav-link">Noticias</Link>
-        <Link to="/eventos" className="nav-link">Eventos</Link>
+        <Link to="/inicio" className="nav">Inicio</Link>
+        <Link to="/cursos" className="nav">Cursos</Link>
+        <Link to="/noticias" className="nav">Noticias</Link>
+        <Link to="/eventos" className="nav">Eventos</Link>
       </>
     );
 
@@ -81,8 +87,8 @@ const Navbar = () => {
         return (
           <>
             {commonLinks}
-            <Link to="/admin" className="nav-link admin-link">Admin Dashboard</Link>
-            <button onClick={handleLogout} className="nav-link logout-btn">Cerrar Sesión</button>
+            <Link to="/perfil" className="nav">Mi Perfil</Link>
+            <Link to="/admin" className="nav admin-link">Admin Dashboard</Link>
           </>
         );
 
@@ -91,7 +97,6 @@ const Navbar = () => {
           <>
             {commonLinks}
             <Link to="/perfil" className="nav-link">Mi Perfil</Link>
-            <button onClick={handleLogout} className="nav-link logout-btn">Cerrar Sesión</button>
           </>
         );
 
@@ -99,9 +104,8 @@ const Navbar = () => {
         return (
           <>
             {commonLinks}
-            <Link to="/perfil" className="nav-link">Mi Perfil</Link>
-            <Link to="/mis-cursos" className="nav-link">Mis Cursos</Link>
-            <button onClick={handleLogout} className="nav-link logout-btn">Cerrar Sesión</button>
+            <Link to="/perfil" className="nav">Mi Perfil</Link>
+            <Link to="/mis-cursos" className="nav">Mis Cursos</Link>
           </>
         );
 
@@ -109,7 +113,6 @@ const Navbar = () => {
         return (
           <>
             {commonLinks}
-            <button onClick={handleLogout} className="nav-link logout-btn">Cerrar Sesión</button>
           </>
         );
     }
@@ -125,6 +128,18 @@ const Navbar = () => {
 
       <div className="navbar-center">
         {renderNavigationLinks()}
+      </div>
+
+      <div className="header-right">
+        {isLoggedIn && (
+          <>
+            <div className="user-info">
+              <span className="nameuser">{userName}</span>
+              <span className="user-role">{userRole}</span>
+            </div>
+            <button onClick={handleLogout} className="logout-btn">Cerrar Sesión</button>
+          </>
+        )}
       </div>
     </nav>
   );

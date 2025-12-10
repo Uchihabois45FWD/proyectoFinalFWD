@@ -15,14 +15,14 @@
    FOOTER
    ================================ */
 .footer {
-    background: var(--color-footer-bg);
-    color: var(--color-footer-text);
-    padding: 2rem;
-    display: flex;
-    justify-content: center;
-    font-size: var(--font-size-sm);
-    position: relative;
-    margin-top: 4rem; /* más limpio que usar top fijo */
+  background: #1a2b3b;
+  color: white;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  font-size: 0.9rem;
+  position: relative;
+  top: 90px;
 }
 
 

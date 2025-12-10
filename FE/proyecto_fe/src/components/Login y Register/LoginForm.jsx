@@ -92,7 +92,7 @@ export default function LoginForm() {
           disabled={submitting}
         />
 
-        <button type="button" className="btn-verPass" onClick={() => setShowPassword(!showPassword)}>
+        <button type="button" className="ver" onClick={() => setShowPassword(!showPassword)}>
           {showPassword ? "Ocultar contraseña" : "Ver contraseña"}
         </button>
 

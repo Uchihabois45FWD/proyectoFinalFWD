@@ -21,16 +21,7 @@ const AdminDashboard = () => {
   const [errorCourses, setErrorCourses] = useState(null);
 
   const [activeSection, setActiveSection] = useState("dashboard");
-
-  const [verModalCurso, setVerModalCurso] = useState(false);
-  const [verModalEventos, setVerModalEventos] = useState(false);
-
-  const [eventos, setEventos] = useState([]);
-
-  const currentUser = {
-    name: localStorage.getItem("user_name") || "Administrador",
-    role: localStorage.getItem("user_role") || "administrador",
-  };
+  const [sidebarVisible, setSidebarVisible] = useState(true);
 
   // Cargar usuarios
   useEffect(() => {
@@ -125,6 +116,73 @@ const AdminDashboard = () => {
 
   const renderContent = () => {
     switch (activeSection) {
+      case "dashboard":
+        return (
+          <div className="dashboard-content">
+            <div className="dashboard-header">
+              <h2>Panel de Administración</h2>
+              <p>Bienvenido al sistema de gestión del Centro Cívico La Capri</p>
+            </div>
+
+            <div className="stats-grid">
+              <div className="stat-card">
+                <div className="stat-icon">👨‍🎓</div>
+                <div className="stat-content">
+                  <h3>{stats.estudiantes}</h3>
+                  <p>Estudiantes Activos</p>
+                </div>
+              </div>
+
+              <div className="stat-card">
+                <div className="stat-icon">📖</div>
+                <div className="stat-content">
+                  <h3>{stats.cursos}</h3>
+                  <p>Cursos Disponibles</p>
+                </div>
+              </div>
+
+              <div className="stat-card">
+                <div className="stat-icon">👨‍🏫</div>
+                <div className="stat-content">
+                  <h3>{stats.instructores}</h3>
+                  <p>Instructores</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="recent-activity">
+              <h3>Actividad Reciente</h3>
+              <div className="activity-list">
+                {courses.slice(0, 2).map((course, index) => (
+                  <div key={`course-${course.id_curso || index}`} className="activity-item">
+                    <span className="activity-icon">📝</span>
+                    <div className="activity-content">
+                      <p>Nuevo curso "{course.nombre || course.titulo}" disponible</p>
+                      <small>Hace {Math.floor(Math.random() * 24) + 1} horas</small>
+                    </div>
+                  </div>
+                ))}
+                {users.slice(0, 2).map((user, index) => (
+                  <div key={`user-${user.id_usuario || index}`} className="activity-item">
+                    <span className="activity-icon">👤</span>
+                    <div className="activity-content">
+                      <p>Usuario "{user.nombre || user.username}" se registró</p>
+                      <small>Hace {Math.floor(Math.random() * 48) + 1} horas</small>
+                    </div>
+                  </div>
+                ))}
+                <div className="activity-item">
+                  <span className="activity-icon">📊</span>
+                  <div className="activity-content">
+                    <p>Estadísticas del sistema actualizadas</p>
+                    <small>Hace 1 día</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
       case "cursos":
         return (
           <div className="section-content">
@@ -169,27 +227,11 @@ const AdminDashboard = () => {
 
   return (
     <div className="admin-layout">
-
-      {/* HEADER */}
-      <header className="admin-header">
-        <h1 className="brand">Centro Cívico La Capri</h1>
-
-        <div className="header-right">
-          <span className="user-info">
-            <span className="user-name">{currentUser.name}</span>
-            <span className="user-role">{currentUser.role}</span>
-          </span>
-
-          <button onClick={handleLogout} className="logout-btn">
-            Cerrar Sesión
-          </button>
-        </div>
-      </header>
+      <Navbar />
 
       <div className="admin-main">
-
-        {/* SIDEBAR */}
-        <aside className="admin-sidebar">
+        {/* Sidebar */}
+        <aside className={`admin-sidebar ${sidebarVisible ? '' : 'sidebar-hidden'}`}>
           <nav className="sidebar-nav">
 
             <button
@@ -225,8 +267,15 @@ const AdminDashboard = () => {
           </nav>
         </aside>
 
-        {/* CONTENIDO */}
-        <main className="admin-content">{renderContent()}</main>
+        {/* Toggle Button on Sidebar Edge */}
+        <button onClick={() => setSidebarVisible(!sidebarVisible)} className="sidebar-toggle-btn">
+          {sidebarVisible ? '◀' : '▶'}
+        </button>
+
+        {/* Main Content */}
+        <main className={`admin-content ${sidebarVisible ? '' : 'sidebar-hidden'}`}>
+          {renderContent()}
+        </main>
       </div>
 
       {/* MODALES */}

@@ -7,7 +7,8 @@ class Usuario(AbstractUser):
     ROL_OPCIONES = (
         ("instructor", "Instructor"),
         ("usuario", "Usuario"),
-        ("administrador", "Administrador")
+        ("administrador", "Administrador"),
+        ("organizador", "Organizador")
     )
     fecha_nacimiento = models.DateField()
     num_telefono = models.CharField(max_length=20)
@@ -15,6 +16,19 @@ class Usuario(AbstractUser):
     rol = models.CharField(choices=ROL_OPCIONES, max_length=25)
     imagen_perfil = models.ImageField(upload_to="imagenes_perfil/", blank=True, null=True)
 
+class Categoria(models.Model):
+    nombre_categoria = models.CharField(max_length=50)
+    descripcion_categoria = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.nombre_categoria
+
+class CategoriaOpciones(models.Model):
+    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
+    nombre_opcion = models.CharField(max_length=100)
+    descripcion_opcion = models.TextField(blank=True, null=True)
+    activo = models.BooleanField(default=True)
+    
 class Curso(models.Model):
     DIAS_CURSO = (
         ("lunes","Lunes"),
@@ -62,9 +76,6 @@ class Inscripcion(models.Model):
     fecha_inscripcion = models.DateTimeField(auto_now_add=True)
     estado = models.CharField(choices=ESTADOS, max_length=20, default="activa")
 
-class CategoriaEvento(models.Model):
-    nombre_categoria = models.CharField(max_length=50)
-    descripcion_categoria = models.TextField(blank=True, null=True)
 
 class Evento(models.Model):
     titulo_evento = models.CharField(max_length=100)
@@ -72,19 +83,13 @@ class Evento(models.Model):
     fecha_evento = models.DateField()
     hora_evento = models.TimeField()
     lugar_evento = models.CharField(max_length=100)
-    categoria = models.ForeignKey(CategoriaEvento, on_delete=models.CASCADE)
+    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, null=True, blank=True)
+    destacado = models.BooleanField(default=False)
     organizador = models.ForeignKey(
-        Usuario, on_delete=models.CASCADE, related_name="eventos_organizados"
+    Usuario, on_delete=models.CASCADE, related_name="eventos_organizados"
     )
 
-class AsistenteEvento(models.Model):
-    evento = models.ForeignKey(Evento, on_delete=models.CASCADE)
-    usuario = models.ForeignKey(
-        Usuario, on_delete=models.CASCADE, limit_choices_to={'rol': 'usuario'}
-    )
-    fecha_registro = models.DateTimeField(auto_now_add=True)
-
-class Organizador(models.Model):
+class Organizacion(models.Model):
     usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
     nombre_organizacion = models.CharField(max_length=100)
     correo_contacto = models.EmailField()
@@ -110,4 +115,11 @@ class ComentariosNoticias(models.Model):
     usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     contenido_comentario = models.TextField()
     fecha_comentario = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-fecha_comentario']
+
+    def __str__(self):
+        return f"Comentario de {self.usuario.username} en {self.noticia.titulo_noticia}"
+    
 
