@@ -1,15 +1,10 @@
-# Profile Picture Implementation Plan
+# TODO: Implement Collapsible Admin Sidebar
 
-## Back-end Tasks
-- [x] Add `imagen_perfil` ImageField to Usuario model in BE/api/models.py
-- [x] Configure MEDIA_URL and MEDIA_ROOT in BE/proyecto_be/settings.py
-- [x] Update UsuarioSerializer in BE/api/serializers.py to handle image uploads
-- [x] Modify EditarUsuarioView in BE/api/views.py to support image updates
-- [x] Ensure API endpoints handle multipart/form-data for uploads
-
-## Front-end Tasks
-- [x] Update PerfilView component in FE/proyecto_fe/src/components/Usuario/PerfilView.jsx to display image and allow uploads
-
-## Follow-up Tasks
-- [x] Run Django migrations
-- [x] Test upload and display functionality
+- [x] Add useState for sidebar visibility in AdminDashboard.jsx
+- [x] Add toggle button attached to sidebar to show/hide sidebar
+- [x] Conditionally render the sidebar based on visibility state
+- [x] Update AdminDashboard.css to hide sidebar with width: 0 when closed
+- [x] Adjust main content width when sidebar is hidden
+- [x] Position toggle button on sidebar edge, never hiding with sidebar
+- [x] Make dashboard content expand to fill space when sidebar hidden
+- [x] Test the collapsible functionality

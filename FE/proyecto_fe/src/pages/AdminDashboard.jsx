@@ -22,12 +22,7 @@ const AdminDashboard = () => {
   const [errorUsers, setErrorUsers] = useState(null);
   const [errorCourses, setErrorCourses] = useState(null);
   const [activeSection, setActiveSection] = useState("dashboard");
-
-  // Get current user from localStorage
-  const currentUser = {
-    name: localStorage.getItem("user_name") || localStorage.getItem("username") || "Administrador",
-    role: localStorage.getItem("user_role") || "administrador"
-  };
+  const [sidebarVisible, setSidebarVisible] = useState(true);
 
   useEffect(() => {
     (async () => {
@@ -143,7 +138,7 @@ const AdminDashboard = () => {
 
             <div className="stats-grid">
               <div className="stat-card">
-                <div className="stat-icon">👥</div>
+                <div className="stat-icon">👨‍🎓</div>
                 <div className="stat-content">
                   <h3>{stats.estudiantes}</h3>
                   <p>Estudiantes Activos</p>
@@ -151,7 +146,7 @@ const AdminDashboard = () => {
               </div>
 
               <div className="stat-card">
-                <div className="stat-icon">📚</div>
+                <div className="stat-icon">📖</div>
                 <div className="stat-content">
                   <h3>{stats.cursos}</h3>
                   <p>Cursos Disponibles</p>
@@ -264,34 +259,11 @@ const AdminDashboard = () => {
 
   return (
     <div className="admin-layout">
-      {/* Top Header */}
-      <header className="admin-header">
-        <div className="header-left">
-          <h1 className="brand">Centro Cívico La Capri</h1>
-        </div>
-
-        <nav className="header-nav">
-          <a href="/" className="nav-link">Inicio</a>
-          <a href="/institucional" className="nav-link">Institucional</a>
-          <a href="/cursos" className="nav-link">Cursos</a>
-          <a href="/contacto" className="nav-link">Contacto</a>
-          <a href="/admin" className="nav-link active">Administración</a>
-        </nav>
-
-        <div className="header-right">
-          <span className="user-info">
-            <span className="user-name">{currentUser.name}</span>
-            <span className="user-role">{currentUser.role}</span>
-          </span>
-          <button onClick={handleLogout} className="logout-btn">
-            Cerrar Sesión
-          </button>
-        </div>
-      </header>
+      <Navbar />
 
       <div className="admin-main">
         {/* Sidebar */}
-        <aside className="admin-sidebar">
+        <aside className={`admin-sidebar ${sidebarVisible ? '' : 'sidebar-hidden'}`}>
           <nav className="sidebar-nav">
             <button
               className={`sidebar-link ${activeSection === 'dashboard' ? 'active' : ''}`}
@@ -343,8 +315,13 @@ const AdminDashboard = () => {
           </nav>
         </aside>
 
+        {/* Toggle Button on Sidebar Edge */}
+        <button onClick={() => setSidebarVisible(!sidebarVisible)} className="sidebar-toggle-btn">
+          {sidebarVisible ? '◀' : '▶'}
+        </button>
+
         {/* Main Content */}
-        <main className="admin-content">
+        <main className={`admin-content ${sidebarVisible ? '' : 'sidebar-hidden'}`}>
           {renderContent()}
         </main>
       </div>

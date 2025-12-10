@@ -94,6 +94,7 @@ export default function PerfilView({ usuario, onUpdate }) {
       <p><strong>Correo:</strong> {usuario?.email}</p>
       <p><strong>Teléfono:</strong> {usuario?.num_telefono}</p>
       <p><strong>Dirección:</strong> {usuario?.direccion}</p>
+      <p><strong>Rol:</strong> {usuario?.rol}</p>
 
       <button className="btn-editar" onClick={() => setEditando(!editando)}>
         Editar perfil

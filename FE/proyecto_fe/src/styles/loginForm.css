@@ -119,3 +119,18 @@ hr {
 .btn-admin:hover {
   opacity: 0.9;
 }
+
+.ver {
+  margin-top: 0.5rem;
+  background: none;
+  border: none;
+  color: #003b91;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+}
+
+.ver:hover {
+  text-decoration: underline;
+  color: #00a59c;
+}
