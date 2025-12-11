@@ -3,7 +3,13 @@
    =========================================== */
 
 .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
   display: flex;
+  align-items: center;
   justify-content: space-between;
   align-items: center;
   background: linear-gradient(135deg, #1e293b 0%, #334155 100%);

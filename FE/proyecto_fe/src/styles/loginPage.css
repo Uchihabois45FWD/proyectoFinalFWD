@@ -1,14 +1,34 @@
-.login-page {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+/* ================================
+   VARIABLES GLOBALES
+   ================================ */
+:root {
+    --font-primary: 'Segoe UI', sans-serif;
+    --color-bg: #f9fafb;
+    --color-text: #2c2c2c;
+    --spacing-md: 2rem;
 }
 
+
+/* ================================
+   PÁGINA DE LOGIN
+   ================================ */
+.login-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: var(--font-primary);
+    background-color: var(--color-bg);
+    color: var(--color-text);
+}
+
+
+/* ================================
+   CONTENEDOR LOGIN
+   ================================ */
 .login-container {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-top: 2rem;
-  padding-bottom: 2rem;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: var(--spacing-md);
 }

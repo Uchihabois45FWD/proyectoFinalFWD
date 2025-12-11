@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import ListaUsuarios from "../components/Admin/ListaUsuarios.jsx";
 import ListaCursos from "../components/Admin/ListaCursos.jsx";
 import { getData, patchData, deleteData } from "../services/fetch";
-import Navbar from "../components/Global/Navbar";
 import "../styles/AdminDashboard.css";
+import AgregarCursosModal from "../components/Admin/AgregarCursosModal.jsx";
+import AgregarEventosModal from "../components/Admin/AgregarEventosModal.jsx";
+import Navbar from "../components/Global/Navbar.jsx";
 
 const idFromUser = (user) => (user?.id_usuario ?? user?.id ?? user?.pk ?? "");
 const idFromCourse = (c) => (c?.id_curso ?? c?.id ?? c?.pk ?? "");
@@ -11,19 +13,23 @@ const idFromCourse = (c) => (c?.id_curso ?? c?.id ?? c?.pk ?? "");
 const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
   const [courses, setCourses] = useState([]);
-  const [stats, setStats] = useState({
-    estudiantes: 0,
-    cursos: 0,
-    instructores: 0
-  });
+  const [stats, setStats] = useState({ estudiantes: 0, cursos: 0, instructores: 0 });
+
   const [loadingUsers, setLoadingUsers] = useState(true);
   const [loadingCourses, setLoadingCourses] = useState(true);
-  const [loadingStats, setLoadingStats] = useState(true);
+
   const [errorUsers, setErrorUsers] = useState(null);
   const [errorCourses, setErrorCourses] = useState(null);
+
   const [activeSection, setActiveSection] = useState("dashboard");
   const [sidebarVisible, setSidebarVisible] = useState(true);
 
+  // Estados para modales
+  const [verModalCurso, setVerModalCurso] = useState(false);
+  const [verModalEventos, setVerModalEventos] = useState(false);
+  const [eventos, setEventos] = useState([]);
+
+  // Cargar usuarios
   useEffect(() => {
     (async () => {
       try {
@@ -32,23 +38,18 @@ const AdminDashboard = () => {
         const userData = Array.isArray(res) ? res : [];
         setUsers(userData);
 
-        // Calculate stats from user data
-        const estudiantes = userData.filter(user =>
-          user.rol === 'usuario' || user.rol === 'estudiante'
-        ).length;
-        const instructores = userData.filter(user =>
-          user.rol === 'instructor' || user.rol === 'instructores'
-        ).length;
+        const estudiantes = userData.filter(u => u.rol === "usuario" || u.rol === "estudiante").length;
+        const instructores = userData.filter(u => u.rol === "instructor").length;
 
         setStats(prev => ({ ...prev, estudiantes, instructores }));
-      } catch (err) {
-        console.error("Error loading users:", err);
+      } catch {
         setErrorUsers("Error al cargar usuarios");
       } finally {
         setLoadingUsers(false);
       }
     })();
 
+    // Cargar cursos
     (async () => {
       try {
         setLoadingCourses(true);
@@ -56,10 +57,8 @@ const AdminDashboard = () => {
         const courseData = Array.isArray(res) ? res : [];
         setCourses(courseData);
 
-        // Update courses count
         setStats(prev => ({ ...prev, cursos: courseData.length }));
-      } catch (err) {
-        console.error("Error loading courses:", err);
+      } catch {
         setErrorCourses("Error al cargar cursos");
       } finally {
         setLoadingCourses(false);
@@ -73,15 +72,14 @@ const AdminDashboard = () => {
       const payload = { id_usuario: Number(id), ...formValues };
       const res = await patchData(payload, "api/actualizar-usuario");
 
-      // Usar los datos retornados por el backend si están disponibles
-      const updated = (res && res.usuario)
-        ? res.usuario
-        : { id_usuario: id, ...formValues };
+      const updated = res?.usuario ?? { id_usuario: id, ...formValues };
 
-      setUsers(prev => prev.map(u => (String(idFromUser(u)) === String(id) ? { ...u, ...updated } : u)));
+      setUsers(prev =>
+        prev.map(u => (String(idFromUser(u)) === String(id) ? { ...u, ...updated } : u))
+      );
       return updated;
     } catch (err) {
-      console.error("handleSaveUser error:", err);
+      console.error(err);
       throw err;
     }
   };
@@ -96,17 +94,14 @@ const AdminDashboard = () => {
       const payload = { id_curso: Number(id), ...formValues };
       const res = await patchData(payload, `api/actualizar-curso/${id}`);
 
-      // Usar los datos retornados por el backend si están disponibles
-      const updated = (res && res.curso)
-        ? res.curso
-        : { id_curso: id, ...formValues };
+      const updated = res?.curso ?? { id_curso: id, ...formValues };
 
       setCourses(prev =>
         prev.map(c => (String(idFromCourse(c)) === String(id) ? { ...c, ...updated } : c))
       );
       return updated;
     } catch (err) {
-      console.error("handleSaveCourse error:", err);
+      console.error(err);
       throw err;
     }
   };
@@ -116,8 +111,7 @@ const AdminDashboard = () => {
       await deleteData(`api/curso-id/${id}`);
       setCourses(prev => prev.filter(c => String(idFromCourse(c)) !== String(id)));
     } catch (err) {
-      console.error("handleDeleteCourse error:", err);
-      throw err;
+      console.error(err);
     }
   };
 
@@ -199,7 +193,9 @@ const AdminDashboard = () => {
         return (
           <div className="section-content">
             <h2>Gestión de Cursos</h2>
-            {loadingCourses ? <p>Cargando cursos...</p> : errorCourses ? <p>{errorCourses}</p> : (
+            {loadingCourses ? (
+              <p>Cargando cursos...</p>
+            ) : (
               <ListaCursos
                 courses={courses}
                 onSaveCourse={handleSaveCourse}
@@ -213,47 +209,25 @@ const AdminDashboard = () => {
         return (
           <div className="section-content">
             <h2>Gestión de Usuarios</h2>
-            {loadingUsers ? <p>Cargando usuarios...</p> : errorUsers ? <p>{errorUsers}</p> : (
-              <ListaUsuarios users={users} onSaveUser={handleSaveUser} onDeleteUser={handleDeleteUser} />
+            {loadingUsers ? (
+              <p>Cargando usuarios...</p>
+            ) : (
+              <ListaUsuarios
+                users={users}
+                onSaveUser={handleSaveUser}
+                onDeleteUser={handleDeleteUser}
+              />
             )}
           </div>
         );
 
-      case "publicaciones":
-        return (
-          <div className="section-content">
-            <h2>Publicaciones</h2>
-            <div className="coming-soon">
-              <h3>🚧 Próximamente</h3>
-              <p>Esta sección estará disponible en futuras actualizaciones.</p>
-            </div>
-          </div>
-        );
-
-      case "reportes":
-        return (
-          <div className="section-content">
-            <h2>Reportes</h2>
-            <div className="coming-soon">
-              <h3>🚧 Próximamente</h3>
-              <p>Esta sección estará disponible en futuras actualizaciones.</p>
-            </div>
-          </div>
-        );
-
-      case "configuracion":
-        return (
-          <div className="section-content">
-            <h2>Configuración</h2>
-            <div className="coming-soon">
-              <h3>🚧 Próximamente</h3>
-              <p>Esta sección estará disponible en futuras actualizaciones.</p>
-            </div>
-          </div>
-        );
-
       default:
-        return null;
+        return (
+          <div className="dashboard-content">
+            <h2>Panel de Administración</h2>
+            <p>Bienvenido</p>
+          </div>
+        );
     }
   };
 
@@ -265,52 +239,36 @@ const AdminDashboard = () => {
         {/* Sidebar */}
         <aside className={`admin-sidebar ${sidebarVisible ? '' : 'sidebar-hidden'}`}>
           <nav className="sidebar-nav">
+
             <button
-              className={`sidebar-link ${activeSection === 'dashboard' ? 'active' : ''}`}
-              onClick={() => setActiveSection('dashboard')}
+              className={`sidebar-link ${activeSection === "dashboard" ? "active" : ""}`}
+              onClick={() => setActiveSection("dashboard")}
             >
-              <span className="sidebar-icon">📊</span>
-              Dashboard
+              📊 Dashboard
             </button>
 
             <button
-              className={`sidebar-link ${activeSection === 'cursos' ? 'active' : ''}`}
-              onClick={() => setActiveSection('cursos')}
+              className={`sidebar-link ${activeSection === "cursos" ? "active" : ""}`}
+              onClick={() => setActiveSection("cursos")}
             >
-              <span className="sidebar-icon">📚</span>
-              Gestión de Cursos
+              📚 Gestión de Cursos
             </button>
 
             <button
-              className={`sidebar-link ${activeSection === 'usuarios' ? 'active' : ''}`}
-              onClick={() => setActiveSection('usuarios')}
+              className={`sidebar-link ${activeSection === "usuarios" ? "active" : ""}`}
+              onClick={() => setActiveSection("usuarios")}
             >
-              <span className="sidebar-icon">👥</span>
-              Gestión de Usuarios
+              👥 Gestión de Usuarios
             </button>
 
-            <button
-              className={`sidebar-link ${activeSection === 'publicaciones' ? 'active' : ''}`}
-              onClick={() => setActiveSection('publicaciones')}
-            >
-              <span className="sidebar-icon">📝</span>
-              Publicaciones
+            {/* Agregar Cursos */}
+            <button className="sidebar-link" onClick={() => setVerModalCurso(true)}>
+              ➕ Agregar cursos
             </button>
 
-            <button
-              className={`sidebar-link ${activeSection === 'reportes' ? 'active' : ''}`}
-              onClick={() => setActiveSection('reportes')}
-            >
-              <span className="sidebar-icon">📈</span>
-              Reportes
-            </button>
-
-            <button
-              className={`sidebar-link ${activeSection === 'configuracion' ? 'active' : ''}`}
-              onClick={() => setActiveSection('configuracion')}
-            >
-              <span className="sidebar-icon">⚙️</span>
-              Configuración
+            {/* Agregar Eventos */}
+            <button className="sidebar-link" onClick={() => setVerModalEventos(true)}>
+              🎉 Agregar eventos
             </button>
           </nav>
         </aside>
@@ -325,6 +283,25 @@ const AdminDashboard = () => {
           {renderContent()}
         </main>
       </div>
+
+      {/* MODALES */}
+      <AgregarCursosModal
+        isOpen={verModalCurso}
+        onClose={() => setVerModalCurso(false)}
+        onSubmit={(newCourse) => {
+          setCourses(prev => [...prev, newCourse]);
+          setVerModalCurso(false);
+        }}
+      />
+
+      <AgregarEventosModal
+        isOpen={verModalEventos}
+        onClose={() => setVerModalEventos(false)}
+        onSubmit={(nuevoEvento) => {
+          setEventos(prev => [...prev, nuevoEvento]);
+          setVerModalEventos(false);
+        }}
+      />
     </div>
   );
 };

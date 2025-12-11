@@ -10,6 +10,7 @@ from .models import Organizacion
 from .models import Noticias
 from .models import ComentariosCursos
 from .models import InscripcionCurso
+from .models import ComentariosNoticias
 from .models import CategoriaOpciones
 
 
@@ -32,29 +33,24 @@ class UsuarioSerializer(serializers.ModelSerializer):
         if len(data["password"]) < 6:
             raise serializers.ValidationError(
                 {"password": "La contraseña debe tener al menos 6 caracteres."})
-
         if not data["num_telefono"].isdigit():
             raise serializers.ValidationError(
                 {"num_telefono": "El número de teléfono debe contener solo dígitos."})
         if len(data["num_telefono"]) != 8:
             raise serializers.ValidationError(
                 {"num_telefono": "El número de teléfono debe tener exactamente 8 dígitos."})
-
         if len(data["direccion"]) < 5:
             raise serializers.ValidationError(
                 {"direccion": "La dirección debe tener al menos 5 caracteres."})
-
         if not data["first_name"].isalpha():
             raise serializers.ValidationError(
                 {"first_name": "El nombre debe contener solo letras."})
         if not data["last_name"].isalpha():
             raise serializers.ValidationError(
                 {"last_name": "El apellido debe contener solo letras."})
-
         if "@" not in data["email"] or "." not in data["email"]:
             raise serializers.ValidationError(
                 {"email": "El correo electrónico no es válido."})
-
         return data
 
     def to_representation(self, instance):
@@ -122,19 +118,15 @@ class LoginSerializer(serializers.Serializer):
     def validate(self, data):
         username = data.get("username")
         password = data.get("password")
-
         if not username or not password:
             raise serializers.ValidationError(
                 "Debes ingresar usuario y contraseña.")
-
         if len(password) < 6:
             raise serializers.ValidationError(
                 {"password": "La contraseña debe tener al menos 6 caracteres."})
-
         user = authenticate(username=username, password=password)
         if not user:
             raise serializers.ValidationError("Credenciales inválidas.")
-
         data["user"] = user
         return data
 
@@ -150,6 +142,12 @@ class InscripcionCursoSerializer(ModelSerializer):
         model = InscripcionCurso
         fields = "__all__"
 
+class ComentariosNoticiasSerializer(ModelSerializer):
+    usuario_nombre = serializers.CharField(source='usuario.username', read_only=True)
+    class Meta:
+        model = ComentariosNoticias
+        fields = ["id", "noticia", "usuario", "usuario_nombre", "contenido_comentario", "fecha_comentario"]
+        
 class CategoriaOpcionesSerializer(ModelSerializer):
     class Meta:
         model = CategoriaOpciones

@@ -1,3 +1,19 @@
+/* ================================
+   VARIABLES GLOBALES
+   ================================ */
+:root {
+    --color-footer-bg: #1a2b3b;
+    --color-footer-text: #ffffff;
+    --color-footer-heading: #00bfa6;
+    --color-footer-link-hover: rgba(255, 255, 255, 0.8);
+    --radius-sm: 4px;
+    --font-size-sm: 0.9rem;
+}
+
+
+/* ================================
+   FOOTER
+   ================================ */
 .footer {
   background: #1a2b3b;
   color: white;
@@ -9,26 +25,41 @@
   top: 90px;
 }
 
+
+/* ================================
+   COLUMNAS DEL FOOTER
+   ================================ */
 .footer-columns {
-  width: 90%;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 2rem;
+    width: 90%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
 }
 
+
+/* ================================
+   TITULOS
+   ================================ */
 .footer h4 { 
-  color: #00bfa6;
-  margin-bottom: 0.5rem;
+    color: var(--color-footer-heading);
+    margin-bottom: 0.75rem;
+    font-size: 1rem;
+    font-weight: 600;
 }
 
+
+/* ================================
+   ENLACES
+   ================================ */
 .footer a {
-  color: white;
-  text-decoration: none;
-  display: block;
-  margin-bottom: 0.3rem;
-  transition: opacity 0.2s;
+    color: var(--color-footer-text);
+    text-decoration: none;
+    display: block;
+    margin-bottom: 0.4rem;
+    transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .footer a:hover {
-  opacity: 0.8;
+    color: var(--color-footer-link-hover);
+    transform: translateX(4px);
 }

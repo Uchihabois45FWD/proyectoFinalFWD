@@ -15,10 +15,8 @@ export default function NoticiasDetalle() {
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
 
-    // elimina etiquetas HTML para evitar enviar/almacenar html
     const stripTags = (html) => {
         if (!html) return "";
-        // crea elemento temporal para decodificar/limpiar
         const div = document.createElement("div");
         div.innerHTML = html;
         return div.textContent || div.innerText || "";
@@ -87,18 +85,15 @@ export default function NoticiasDetalle() {
             const saved = await fetch(`http://127.0.0.1:8000/api/comentarios-noticias/`, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("access_token") || localStorage.getItem("token")}`,
+                    "Content-Type": "application/json"
                 },
                 body: JSON.stringify(payload)
             })
             console.log("POST comentario response:", saved);
 
-            // Solo añadir si la respuesta es el objeto comentario esperado
             if (saved && typeof saved === "object" && (saved.id || saved.pk || saved.contenido_comentario)) {
                 setComentarios((prev) => [saved, ...prev]);
             } else {
-                // si server devuelve string (html o mensaje) o formato inesperado, recargar lista desde API
                 console.warn("Respuesta inesperada al crear comentario, recargando lista:", saved);
                 await loadComentarios();
             }
@@ -139,24 +134,28 @@ export default function NoticiasDetalle() {
                 <div className="comentarios-seccion">
                     <h3>Comentarios ({comentarios.length})</h3>
 
-                    <form onSubmit={handlePublicarComentario}>
-                        <textarea
-                            placeholder="Escribe tu comentario..."
+                    <section className="noticia-comentar">
+                        <h3>Comentar</h3>
+                        <input
+                            placeholder="Comentar"
                             value={nuevoComentario}
                             onChange={(e) => setNuevoComentario(e.target.value)}
-                            rows="4"
                         />
-                        <button type="submit" disabled={submitting}>
-                            {submitting ? "Publicando..." : "Publicar Comentario"}
+                        <button
+                            onClick={handlePublicarComentario}
+                            className="btn-comentar"
+                            disabled={submitting}
+                        >
+                            {submitting ? "Publicando..." : "Publicar comentario"}
                         </button>
-                    </form>
+                    </section>
 
                     <div className="lista-comentarios">
                         {comentarios.length === 0 ? (
                             <p>No hay comentarios aún</p>
                         ) : (
                             comentarios.map((c) => (
-                                <div key={c.id ?? c.pk ?? `${c.usuario}-${c.fecha_comentario}`} className="comentario-item">
+                                <div key={c.id ?? c.pk ?? `${c.usuario_nombre}-${c.fecha_comentario}`} className="comentario-item">
                                     <p className="comentario-texto">{c.contenido_comentario}</p>
                                     <small className="comentario-meta">
                                         {c.usuario_nombre ?? `Usuario #${c.usuario ?? "?"}`}{" "}

@@ -1,12 +1,11 @@
 from django.shortcuts import render
 from rest_framework.generics import ListCreateAPIView, DestroyAPIView, RetrieveUpdateDestroyAPIView
-from .models import Usuario, Curso, Inscripcion, Categoria, Evento, Organizacion,Noticias, ComentariosCursos, InscripcionCurso, CategoriaOpciones
+from .models import Usuario, Curso, Inscripcion, Categoria, Evento, Organizacion,Noticias, ComentariosCursos, InscripcionCurso, CategoriaOpciones, ComentariosNoticias
 from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
-
 from .serializers import (
     UsuarioSerializer,
     CursoSerializer,
@@ -17,17 +16,21 @@ from .serializers import (
     NoticiasSerializer,
     LoginSerializer,
     ComentariosCursosSerializer,
+    ComentariosNoticiasSerializer,
     InscripcionCursoSerializer,
     CategoriaOpcionesSerializer
 )
+
 
 class UsuarioCreateView(ListCreateAPIView):
     queryset = Usuario.objects.all()
     serializer_class = UsuarioSerializer
 
+
 class CursoCreateView(ListCreateAPIView):
     queryset = Curso.objects.all()
     serializer_class = CursoSerializer
+
 
 class InscripcionCreateView(ListCreateAPIView):
     queryset = Inscripcion.objects.all()
@@ -37,6 +40,7 @@ class CategoriaCreateView(ListCreateAPIView):
     queryset = Categoria.objects.all()
     serializer_class = CategoriaSerializer
 
+
 class EventoCreateView(ListCreateAPIView):
     queryset = Evento.objects.all()
     serializer_class = EventoSerializer
@@ -45,14 +49,16 @@ class OrganizacionCreateView(ListCreateAPIView):
     queryset = Organizacion.objects.all()
     serializer_class = OrganizacionSerializer
 
+
 class NoticiasCreateView(ListCreateAPIView):
     queryset = Noticias.objects.all()
     serializer_class = NoticiasSerializer
 
+
 class UsuarioLoginView(APIView):
     def post(self, request):
-        serializer = LoginSerializer(data=request.data) # el traductorsh
-        if serializer.is_valid(): # si existe el usuario
+        serializer = LoginSerializer(data=request.data)  # el traductorsh
+        if serializer.is_valid():  # si existe el usuario
             user = serializer.validated_data["user"]
             token = str(RefreshToken.for_user(user))
             return Response({
@@ -69,29 +75,30 @@ class UsuarioLoginView(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class UsuarioPorIdView(ListCreateAPIView):
     serializer_class = UsuarioSerializer
-    
+
     def get_queryset(self):
-        id_usuario = self.kwargs["id_usuario"] # llega por la url
+        id_usuario = self.kwargs["id_usuario"]  # llega por la url
         return Usuario.objects.filter(id=id_usuario)
 
+
 class EditarUsuarioView(APIView):
-    def patch(self,request):
-        id_usuario = request.data.get("id_usuario")  # lo que va a identificar al usuario
+    def patch(self, request):
+        # lo que va a identificar al usuario
+        id_usuario = request.data.get("id_usuario")
         nombre_usuario = request.data.get("username")
         correo_usuario = request.data.get("email")
         telefono_usuario = request.data.get("num_telefono")
         direccion_usuario = request.data.get("direccion")
         rol_usuario = request.data.get("rol")
         imagen_perfil = request.FILES.get("imagen_perfil")
-
         try:
-            usuario = Usuario.objects.get(id=id_usuario)  # traemos al usuario por el id
-
+            # traemos al usuario por el id
+            usuario = Usuario.objects.get(id=id_usuario)
             """
                 Si nos dieron el dato lo actualizamos
-
                 sino, se queda igual
             """
             if nombre_usuario:
@@ -106,9 +113,7 @@ class EditarUsuarioView(APIView):
                 usuario.rol = rol_usuario
             if imagen_perfil:
                 usuario.imagen_perfil = imagen_perfil
-
-            usuario.save() # confirmamos y guardamos en la base de datos
-
+            usuario.save()  # confirmamos y guardamos en la base de datos
             # Devolvemos el usuario actualizado
             serializer = UsuarioSerializer(usuario)
             return Response({
@@ -117,29 +122,38 @@ class EditarUsuarioView(APIView):
             }, status=status.HTTP_200_OK)
         except Usuario.DoesNotExist:
             return Response({"error": "Usuario no encontrado."}, status=status.HTTP_404_NOT_FOUND)
-    
+
+
+# esto
 class ComentariosCursosCreateView(ListCreateAPIView):
     queryset = ComentariosCursos.objects.all()
     serializer_class = ComentariosCursosSerializer
+
+class ComentariosNoticiasCreateView(ListCreateAPIView):
+    queryset = ComentariosNoticias.objects.all()
+    serializer_class = ComentariosNoticiasSerializer
     
+
 class InscripcionCursoCreateView(ListCreateAPIView):
     queryset = InscripcionCurso.objects.all()
     serializer_class = InscripcionCursoSerializer
+
 
 class EliminarUsuarioView(DestroyAPIView):
     queryset = Usuario.objects.all()
     serializer_class = UsuarioSerializer
 
+
 class UsuarioDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Usuario.objects.all()
     serializer_class = UsuarioSerializer
+
 
 class EditarCursoView(APIView):
     def patch(self, request, id_curso=None):
         try:
             # Traemos el curso por su id
             curso = Curso.objects.get(id=id_curso)
-
             # Actualizamos solo los campos que nos envíen
             nombre_curso = request.data.get("nombre_curso")
             descripcion_curso = request.data.get("descripcion_curso")
@@ -180,17 +194,17 @@ class EditarCursoView(APIView):
                 curso.destacado = destacado
 
             curso.save()
-
             # Devolvemos el curso actualizado como JSON
             serializer = CursoSerializer(curso)
             return Response(
-                {"mensaje": "Curso actualizado correctamente.", "curso": serializer.data},
+                {"mensaje": "Curso actualizado correctamente.",
+                    "curso": serializer.data},
                 status=status.HTTP_200_OK
             )
-
         except Curso.DoesNotExist:
             return Response({"error": "Curso no encontrado."}, status=status.HTTP_404_NOT_FOUND)
-        
+
+
 class EliminarCursoView(DestroyAPIView):
     queryset = Curso.objects.all()
     serializer_class = CursoSerializer
@@ -203,7 +217,8 @@ class EliminarCursoView(DestroyAPIView):
             return Response({"mensaje": "Curso eliminado correctamente."}, status=status.HTTP_204_NO_CONTENT)
         except Curso.DoesNotExist:
             return Response({"error": "Curso no encontrado."}, status=status.HTTP_404_NOT_FOUND)
-        
+
+
 class CursoDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Curso.objects.all()
     serializer_class = UsuarioSerializer

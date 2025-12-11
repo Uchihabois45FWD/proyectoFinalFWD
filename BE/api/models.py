@@ -42,7 +42,7 @@ class Curso(models.Model):
         ("virtual","Virtual"),
         ("bimodal","Bimodal"),
     )
-    imagen_curso = models.TextField()
+    imagen_curso = models.TextField(null=True, blank=True)
     nombre_curso = models.CharField(max_length=40)
     descripcion_curso = models.CharField(max_length=40)
     fecha_inicio_curso = models.DateField()

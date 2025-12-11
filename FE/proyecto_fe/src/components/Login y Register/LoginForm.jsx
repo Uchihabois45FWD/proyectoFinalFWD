@@ -1,4 +1,3 @@
-// ...existing code...
 import React, { useState } from "react";
 import "../../styles/loginForm.css";
 import { loginUser } from "../../services/fetch";
@@ -7,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 export default function LoginForm() {
   const [usuario, setUsuario] = useState("");
   const [contrasena, setContrasena] = useState("");
-  const [recordarme, setRecordarme] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
@@ -18,35 +16,37 @@ export default function LoginForm() {
       alert("Complete usuario y contraseña");
       return;
     }
+
     setSubmitting(true);
+
     try {
       const data = await loginUser(usuario.trim(), contrasena);
-      localStorage.setItem("auth_token", data.access);
-      // loginUser guarda token si el backend lo devuelve
-      // guardar identificador/rol si vienen en la respuesta
-      if (data?.id_usuario) localStorage.setItem("id_usuario", String(data.id_usuario));
-      if (data?.user_id) localStorage.setItem("id_usuario", String(data.user_id));
-      if (data?.id) localStorage.setItem("id_usuario", String(data.id));
-      if (data?.rol) localStorage.setItem("user_role", data.rol);
-      else if (!localStorage.getItem("user_role")) localStorage.setItem("user_role", "usuario");
 
-      // Set user name
-      if (data?.nombre) localStorage.setItem("user_name", data.nombre);
-      else if (data?.name) localStorage.setItem("user_name", data.name);
-      else if (data?.username) localStorage.setItem("user_name", data.username);
-      else localStorage.setItem("user_name", usuario.trim()); // fallback to login username
+      // 🔥 SIEMPRE usa localStorage
+      const storage = localStorage;
 
-      // opcional: recordar (ya se usa localStorage por defecto)
-      if (!recordarme) {
-        // si no quiere recordar, podría guardarse en sessionStorage en su lugar
-        // aquí mantenemos token en localStorage por simplicidad
-      }
+      storage.setItem("auth_token", data.access);
 
-      // Set flag for welcome notification
+      if (data?.id_usuario) storage.setItem("id_usuario", String(data.id_usuario));
+      if (data?.user_id) storage.setItem("id_usuario", String(data.user_id));
+      if (data?.id) storage.setItem("id_usuario", String(data.id));
+
+      if (data?.rol) storage.setItem("user_role", data.rol);
+      else if (!storage.getItem("user_role")) storage.setItem("user_role", "usuario");
+
+      if (data?.nombre) storage.setItem("user_name", data.nombre);
+      else if (data?.name) storage.setItem("user_name", data.name);
+      else if (data?.username) storage.setItem("user_name", data.username);
+      else storage.setItem("user_name", usuario.trim());
+
+      // 🔥 Eliminar remember_me, ya no se usa
+      // storage.setItem("remember_me", "false");
+
       sessionStorage.setItem("justLoggedIn", "true");
 
       alert(data.mensaje || "Inicio de sesión correcto");
       navigate("/inicio");
+
     } catch (err) {
       const resp = err?.response || {};
       const msg =

@@ -16,9 +16,10 @@ const Navbar = () => {
 
   useEffect(() => {
     const checkLoginStatus = () => {
-      const role = localStorage.getItem("user_role");
-      const name = localStorage.getItem("user_name") || localStorage.getItem("username");
-      const token = localStorage.getItem("auth_token") || localStorage.getItem("access_token");
+      // Check both localStorage and sessionStorage for login data
+      const role = localStorage.getItem("user_role") || sessionStorage.getItem("user_role");
+      const name = localStorage.getItem("user_name") || sessionStorage.getItem("user_name") || localStorage.getItem("username");
+      const token = localStorage.getItem("auth_token") || sessionStorage.getItem("auth_token") || localStorage.getItem("access_token") || sessionStorage.getItem("access_token");
 
       if (role && token) {
         setUserRole(role);
@@ -54,6 +55,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     localStorage.clear();
+    sessionStorage.clear();
     setUserRole(null);
     setUserName("");
     setIsLoggedIn(false);
