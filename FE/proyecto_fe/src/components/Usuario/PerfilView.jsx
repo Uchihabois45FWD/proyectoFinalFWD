@@ -1,9 +1,16 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "../../styles/perfil.css";
 import { patchData, getData } from "../../services/fetch";
+import AgregarCursosModal from "../Admin/AgregarCursosModal.jsx";
+import AgregarEventosModal from "../Admin/AgregarEventosModal.jsx";
 
 export default function PerfilView({ usuario, onUpdate }) {
   const [editando, setEditando] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [verModalCurso, setVerModalCurso] = useState(false);
+  const [verModalEventos, setVerModalEventos] = useState(false);
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     id_usuario: localStorage.getItem("id_usuario"),
@@ -40,6 +47,33 @@ export default function PerfilView({ usuario, onUpdate }) {
       imagen_perfil: file
     }));
   }
+
+  const getMenuOptions = () => {
+    const rol = usuario?.rol;
+    const options = [
+      { label: 'Editar información', action: () => { setEditando(true); setDropdownOpen(false); } }
+    ];
+
+    if (rol === 'usuario') {
+      options.push(
+        { label: 'Mis cursos', action: () => navigate('/cursos') },
+        { label: 'Calendario', action: () => navigate('/eventos') },
+        { label: 'Configuración', action: () => alert('Configuración no implementada') }
+      );
+    } else if (rol === 'instructor') {
+      options.push(
+        { label: 'Crear curso', action: () => { setVerModalCurso(true); setDropdownOpen(false); } },
+        { label: 'Ver cursos creados', action: () => navigate('/cursos') }
+      );
+    } else if (rol === 'organizador') {
+      options.push(
+        { label: 'Crear eventos', action: () => { setVerModalEventos(true); setDropdownOpen(false); } },
+        { label: 'Eventos creados', action: () => navigate('/eventos') }
+      );
+    }
+
+    return options;
+  };
 
   async function actualizarUsuario() {
     try {
@@ -96,9 +130,19 @@ export default function PerfilView({ usuario, onUpdate }) {
       <p><strong>Dirección:</strong> {usuario?.direccion}</p>
       <p><strong>Rol:</strong> {usuario?.rol}</p>
 
-      <button className="btn-editar" onClick={() => setEditando(!editando)}>
-        Editar perfil
+      <button className="dropdown-toggle-btn" onClick={() => setDropdownOpen(!dropdownOpen)}>
+        ⚙
       </button>
+
+      {dropdownOpen && (
+        <div className="dropdown-menu">
+          {getMenuOptions().map(option => (
+            <button key={option.label} className="dropdown-item" onClick={option.action}>
+              {option.label}
+            </button>
+          ))}
+        </div>
+      )}
 
       {editando && (
         <div className="perfil-edit-container">
@@ -141,6 +185,23 @@ export default function PerfilView({ usuario, onUpdate }) {
           </button>
         </div>
       )}
+
+      <AgregarCursosModal
+        isOpen={verModalCurso}
+        onClose={() => setVerModalCurso(false)}
+        onSubmit={(newCourse) => {
+          // perhaps add to some state or just close
+          setVerModalCurso(false);
+        }}
+      />
+
+      <AgregarEventosModal
+        isOpen={verModalEventos}
+        onClose={() => setVerModalEventos(false)}
+        onSubmit={(nuevoEvento) => {
+          setVerModalEventos(false);
+        }}
+      />
     </div>
   );
 }

@@ -35,6 +35,7 @@
     text-align: center;
     font-family: var(--font-primary);
     transition: transform 0.2s ease;
+    position: relative;
 }
 
 .perfil-view:hover {
@@ -138,4 +139,54 @@
     box-shadow: 0 3px 10px rgba(0,0,0,0.08);
     position: relative;
     left: 130px;
+}
+
+/* ================================
+   DROPDOWN MENU
+   ================================ */
+.dropdown-toggle-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: linear-gradient(135deg, #ff6b6b, #feca57);
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  z-index: 1000;
+}
+
+.dropdown-toggle-btn:hover {
+  box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 80px;
+  left: 20px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  z-index: 1000;
+  min-width: 200px;
+}
+
+.dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 10px 15px;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--color-strong);
+}
+
+.dropdown-item:hover {
+  background: #f0f0f0;
 }
