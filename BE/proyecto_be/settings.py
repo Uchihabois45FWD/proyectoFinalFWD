@@ -58,12 +58,16 @@ MIDDLEWARE = [
 
 # CORS: en desarrollo permitir solo orígenes concretos y credenciales
 CORS_ALLOW_ALL_ORIGINS = False
+
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
+    "http://localhost:5174",      
+    "http://127.0.0.1:5174",       
     "http://localhost:3000",
     "http://127.0.0.1:3000",
 ]
+
 CORS_ALLOW_CREDENTIALS = True
 
 # Si usas CSRF con cookies y fetch credentials, puede ser útil:

@@ -92,20 +92,9 @@ export default function LoginForm() {
           disabled={submitting}
         />
 
-        <button type="button" onClick={() => setShowPassword(!showPassword)}>
+        <button type="button" className="ver" onClick={() => setShowPassword(!showPassword)}>
           {showPassword ? "Ocultar contraseña" : "Ver contraseña"}
         </button>
-
-        <div className="remember-row">
-          <input
-            type="checkbox"
-            checked={recordarme}
-            onChange={() => setRecordarme(!recordarme)}
-            id="remember"
-            disabled={submitting}
-          />
-          <label htmlFor="remember">Recordarme</label>
-        </div>
 
         <button type="submit" className="btn-login" disabled={submitting}>
           {submitting ? "Ingresando..." : "Iniciar Sesión"}
