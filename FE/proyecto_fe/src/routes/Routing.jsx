@@ -10,6 +10,7 @@ import CursoDetalle from "../pages/CursoDetalle"
 import EventosDetalle from "../pages/EventosDetalle"
 import AdminDashboard from "../pages/AdminDashboard"
 import NoticiasDetalle from "../pages/NoticiasDetalle";
+import MisCursos from "../pages/MisCursos";
 
 const ProtectedRoute = ({ children }) => {
     const userRole = localStorage.getItem("user_role"); 
@@ -35,6 +36,7 @@ const Routing = () =>{
                 <Route path="/curso/:id" element={<CursoDetalle />} />
                 <Route path="/evento/:id" element={<EventosDetalle />} />
                 <Route path="/noticias/:id" element={<NoticiasDetalle />} />
+                <Route path="/mis-cursos" element={<MisCursos/>} />
                 <Route path="/admin" element={
                     <ProtectedRoute>
                         <AdminDashboard />
