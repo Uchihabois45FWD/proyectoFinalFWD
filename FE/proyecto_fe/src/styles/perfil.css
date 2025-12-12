@@ -147,7 +147,7 @@
 .dropdown-toggle-btn {
   position: absolute;
   top: 20px;
-  left: 20px;
+  left: 30px;
   background: linear-gradient(135deg, #ff6b6b, #feca57);
   border: none;
   border-radius: 50%;
@@ -157,6 +157,9 @@
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
   z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .dropdown-toggle-btn:hover {
