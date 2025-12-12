@@ -21,8 +21,7 @@
   display: flex;
   justify-content: center;
   font-size: 0.9rem;
-  position: relative;
-  top: 90px;
+  margin-top: auto;
 }
 
 

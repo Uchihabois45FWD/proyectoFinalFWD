@@ -112,96 +112,103 @@ export default function PerfilView({ usuario, onUpdate }) {
   }
 
   return (
-    <div className="perfil-view">
-      {usuario?.imagen_perfil ? (
-        <img
-          src={`http://localhost:8000${usuario.imagen_perfil}`}
-          alt="Foto de perfil"
-          className="foto-perfil"
-        />
-      ) : (
-        <div className="foto-perfil-placeholder">
-          <span>Sin foto de perfil</span>
-        </div>
-      )}
-      <h2>{usuario?.username}</h2>
-      <p><strong>Correo:</strong> {usuario?.email}</p>
-      <p><strong>Teléfono:</strong> {usuario?.num_telefono}</p>
-      <p><strong>Dirección:</strong> {usuario?.direccion}</p>
-      <p><strong>Rol:</strong> {usuario?.rol}</p>
-
-      <button className="dropdown-toggle-btn" onClick={() => setDropdownOpen(!dropdownOpen)}>
-        ⚙
-      </button>
-
-      {dropdownOpen && (
-        <div className="dropdown-menu">
+    <div className="perfil-view-layout">
+      {/* Sidebar */}
+      <aside className={`perfil-view-sidebar ${dropdownOpen ? '' : 'sidebar-hidden'}`}>
+        <nav className="sidebar-nav">
           {getMenuOptions().map(option => (
-            <button key={option.label} className="dropdown-item" onClick={option.action}>
+            <button key={option.label} className="sidebar-link" onClick={option.action}>
               {option.label}
             </button>
           ))}
+        </nav>
+      </aside>
+
+      {/* Toggle Button */}
+      <button onClick={() => setDropdownOpen(!dropdownOpen)} className="sidebar-toggle-btn">
+        {dropdownOpen ? '◀' : '▶'}
+      </button>
+
+      {/* Main Content */}
+      <main className={`perfil-view-content ${dropdownOpen ? '' : 'sidebar-hidden'}`}>
+        <div className="perfil-view">
+          {usuario?.imagen_perfil ? (
+            <img
+              src={`http://localhost:8000${usuario.imagen_perfil}`}
+              alt="Foto de perfil"
+              className="foto-perfil"
+            />
+          ) : (
+            <div className="foto-perfil-placeholder">
+              <span>Sin foto de perfil</span>
+            </div>
+          )}
+          <h2>{usuario?.username}</h2>
+          <p><strong>Correo:</strong> {usuario?.email}</p>
+          <p><strong>Teléfono:</strong> {usuario?.num_telefono}</p>
+          <p><strong>Dirección:</strong> {usuario?.direccion}</p>
+          <p><strong>Rol:</strong> {usuario?.rol}</p>
+
+          {editando && (
+            <div className="perfil-edit-container">
+              <input
+                name="username"
+                onChange={handleChange}
+                type="text"
+                value={formData.username}
+                placeholder="Editar nombre de usuario"
+              />
+              <input
+                name="email"
+                onChange={handleChange}
+                type="text"
+                value={formData.email}
+                placeholder="Editar correo"
+              />
+              <input
+                name="num_telefono"
+                onChange={handleChange}
+                type="text"
+                value={formData.num_telefono}
+                placeholder="Editar teléfono"
+              />
+              <input
+                name="direccion"
+                onChange={handleChange}
+                type="text"
+                value={formData.direccion}
+                placeholder="Editar dirección"
+              />
+              <input
+                name="imagen_perfil"
+                onChange={handleFileChange}
+                type="file"
+                accept="image/*"
+              />
+              <button className="btn-guardar-cambios" onClick={actualizarUsuario}>
+                Guardar cambios
+              </button>
+            </div>
+          )}
+
+          <AgregarCursosModal
+            isOpen={verModalCurso}
+            onClose={() => setVerModalCurso(false)}
+            onSubmit={(newCourse) => {
+              // perhaps add to some state or just close
+              setVerModalCurso(false);
+            }}
+          />
+
+          <AgregarEventosModal
+            isOpen={verModalEventos}
+            onClose={() => setVerModalEventos(false)}
+            onSubmit={(nuevoEvento) => {
+              setVerModalEventos(false);
+            }}
+          />
         </div>
-      )}
-
-      {editando && (
-        <div className="perfil-edit-container">
-          <input
-            name="username"
-            onChange={handleChange}
-            type="text"
-            value={formData.username}
-            placeholder="Editar nombre de usuario"
-          />
-          <input
-            name="email"
-            onChange={handleChange}
-            type="text"
-            value={formData.email}
-            placeholder="Editar correo"
-          />
-          <input
-            name="num_telefono"
-            onChange={handleChange}
-            type="text"
-            value={formData.num_telefono}
-            placeholder="Editar teléfono"
-          />
-          <input
-            name="direccion"
-            onChange={handleChange}
-            type="text"
-            value={formData.direccion}
-            placeholder="Editar dirección"
-          />
-          <input
-            name="imagen_perfil"
-            onChange={handleFileChange}
-            type="file"
-            accept="image/*"
-          />
-          <button className="btn-guardar-cambios" onClick={actualizarUsuario}>
-            Guardar cambios
-          </button>
-        </div>
-      )}
-
-      <AgregarCursosModal
-        isOpen={verModalCurso}
-        onClose={() => setVerModalCurso(false)}
-        onSubmit={(newCourse) => {
-          // perhaps add to some state or just close
-          setVerModalCurso(false);
-        }}
-      />
-
-      <AgregarEventosModal
-        isOpen={verModalEventos}
-        onClose={() => setVerModalEventos(false)}
-        onSubmit={(nuevoEvento) => {
-          setVerModalEventos(false);
-        }}
-      />
+      </main>
     </div>
   );
 }

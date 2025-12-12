@@ -1,12 +1,29 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "../../styles/navbar.css";
 
 const Navbar = () => {
   const [userRole, setUserRole] = useState(null);
   const [userName, setUserName] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const dropdownRef = useRef(null);
   const navigate = useNavigate();
+
+  // Function to format user role for display
+  const formatUserRole = (role) => {
+    if (!role) return "";
+    switch (role.toLowerCase()) {
+      case "administrador":
+        return "Administrador";
+      case "instructor":
+        return "Instructor";
+      case "usuario":
+        return "Usuario";
+      default:
+        return role.charAt(0).toUpperCase() + role.slice(1);
+    }
+  };
 
     // Get current user from localStorage
     const currentUser = {
@@ -53,6 +70,23 @@ const Navbar = () => {
     };
   }, []);
 
+  // Handle clicks outside sidebar to close it
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsSidebarOpen(false);
+      }
+    };
+
+    if (isSidebarOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isSidebarOpen]);
+
   const handleLogout = () => {
     localStorage.clear();
     sessionStorage.clear();
@@ -87,7 +121,6 @@ const Navbar = () => {
         return (
           <>
             {commonLinks}
-            <Link to="/perfil" className="nav">Mi Perfil</Link>
             <Link to="/admin" className="nav admin-link">Admin Dashboard</Link>
           </>
         );
@@ -96,7 +129,6 @@ const Navbar = () => {
         return (
           <>
             {commonLinks}
-            <Link to="/perfil" className="nav-link">Mi Perfil</Link>
           </>
         );
 
@@ -104,8 +136,13 @@ const Navbar = () => {
         return (
           <>
             {commonLinks}
-            <Link to="/perfil" className="nav">Mi Perfil</Link>
-            <Link to="/mis-cursos" className="nav">Mis Cursos</Link>
+          </>
+        );
+
+        case "organizador":
+        return (
+          <>
+            {commonLinks}
           </>
         );
 
@@ -132,15 +169,45 @@ const Navbar = () => {
 
       <div className="header-right">
         {isLoggedIn && (
-          <>
-            <div className="user-info">
+          <div className="user-menu" ref={dropdownRef}>
+            <button
+              className="user-info-btn"
+              onClick={() => {
+                console.log("Dropdown clicked, current state:", isSidebarOpen);
+                setIsSidebarOpen(!isSidebarOpen);
+              }}
+            >
               <span className="nameuser">{userName}</span>
-              <span className="user-role">{userRole}</span>
-            </div>
-            <button onClick={handleLogout} className="logout-btn">Cerrar Sesión</button>
-          </>
+              <span className="user-role">{formatUserRole(userRole)}</span>
+              <span className="dropdown-arrow">{isSidebarOpen ? '✕' : '☰'}</span>
+            </button>
+          </div>
         )}
       </div>
+
+      {/* Dropdown Menu */}
+      {(() => {
+        console.log("Rendering dropdown - isSidebarOpen:", isSidebarOpen, "isLoggedIn:", isLoggedIn);
+        console.log("localStorage values:", {
+          user_role: localStorage.getItem("user_role"),
+          user_name: localStorage.getItem("user_name"),
+          username: localStorage.getItem("username"),
+          auth_token: localStorage.getItem("auth_token"),
+          access_token: localStorage.getItem("access_token")
+        });
+        return isSidebarOpen && (
+          <div className="dropdown-overlay" onClick={() => setIsSidebarOpen(false)} style={{background: 'rgba(0,0,0,0.5)', position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 9999}}>
+            <div className="dropdown-menu" ref={dropdownRef} onClick={(e) => e.stopPropagation()} style={{position: 'absolute', top: '64px', right: '20px', background: 'white', border: '1px solid #ccc', borderRadius: '8px', padding: '10px', minWidth: '180px', zIndex: 10000}}>
+              <Link to="/perfil" className="dropdown-item" onClick={() => setIsSidebarOpen(false)} style={{display: 'block', padding: '10px', textDecoration: 'none', color: '#333'}}>
+                Mi Perfil
+              </Link>
+              <button onClick={handleLogout} className="dropdown-item logout-item" style={{display: 'block', width: '100%', padding: '10px', border: 'none', background: 'none', color: '#dc2626', textAlign: 'left', cursor: 'pointer'}}>
+                Cerrar Sesión
+              </button>
+            </div>
+          </div>
+        );
+      })()}
     </nav>
   );
 };

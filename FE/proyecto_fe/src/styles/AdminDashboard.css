@@ -2,6 +2,8 @@
 
 /* Palette */
 :root {
+  --bg: #f9f9f9;
+  --card-bg: #ffffff;
   --hero-start: #ec6713;
   --hero-end: #f7bc17;
   --muted: #ec6713;
