@@ -127,6 +127,7 @@ class CategoriaSerializer(ModelSerializer):
         fields = "__all__"
 
 class EventoSerializer(ModelSerializer):
+    usuario_nombre = serializers.CharField(source='organizador.username', read_only=True)
     class Meta:
         model = Evento
         fields = "__all__"

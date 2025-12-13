@@ -191,22 +191,27 @@ export default function PerfilView({ usuario, onUpdate }) {
             </div>
           )}
 
-          <AgregarCursosModal
-            isOpen={verModalCurso}
-            onClose={() => setVerModalCurso(false)}
-            onSubmit={(newCourse) => {
-              // perhaps add to some state or just close
-              setVerModalCurso(false);
-            }}
-          />
+          {verModalCurso && (
+            <AgregarCursosModal
+              isOpen={verModalCurso}
+              onClose={() => setVerModalCurso(false)}
+              onSubmit={(newCourse) => {
+                // perhaps add to some state or just close
+                setVerModalCurso(false);
+              }}
+              currentUser={usuario}
+            />
+          )}
 
-          <AgregarEventosModal
-            isOpen={verModalEventos}
-            onClose={() => setVerModalEventos(false)}
-            onSubmit={(nuevoEvento) => {
-              setVerModalEventos(false);
-            }}
-          />
+          {verModalEventos && (
+            <AgregarEventosModal
+              isOpen={verModalEventos}
+              onClose={() => setVerModalEventos(false)}
+              onSubmit={(nuevoEvento) => {
+                setVerModalEventos(false);
+              }}
+            />
+          )}
         </div>
       </main>
     </div>
