@@ -83,24 +83,35 @@ class CursoSerializer(serializers.ModelSerializer):
             return "Sin instructor"
 
     def validate(self, data):
+        print("Datos recibidos en validate:", data)
         required_fields = ['nombre_curso', 'descripcion_curso', 'fecha_inicio_curso', 'fecha_fin_curso', 'instructor', 'limite_cupos', 'modalidad', 'primer_dia', 'ultimo_dia']
         for field in required_fields:
             if not data.get(field):
+                print(f"Campo faltante: {field}")
                 raise serializers.ValidationError({field: f"El campo {field} es requerido."})
         # Check if instructor exists
         try:
             instructor_id = int(data['instructor'])
-            Usuario.objects.get(id=instructor_id)
+            print(f"Buscando instructor con ID: {instructor_id}")
+            instructor = Usuario.objects.get(id=instructor_id)
+            print(f"Instructor encontrado: {instructor.username}, rol: {instructor.rol}")
+            if instructor.rol != 'instructor':
+                print(f"El rol del instructor no es 'instructor': {instructor.rol}")
+                raise serializers.ValidationError({"instructor": "El usuario seleccionado no tiene el rol de instructor."})
             data['instructor'] = instructor_id
         except Usuario.DoesNotExist:
+            print("Instructor no encontrado")
             raise serializers.ValidationError({"instructor": "Instructor no encontrado."})
-        except (ValueError, TypeError):
+        except (ValueError, TypeError) as e:
+            print(f"Error convirtiendo instructor a int: {e}")
             raise serializers.ValidationError({"instructor": "Instructor inválido."})
         # Validate limite_cupos
         try:
             data['limite_cupos'] = int(data['limite_cupos'])
-        except (ValueError, TypeError):
+        except (ValueError, TypeError) as e:
+            print(f"Error convirtiendo limite_cupos: {e}")
             raise serializers.ValidationError({"limite_cupos": "Debe ser un número entero."})
+        print("Validación exitosa")
         return data
 
 

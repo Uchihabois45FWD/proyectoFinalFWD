@@ -30,7 +30,8 @@ export default function AgregarCursosModal({
   useEffect(()=>{
     const fetchUsuarios = async()=>{
       const data = await getData('crear-usuario/');
-      setUsuarios(data);
+      const instructores = data.filter(usuario => usuario.rol === 'instructor');
+      setUsuarios(instructores);
     }
     fetchUsuarios();
   },[])
@@ -57,7 +58,7 @@ export default function AgregarCursosModal({
     }
     const peticion = await postData('crear-curso/', guardarCurso);
     console.log(peticion);
-    
+
     onSubmit(formData);
   };
 

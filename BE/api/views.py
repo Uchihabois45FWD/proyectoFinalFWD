@@ -183,7 +183,10 @@ class EditarCursoView(APIView):
                 curso.descripcion = descripcion_curso
             if instructor is not None:
                 try:
-                    curso.instructor = Usuario.objects.get(id=instructor)
+                    instructor_obj = Usuario.objects.get(id=instructor)
+                    if instructor_obj.rol != 'instructor':
+                        return Response({"error": "El usuario seleccionado no tiene el rol de instructor."}, status=status.HTTP_400_BAD_REQUEST)
+                    curso.instructor = instructor_obj
                 except Usuario.DoesNotExist:
                     return Response({"error": "Instructor no encontrado."}, status=status.HTTP_400_BAD_REQUEST)
             if limite_cupos is not None:
