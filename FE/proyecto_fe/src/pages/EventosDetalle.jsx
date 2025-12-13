@@ -53,15 +53,15 @@ export default function EventosDetalle() {
             <div className="curso-container">
                 <main className="curso-detalle-contenido">
                     <section className="curso-banner">
-                        <h1 className="curso-titulo">{evento.titulo_evento}</h1>
+                        <h1 className="curso-titulo">{evento.titulo}</h1>
                     </section>
 
                     <section className="curso-info">
-                        <p className="curso-descripcion"><strong>Descripción:</strong> {evento.descripcion_evento}</p>
+                        <p className="curso-descripcion"><strong>Descripción:</strong> {evento.descripcion}</p>
                         <p><strong>Organizador:</strong> {evento.organizador?.first_name} {evento.organizador?.last_name}</p>
-                        <p><strong>Fecha:</strong> {evento.fecha_evento}</p>
-                        <p><strong>Hora:</strong> {evento.hora_evento}</p>
-                        <p><strong>Lugar:</strong> {evento.lugar_evento}</p>
+                        <p><strong>Fecha:</strong> {evento.fecha}</p>
+                        <p><strong>Hora:</strong> {evento.hora}</p>
+                        <p><strong>Lugar:</strong> {evento.lugar}</p>
                         <p><strong>Categoría:</strong> {evento.categoria?.nombre_categoria}</p>
                     </section>
 

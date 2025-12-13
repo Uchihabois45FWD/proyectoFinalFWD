@@ -82,6 +82,27 @@ class CursoSerializer(serializers.ModelSerializer):
         except:
             return "Sin instructor"
 
+    def validate(self, data):
+        required_fields = ['nombre_curso', 'descripcion_curso', 'fecha_inicio_curso', 'fecha_fin_curso', 'instructor', 'limite_cupos', 'modalidad', 'primer_dia', 'ultimo_dia']
+        for field in required_fields:
+            if not data.get(field):
+                raise serializers.ValidationError({field: f"El campo {field} es requerido."})
+        # Check if instructor exists
+        try:
+            instructor_id = int(data['instructor'])
+            Usuario.objects.get(id=instructor_id)
+            data['instructor'] = instructor_id
+        except Usuario.DoesNotExist:
+            raise serializers.ValidationError({"instructor": "Instructor no encontrado."})
+        except (ValueError, TypeError):
+            raise serializers.ValidationError({"instructor": "Instructor inválido."})
+        # Validate limite_cupos
+        try:
+            data['limite_cupos'] = int(data['limite_cupos'])
+        except (ValueError, TypeError):
+            raise serializers.ValidationError({"limite_cupos": "Debe ser un número entero."})
+        return data
+
 
 class InscripcionSerializer(ModelSerializer):
     class Meta:
