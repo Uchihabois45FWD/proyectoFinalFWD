@@ -56,7 +56,6 @@ function PaginaInicio() {
 
     return (
         <>
-            <Navbar />
             {showWelcome && (
                 <WelcomeNotification
                     userName={userName}

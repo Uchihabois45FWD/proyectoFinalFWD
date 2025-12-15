@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import { getData, postData } from "../services/fetch";
 
 import "../styles/noticiaDetalle.css";
-import Navbar from "../components/Global/Navbar";
 import Footer from "../components/Global/Footer";
 
 export default function NoticiasDetalle() {

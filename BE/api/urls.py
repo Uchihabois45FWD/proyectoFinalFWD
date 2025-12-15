@@ -3,6 +3,7 @@ from .views import (
     UsuarioDetailView,
     UsuarioCreateView,
     CursoCreateView,
+    InscripcionCreateView,
     InscripcionCursoCreateView,
     EventoCreateView,
     OrganizacionCreateView,
@@ -13,6 +14,7 @@ from .views import (
     EliminarUsuarioView,
     EditarCursoView,
     EliminarCursoView,
+    EliminarInscripcionView,
     CursoDetailView,
     ComentariosNoticiasCreateView,
     CategoriaCreateView
@@ -20,7 +22,7 @@ from .views import (
 urlpatterns = [
     path("crear-usuario/", UsuarioCreateView.as_view(), name='crear-usuario'),
     path("crear-curso/", CursoCreateView.as_view()),
-    path("crear-inscripcion/", InscripcionCursoCreateView.as_view()),
+    path("crear-inscripcion/", InscripcionCreateView.as_view()),
     path("crear-evento/", EventoCreateView.as_view()),
     path("crear-organizacion/", OrganizacionCreateView.as_view()),
     path("crear-noticia/", NoticiasCreateView.as_view()),
@@ -31,6 +33,7 @@ urlpatterns = [
     path("eliminar-usuario/<int:pk>/", EliminarUsuarioView.as_view()),
     path("actualizar-curso/<int:id_curso>/", EditarCursoView.as_view(), name="actualizar-curso"),
     path("eliminar-curso/<int:id>/", EliminarCursoView.as_view(), name="eliminar-curso"),
+    path("eliminar-inscripcion/<int:id>/", EliminarInscripcionView.as_view(), name="eliminar-inscripcion"),
     path("curso-detail/<int:pk>/", CursoDetailView.as_view(), name="curso-detail"),
     path("comentarios-noticias/", ComentariosNoticiasCreateView.as_view(), name="curso-detail"),
     path("crear-categoria/", CategoriaCreateView.as_view())

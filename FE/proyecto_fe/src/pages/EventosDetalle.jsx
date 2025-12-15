@@ -64,10 +64,6 @@ export default function EventosDetalle() {
                         <p><strong>Lugar:</strong> {evento.lugar_evento}</p>
                         <p><strong>Categoría:</strong> {evento.categoria?.nombre_categoria}</p>
                     </section>
-
-                    <div className="curso-inscripcion">
-                        <button onClick={handleAsistir} className="btn-inscribirse">Asistir al Evento</button>
-                    </div>
                 </main>
             </div>
             <Footer />

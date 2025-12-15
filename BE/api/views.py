@@ -36,6 +36,9 @@ class InscripcionCreateView(ListCreateAPIView):
     queryset = Inscripcion.objects.all()
     serializer_class = InscripcionSerializer
 
+    def perform_create(self, serializer):
+        serializer.save()
+
 class CategoriaCreateView(ListCreateAPIView):
     queryset = Categoria.objects.all()
     serializer_class = CategoriaSerializer
@@ -219,10 +222,27 @@ class EliminarCursoView(DestroyAPIView):
             return Response({"error": "Curso no encontrado."}, status=status.HTTP_404_NOT_FOUND)
 
 
+class EliminarInscripcionView(DestroyAPIView):
+    queryset = Inscripcion.objects.all()
+    serializer_class = InscripcionSerializer
+    lookup_field = "id"   # campo en el modelo
+
+    def delete(self, request, *args, **kwargs):
+        try:
+            inscripcion = self.get_object()
+            inscripcion.delete()
+            return Response({"mensaje": "Inscripción eliminada correctamente."}, status=status.HTTP_204_NO_CONTENT)
+        except Inscripcion.DoesNotExist:
+            return Response({"error": "Inscripción no encontrada."}, status=status.HTTP_404_NOT_FOUND)
+
+
 class CursoDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Curso.objects.all()
     serializer_class = UsuarioSerializer
 
+
 class CategoriaOpcionesCreateView(ListCreateAPIView):
     queryset = CategoriaOpciones.objects.all()
     serializer_class = CategoriaOpcionesSerializer
+    
+    

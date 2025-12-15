@@ -1,4 +1,3 @@
-import Navbar from "../components/Global/Navbar";
 import Footer from "../components/Global/Footer";
 import LoginForm from "../components/Login y Register/LoginForm";
 import "../styles/loginPage.css";

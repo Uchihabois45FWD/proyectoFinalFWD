@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
 import { getData } from "../services/fetch"
-import Navbar from "../components/Global/Navbar"
 import "../styles/noticias.css"
+import Navbar from "../components/Global/Navbar";
+
 
 const Noticias = () => {
     const [listaNoticias, setListaNoticias] = useState([])
@@ -18,7 +19,6 @@ const Noticias = () => {
 
     return (
         <div>
-            <Navbar />
             <div className="noticias-page">
                 <h1 className="noticias-titulo">Noticias</h1>
                 <div className="noticias-contenedor">

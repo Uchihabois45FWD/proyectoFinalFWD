@@ -26,7 +26,6 @@ export default function PerfilPage() {
 
   return (
     <div className="perfil-layout">
-      <Navbar />
       <div className="perfil-page">
         {usuario ? (
           <PerfilView usuario={usuario} onUpdate={handleUsuarioUpdate} />

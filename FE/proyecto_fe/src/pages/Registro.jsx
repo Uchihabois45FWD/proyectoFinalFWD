@@ -5,7 +5,6 @@ import RegistroComp from '../components/Login y Register/RegistroComp'
 function Registro() {
   return (
     <div>
-        <Navbar/>
         <RegistroComp/>,
         <Footer/>
     </div>

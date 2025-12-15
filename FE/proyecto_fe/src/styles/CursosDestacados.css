@@ -1,79 +1,43 @@
 /* ================================
-   VARIABLES GLOBALES
+   VARIABLES GLOBALES (TRANSPARENTES)
    ================================ */
 :root {
     --font-primary: 'Segoe UI', sans-serif;
-    --color-bg-card: #ffffff;
-    --color-heading: #1e293b;
-    --color-text: #64748b;
-    --color-accent-1: #3c760f;
-    --color-accent-2: #0f766e;
+    --color-bg-card: rgba(255, 255, 255, 0.25); /* más transparente */
+    --color-heading: rgba(30, 41, 59, 0.7);     /* antes #1e293b */
+    --color-text: rgba(100, 116, 139, 0.65);    /* antes #64748b */
+    --color-accent-1: rgba(60, 118, 15, 0.7);   /* antes #3c760f */
+    --color-accent-2: rgba(15, 118, 110, 0.7);  /* antes #0f766e */
     --radius-lg: 14px;
-    --shadow-sm: 0 8px 18px rgba(0, 0, 0, 0.08);
-    --shadow-md: 0 12px 24px rgba(0, 0, 0, 0.12);
+    --shadow-sm: 0 8px 18px rgba(0, 0, 0, 0.05); /* sombras más suaves */
+    --shadow-md: 0 12px 24px rgba(0, 0, 0, 0.08);
 }
 
-
 /* ================================
-   TARJETA DE CURSO
+   TARJETA DE CURSO (GLASS)
    ================================ */
 .curso-card {
     width: 330px;
+
     background: var(--color-bg-card);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
     border-radius: var(--radius-lg);
     padding: 22px;
+
+    border: 1px solid rgba(255, 255, 255, 0.25); /* más transparente */
     box-shadow: var(--shadow-sm);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+    transition: transform 0.25s ease,
+                box-shadow 0.25s ease,
+                background 0.25s ease;
+
     font-family: var(--font-primary);
 }
 
 .curso-card:hover {
+    background: rgba(255, 255, 255, 0.35); /* hover también transparente */
     transform: translateY(-4px);
     box-shadow: var(--shadow-md);
-}
-
-
-/* ================================
-   TITULO Y TEXTO
-   ================================ */
-.curso-card h3 {
-    font-size: 1.25rem;
-    color: var(--color-heading);
-    margin-bottom: 10px;
-    font-weight: 600;
-    line-height: 1.4;
-}
-
-.curso-card p {
-    font-size: 0.95rem;
-    color: var(--color-text);
-    margin-bottom: 10px;
-    line-height: 1.6;
-}
-
-
-/* ================================
-   DATOS DEL CURSO
-   ================================ */
-.cont-datos {
-    display: flex;
-    flex-wrap: wrap;
-    row-gap: 6px;
-    margin-top: 12px;
-}
-
-.cont-datos p:nth-child(1) {
-    font-weight: 500;
-    color: var(--color-accent-1);
-}
-
-.cont-datos p:nth-child(2) {
-    font-weight: 500;
-    color: var(--color-accent-2);
-}
-
-.cont-datos p:nth-child(3) {
-    margin-left: auto;
-    font-weight: 600;
-    color: var(--color-accent-2);
 }

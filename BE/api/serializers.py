@@ -84,6 +84,8 @@ class CursoSerializer(serializers.ModelSerializer):
 
 
 class InscripcionSerializer(ModelSerializer):
+    nombre_curso = serializers.CharField(source='curso.nombre_curso', read_only=True)
+
     class Meta:
         model = Inscripcion
         fields = "__all__"
@@ -139,6 +141,7 @@ class ComentariosCursosSerializer(ModelSerializer):
 
 
 class InscripcionCursoSerializer(ModelSerializer):
+    nombre_curso = serializers.CharField(source='curso.nombre_curso', read_only=True)
     class Meta:
         model = InscripcionCurso
         fields = "__all__"

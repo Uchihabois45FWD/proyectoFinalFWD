@@ -46,7 +46,6 @@ const Cursos = () => {
 
   return (
     <>
-      <Navbar />
       <div className="cursos-container">
 
         <input
