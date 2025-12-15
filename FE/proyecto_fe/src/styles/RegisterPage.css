@@ -3,33 +3,26 @@
    ================================ */
 :root {
     --font-primary: 'Segoe UI', sans-serif;
-    --color-bg: #f9fafb;
     --color-text: #2c2c2c;
-    --spacing-md: 2rem;
 }
 
-
 /* ================================
-   PÁGINA DE LOGIN
+   PÁGINA DE REGISTRO
    ================================ */
-.login-page {
+.registro-page {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     font-family: var(--font-primary);
-    background-image: url(../../public/fondo\ login\ y\ register.png);
-    background-size: cover;
-    background-position:left;
 }
 
-
 /* ================================
-   CONTENEDOR LOGIN
+   CONTENEDOR REGISTRO
    ================================ */
-.login-container {
+.registro-container {
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: var(--spacing-md);
+    padding: 2rem;
 }

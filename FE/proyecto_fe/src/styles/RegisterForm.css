@@ -17,54 +17,54 @@
     --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-
 /* ================================
-   TARJETA LOGIN
+   TARJETA REGISTRO
    ================================ */
-.login-card {
+.registro-card {
     background: var(--color-bg-card);
     padding: 2rem 2.5rem;
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-md);
-    width: 380px;
+    width: 550px;
     margin: 3rem auto;
     text-align: center;
     font-family: var(--font-primary);
 }
 
-.login-card h2 {
+.registro-card h2 {
     font-size: 1.5rem;
     margin-bottom: 0.4rem;
     color: var(--color-heading);
     font-weight: 700;
 }
 
-.login-card p {
+.registro-card p {
     margin-bottom: 1rem;
     color: var(--color-text);
     font-size: 0.95rem;
 }
 
-
 /* ================================
    FORMULARIO
    ================================ */
-.login-card form {
+.registro-card form {
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
 }
 
-.login-card label {
+.registro-card label {
     text-align: left;
     font-weight: 600;
     font-size: 0.9rem;
     color: var(--color-label);
 }
 
-.login-card input[type="email"],
-.login-card input[type="password"],
-.login-card input[type="text"] {
+.registro-card input[type="email"],
+.registro-card input[type="password"],
+.registro-card input[type="text"],
+.registro-card input[type="tel"],
+.registro-card input[type="date"] {
     padding: 0.6rem;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-sm);
@@ -72,17 +72,34 @@
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.login-card input:focus {
+.registro-card input:focus {
     border-color: var(--color-primary);
     box-shadow: 0 0 0 2px rgba(0, 59, 145, 0.2);
     outline: none;
 }
 
+/* ================================
+   FILA
+   ================================ */
+.fila {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.fila > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.fila input {
+    flex: 1;
+}
 
 /* ================================
-   BOTÓN LOGIN
+   BOTÓN PRINCIPAL
    ================================ */
-.btn-login {
+.btn-principal {
     margin-top: 1rem;
     background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
     color: #fff;
@@ -94,101 +111,93 @@
     transition: opacity 0.3s ease, transform 0.2s ease;
 }
 
-.btn-login:hover {
+.btn-principal:hover {
     opacity: 0.9;
     transform: translateY(-2px);
 }
 
-
-
-.btn-verPass{
-  background-color: #3084d6; 
-}
-
-
 /* ================================
-   ENLACES
+   BOTÓN VER/OCULTAR CONTRASEÑA
    ================================ */
-.register-link a {
-    color: var(--color-primary);
-    font-weight: 600;
-    text-decoration: none;
-    transition: color 0.2s ease;
-}
-
-.register-link a:hover {
-    text-decoration: underline;
-    color: var(--color-secondary);
-}
-
-.forgot-password a {
-    color: var(--color-secondary);
-    font-size: 0.85rem;
-    text-decoration: none;
-    transition: color 0.2s ease;
-}
-
-.forgot-password a:hover {
-    text-decoration: underline;
-    color: var(--color-primary);
-}
-
-
-/* ================================
-   SEPARADOR
-   ================================ */
-hr {
-    margin: 1.5rem 0;
+.ver-btn {
+    background: none;
     border: none;
-    border-top: 1px solid #ddd;
-}
-
-
-/* ================================
-   BOTONES DEMO
-   ================================ */
-.demo-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-}
-
-.btn-user,
-.btn-admin {
-    color: #fff;
-    border: none;
-    border-radius: var(--radius-sm);
-    padding: 0.6rem;
+    color: #003b91;
     cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+}
+
+.ver-btn:hover {
+    text-decoration: underline;
+    color: #00a59c;
+}
+
+/* ================================
+   TÉRMINOS
+   ================================ */
+.terminos {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    text-align: left;
+    margin-top: 0.6rem;
+    color: #444;
+}
+
+.terminos input {
+    margin-top: 0.2rem;
+}
+
+.terminos a {
+    color: var(--color-primary);
     font-weight: 600;
-    transition: opacity 0.3s ease, transform 0.2s ease;
+    text-decoration: none;
+    transition: color 0.2s ease;
 }
 
-.btn-user {
-    background: var(--color-user);
+.terminos a:hover {
+    text-decoration: underline;
+    color: var(--color-secondary);
 }
 
-.btn-admin {
-    background: var(--color-admin);
+/* ================================
+   LINK DE LOGIN
+   ================================ */
+.login-link {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: var(--color-text);
 }
 
-.btn-user:hover,
-.btn-admin:hover {
-    opacity: 0.9;
-    transform: translateY(-2px);
+.login-link a {
+    color: var(--color-primary);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease;
 }
 
-.ver {
-  margin-top: 0.5rem;
-  background: none;
-  border: none;
-  color: #003b91;
-  cursor: pointer;
-  font-size: 0.85rem;
-  transition: all 0.3s ease;
+.login-link a:hover {
+    text-decoration: underline;
+    color: var(--color-secondary);
 }
 
-.ver:hover {
-  text-decoration: underline;
-  color: #00a59c;
+/* ================================
+   RESPONSIVE
+   ================================ */
+@media (max-width: 650px) {
+    .registro-card {
+        padding: 1.5rem;
+        width: 92%;
+    }
+
+    .fila {
+        flex-direction: column;
+    }
+
+    input,
+    button {
+        font-size: 0.85rem;
+    }
 }

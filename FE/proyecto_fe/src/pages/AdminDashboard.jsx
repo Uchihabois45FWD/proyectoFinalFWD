@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ListaUsuarios from "../components/Admin/ListaUsuarios.jsx";
 import ListaCursos from "../components/Admin/ListaCursos.jsx";
-import { getData, patchData, deleteData } from "../services/fetch";
+import { getData, patchData, deleteData, postData } from "../services/fetch";
 import "../styles/AdminDashboard.css";
 import AgregarCursosModal from "../components/Admin/AgregarCursosModal.jsx";
 import AgregarEventosModal from "../components/Admin/AgregarEventosModal.jsx";
@@ -299,9 +299,15 @@ const AdminDashboard = () => {
       <AgregarEventosModal
         isOpen={verModalEventos}
         onClose={() => setVerModalEventos(false)}
-        onSubmit={(nuevoEvento) => {
-          setEventos(prev => [...prev, nuevoEvento]);
-          setVerModalEventos(false);
+        onSubmit={async (nuevoEvento) => {
+          try {
+            await postData("crear-evento", nuevoEvento);
+            setEventos(prev => [...prev, nuevoEvento]);
+            setVerModalEventos(false);
+          } catch (error) {
+            console.error("Error al crear evento:", error);
+            alert("Error al crear el evento. Por favor, inténtalo de nuevo.");
+          }
         }}
       />
 

@@ -78,15 +78,21 @@ class Inscripcion(models.Model):
 
 
 class Evento(models.Model):
-    titulo_evento = models.CharField(max_length=100)
-    descripcion_evento = models.TextField()
-    fecha_evento = models.DateField()
-    hora_evento = models.TimeField()
-    lugar_evento = models.CharField(max_length=100)
-    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, null=True, blank=True)
+    titulo = models.CharField(max_length=100)
+    descripcion = models.TextField()
+    fecha = models.DateField()
+    hora = models.TimeField()
+    lugar = models.CharField(max_length=100)
+    categoria = models.CharField(max_length=50, choices=[
+        ('charla', 'Charla'),
+        ('taller', 'Taller'),
+        ('conferencia', 'Conferencia')
+    ])
+    cupos = models.IntegerField(default=0)
+    imagen = models.URLField(blank=True, null=True)
     destacado = models.BooleanField(default=False)
     organizador = models.ForeignKey(
-    Usuario, on_delete=models.CASCADE, related_name="eventos_organizados"
+        Usuario, on_delete=models.CASCADE, related_name="eventos_organizados", null=True, blank=True
     )
 
 class Organizacion(models.Model):

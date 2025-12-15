@@ -1,6 +1,6 @@
 // ...existing code...
 import { useState } from "react";
-import "../../styles/registro.css";
+import "../../styles/RegisterForm.css";
 import { postData } from "../../services/fetch";
 import { useNavigate } from "react-router-dom";
 
@@ -94,17 +94,18 @@ export default function RegistroComp() {
     };
 
     return (
-        <div className="registro-bg">
-            <div className="registro-card">
-                <h2>Crear Cuenta</h2>
-                <p>Únete a nuestra comunidad educativa</p>
+        <div className="registro-page">
+            <div className="registro-container">
+                <div className="registro-card">
+                    <h2>Crear Cuenta</h2>
+                    <p>Únete a nuestra comunidad educativa</p>
 
                 <form onSubmit={onSubmit} noValidate>
                     <div className="fila">
                         <div style={{ flex: 1 }}>
+                            <label>Nombre de usuario</label>
                             <input
                                 type="text"
-                                placeholder="Nombre de usuario"
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
                             />
@@ -112,9 +113,9 @@ export default function RegistroComp() {
                         </div>
 
                         <div style={{ flex: 1 }}>
+                            <label>Nombre</label>
                             <input
                                 type="text"
-                                placeholder="Nombre"
                                 value={nombre}
                                 onChange={(e) => setNombre(e.target.value)}
                             />
@@ -122,9 +123,9 @@ export default function RegistroComp() {
                         </div>
 
                         <div style={{ flex: 1 }}>
+                            <label>Apellidos</label>
                             <input
                                 type="text"
-                                placeholder="Apellidos"
                                 value={apellidos}
                                 onChange={(e) => setApellidos(e.target.value)}
                             />
@@ -132,29 +133,39 @@ export default function RegistroComp() {
                         </div>
                     </div>
 
+                    <label>Correo Electrónico</label>
                     <input
                         type="email"
-                        placeholder="Correo Electrónico"
                         value={correo}
                         onChange={(e) => setCorreo(e.target.value)}
                     />
                     {errors.email && <div className="field-error">{Array.isArray(errors.email) ? errors.email.join(", ") : errors.email}</div>}
 
-                    <input type="text" placeholder="Teléfono" value={telefono} onChange={(e) => setTelefono(e.target.value)} />
+                    <label>Teléfono</label>
+                    <input type="text" value={telefono} onChange={(e) => setTelefono(e.target.value)} />
                     {errors.num_telefono && <div className="field-error">{Array.isArray(errors.num_telefono) ? errors.num_telefono.join(", ") : errors.num_telefono}</div>}
 
-                    <input type="text" placeholder="Rol" value={rol} onChange={(e) => setRol(e.target.value)} />
+                    <label>Rol</label>
+                    <input type="text" value={rol} onChange={(e) => setRol(e.target.value)} />
                     {errors.rol && <div className="field-error">{Array.isArray(errors.rol) ? errors.rol.join(", ") : errors.rol}</div>}
 
-                    <input type="text" placeholder="Dirección" value={direccion} onChange={(e) => setDireccion(e.target.value)} />
+                    <label>Dirección</label>
+                    <input type="text" value={direccion} onChange={(e) => setDireccion(e.target.value)} />
                     {errors.direccion && <div className="field-error">{Array.isArray(errors.direccion) ? errors.direccion.join(", ") : errors.direccion}</div>}
 
-                    <input type="date" placeholder="Fecha nacimiento" value={fechaNacimiento} onChange={(e) => setFechaNacimiento(e.target.value)} />
+                    <label>Fecha de nacimiento</label>
+                    <input type="date" value={fechaNacimiento} onChange={(e) => setFechaNacimiento(e.target.value)} />
                     {errors.fecha_nacimiento && <div className="field-error">{Array.isArray(errors.fecha_nacimiento) ? errors.fecha_nacimiento.join(", ") : errors.fecha_nacimiento}</div>}
 
                     <div className="fila">
-                        <input type={ver ? "text" : "password"} placeholder="Contraseña" value={pass} onChange={(e) => setPass(e.target.value)} />
-                        <input type={ver ? "text" : "password"} placeholder="Confirmar Contraseña" value={pass2} onChange={(e) => setPass2(e.target.value)} />
+                        <div style={{ flex: 1 }}>
+                            <label>Contraseña</label>
+                            <input type={ver ? "text" : "password"} value={pass} onChange={(e) => setPass(e.target.value)} />
+                        </div>
+                        <div style={{ flex: 1 }}>
+                            <label>Confirmar Contraseña</label>
+                            <input type={ver ? "text" : "password"} value={pass2} onChange={(e) => setPass2(e.target.value)} />
+                        </div>
                     </div>
                     {errors.password && <div className="field-error">{Array.isArray(errors.password) ? errors.password.join(", ") : errors.password}</div>}
 
@@ -179,7 +190,8 @@ export default function RegistroComp() {
                     <p className="login-link">
                         ¿Ya tienes cuenta? <a href="/">Inicia sesión aquí</a>
                     </p>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     );

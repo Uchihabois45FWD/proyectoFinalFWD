@@ -33,7 +33,9 @@ export default function PerfilPage() {
           <p>Error cargando perfil o usuario no encontrado.</p>
         )}
       </div>
-      <Footer />
+      <div className="footer-container">
+        <Footer />
+      </div>
     </div>
   );
 }

@@ -2,7 +2,7 @@
 
 /* Palette */
 :root {
-  --bg: #ffffff;
+  --bg: #f9f9f9;
   --card-bg: #ffffff;
   --hero-start: #ec6713;
   --hero-end: #f7bc17;
@@ -13,8 +13,7 @@
   --danger: #1d1b21;
   --border:  rgb(102, 192, 222);
   --sidebar-bg: #1d1b21;
-  --sidebar-hover: rgb(102, 192, 222);
-  --header-bg: #ffffff;
+  --sidebar-hover: #f7bc17;
   --text-primary: #000000;
   --text-secondary: #000000;
 }

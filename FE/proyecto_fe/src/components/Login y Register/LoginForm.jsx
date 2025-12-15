@@ -45,6 +45,7 @@ export default function LoginForm() {
       sessionStorage.setItem("justLoggedIn", "true");
 
       alert(data.mensaje || "Inicio de sesión correcto");
+      localStorage.setItem("token", data.token);
       navigate("/inicio");
 
     } catch (err) {

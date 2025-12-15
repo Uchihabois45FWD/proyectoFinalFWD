@@ -1,11 +1,13 @@
+from rest_framework.permissions import AllowAny
 from django.shortcuts import render
 from rest_framework.generics import ListCreateAPIView, DestroyAPIView, RetrieveUpdateDestroyAPIView
-from .models import Usuario, Curso, Inscripcion, Categoria, Evento, Organizacion,Noticias, ComentariosCursos, InscripcionCurso, CategoriaOpciones, ComentariosNoticias
+from .models import Usuario, Curso, Inscripcion, Categoria, Evento, Organizacion, Noticias, ComentariosCursos, InscripcionCurso, CategoriaOpciones, ComentariosNoticias
 from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.permissions import IsAuthenticated
 from .serializers import (
     UsuarioSerializer,
     CursoSerializer,
@@ -36,8 +38,6 @@ class InscripcionCreateView(ListCreateAPIView):
     queryset = Inscripcion.objects.all()
     serializer_class = InscripcionSerializer
 
-    def perform_create(self, serializer):
-        serializer.save()
 
 class CategoriaCreateView(ListCreateAPIView):
     queryset = Categoria.objects.all()
@@ -45,9 +45,11 @@ class CategoriaCreateView(ListCreateAPIView):
 
 
 class EventoCreateView(ListCreateAPIView):
+    permission_classes = [AllowAny]
     queryset = Evento.objects.all()
     serializer_class = EventoSerializer
-    
+
+
 class OrganizacionCreateView(ListCreateAPIView):
     queryset = Organizacion.objects.all()
     serializer_class = OrganizacionSerializer
@@ -60,10 +62,14 @@ class NoticiasCreateView(ListCreateAPIView):
 
 class UsuarioLoginView(APIView):
     def post(self, request):
-        serializer = LoginSerializer(data=request.data)  # el traductorsh
-        if serializer.is_valid():  # si existe el usuario
+        serializer = LoginSerializer(data=request.data)
+
+        if serializer.is_valid():
             user = serializer.validated_data["user"]
-            token = str(RefreshToken.for_user(user))
+
+            refresh = RefreshToken.for_user(user)
+            token = str(refresh.access_token)
+
             return Response({
                 "mensaje": "Inicio de sesión exitoso",
                 "imagen_perfil": user.imagen_perfil.url if user.imagen_perfil else None,
@@ -75,8 +81,8 @@ class UsuarioLoginView(APIView):
                 "id_usuario": user.id,
                 "rol": user.rol
             }, status=status.HTTP_200_OK)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UsuarioPorIdView(ListCreateAPIView):
@@ -132,10 +138,11 @@ class ComentariosCursosCreateView(ListCreateAPIView):
     queryset = ComentariosCursos.objects.all()
     serializer_class = ComentariosCursosSerializer
 
+
 class ComentariosNoticiasCreateView(ListCreateAPIView):
     queryset = ComentariosNoticias.objects.all()
     serializer_class = ComentariosNoticiasSerializer
-    
+
 
 class InscripcionCursoCreateView(ListCreateAPIView):
     queryset = InscripcionCurso.objects.all()

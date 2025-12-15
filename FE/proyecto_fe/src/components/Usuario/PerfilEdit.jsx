@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { patchData } from "../services/fetch";
+import { patchData } from "../../services/fetch";
 
 export default function PerfilEdit({ usuario, guardarCambios, cancelar }) {
   const [formData, setFormData] = useState({
