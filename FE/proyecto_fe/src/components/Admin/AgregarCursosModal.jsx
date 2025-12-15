@@ -67,10 +67,16 @@ export default function AgregarCursosModal({
       certificado: formData.certificado,
       instructor: formData.instructor,
     }
-    const peticion = await postData('crear-curso/', guardarCurso);
-    console.log(peticion);
-
-    onSubmit(formData);
+    try {
+      const peticion = await postData('crear-curso/', guardarCurso);
+      console.log(peticion);
+      onSubmit(formData);
+    } catch (error) {
+      console.error('Error creating course:', error);
+      alert('Error al crear el curso. Revisa la consola para más detalles.');
+      // Still call onSubmit to close the modal, but pass null or handle accordingly
+      onSubmit(null);
+    }
   };
 
   if (!isOpen) return null;

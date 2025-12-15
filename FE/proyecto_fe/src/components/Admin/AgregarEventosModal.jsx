@@ -5,11 +5,11 @@ import { getData, postData } from "../../services/fetch";
 export default function AgregarEventosModal({ isOpen, onClose, onSubmit, initialData }) {
 
     const [formData, setFormData] = useState({
-        titulo_evento: "",
-        descripcion_evento: "",
-        fecha_evento: "",
-        hora_evento: "",
-        lugar_evento: "",
+        titulo: "",
+        descripcion: "",
+        fecha: "",
+        hora: "",
+        lugar: "",
         categoria: "",
         organizador: "",
         cupos: "",
@@ -51,11 +51,18 @@ export default function AgregarEventosModal({ isOpen, onClose, onSubmit, initial
 
     const submitForm = async (e) => {
         e.preventDefault();
-        const peticion = await postData('crear-evento/', formData);
-        console.log(peticion);
-
-        if (onSubmit) onSubmit();
-        onClose();
+        try {
+            const peticion = await postData('crear-evento/', formData);
+            console.log(peticion);
+            if (onSubmit) onSubmit(formData);
+            onClose();
+        } catch (error) {
+            console.error('Error creating event:', error);
+            alert('Error al crear el evento. Revisa la consola para más detalles.');
+            // Still call onSubmit to close the modal, but pass null or handle accordingly
+            if (onSubmit) onSubmit(null);
+            onClose();
+        }
     };
 
     return (
@@ -75,8 +82,8 @@ export default function AgregarEventosModal({ isOpen, onClose, onSubmit, initial
                             <div className="campo campo-full">
                                 <label>Título</label>
                                 <input
-                                    name="titulo_evento"
-                                    value={formData.titulo_evento}
+                                    name="titulo"
+                                    value={formData.titulo}
                                     onChange={handleChange}
                                 />
                             </div>
@@ -84,8 +91,8 @@ export default function AgregarEventosModal({ isOpen, onClose, onSubmit, initial
                             <div className="campo campo-full">
                                 <label>Descripción</label>
                                 <textarea
-                                    name="descripcion_evento"
-                                    value={formData.descripcion_evento}
+                                    name="descripcion"
+                                    value={formData.descripcion}
                                     onChange={handleChange}
                                 ></textarea>
                             </div>
@@ -94,8 +101,8 @@ export default function AgregarEventosModal({ isOpen, onClose, onSubmit, initial
                                 <label>Fecha</label>
                                 <input
                                     type="date"
-                                    name="fecha_evento"
-                                    value={formData.fecha_evento}
+                                    name="fecha"
+                                    value={formData.fecha}
                                     onChange={handleChange}
                                 />
                             </div>
@@ -104,8 +111,8 @@ export default function AgregarEventosModal({ isOpen, onClose, onSubmit, initial
                                 <label>Hora</label>
                                 <input
                                     type="time"
-                                    name="hora_evento"
-                                    value={formData.hora_evento}
+                                    name="hora"
+                                    value={formData.hora}
                                     onChange={handleChange}
                                 />
                             </div>
@@ -113,8 +120,8 @@ export default function AgregarEventosModal({ isOpen, onClose, onSubmit, initial
                             <div className="campo">
                                 <label>Lugar</label>
                                 <input
-                                    name="lugar_evento"
-                                    value={formData.lugar_evento}
+                                    name="lugar"
+                                    value={formData.lugar}
                                     onChange={handleChange}
                                 />
                             </div>

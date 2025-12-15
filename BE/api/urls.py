@@ -15,7 +15,8 @@ from .views import (
     EliminarCursoView,
     CursoDetailView,
     ComentariosNoticiasCreateView,
-    CategoriaCreateView
+    CategoriaCreateView,
+    CategoriaDetailView
 )
 urlpatterns = [
     path("crear-usuario/", UsuarioCreateView.as_view(), name='crear-usuario'),
@@ -33,6 +34,7 @@ urlpatterns = [
     path("eliminar-curso/<int:id>/", EliminarCursoView.as_view(), name="eliminar-curso"),
     path("curso-detail/<int:pk>/", CursoDetailView.as_view(), name="curso-detail"),
     path("comentarios-noticias/", ComentariosNoticiasCreateView.as_view(), name="curso-detail"),
-    path("crear-categoria/", CategoriaCreateView.as_view())
-    
+    path("crear-categoria/", CategoriaCreateView.as_view()),
+    path("categoria/<int:pk>/", CategoriaDetailView.as_view(), name="categoria-detail")
+
 ]

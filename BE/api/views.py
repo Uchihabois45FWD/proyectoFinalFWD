@@ -33,6 +33,15 @@ class CursoCreateView(ListCreateAPIView):
     queryset = Curso.objects.all()
     serializer_class = CursoSerializer
 
+    def create(self, request, *args, **kwargs):
+        try:
+            return super().create(request, *args, **kwargs)
+        except Exception as e:
+            print(f"Error creating course: {e}")
+            import traceback
+            traceback.print_exc()
+            return Response({"error": "Internal server error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 class InscripcionCreateView(ListCreateAPIView):
     queryset = Inscripcion.objects.all()
@@ -40,6 +49,11 @@ class InscripcionCreateView(ListCreateAPIView):
 
 
 class CategoriaCreateView(ListCreateAPIView):
+    queryset = Categoria.objects.all()
+    serializer_class = CategoriaSerializer
+
+
+class CategoriaDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Categoria.objects.all()
     serializer_class = CategoriaSerializer
 
