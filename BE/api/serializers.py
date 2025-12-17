@@ -42,10 +42,11 @@ class UsuarioSerializer(serializers.ModelSerializer):
         if len(data["direccion"]) < 5:
             raise serializers.ValidationError(
                 {"direccion": "La dirección debe tener al menos 5 caracteres."})
-        if not data["first_name"].isalpha():
+        import re
+        if not re.match(r'^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+$', data["first_name"]):
             raise serializers.ValidationError(
                 {"first_name": "El nombre debe contener solo letras."})
-        if not data["last_name"].isalpha():
+        if not re.match(r'^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+$', data["last_name"]):
             raise serializers.ValidationError(
                 {"last_name": "El apellido debe contener solo letras."})
         if "@" not in data["email"] or "." not in data["email"]:

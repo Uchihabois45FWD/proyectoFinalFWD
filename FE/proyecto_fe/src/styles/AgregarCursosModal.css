@@ -11,12 +11,13 @@
     align-items: center;
     padding: 20px;
     z-index: 1000;
+    transition: none;
+    pointer-events: none;
 }
 
 /* ==== CONTENEDOR PRINCIPAL ==== */
 .modal-container {
-    width: 100%;
-    max-width: 850px;
+    width: 850px;
     background: #ffffff;
     border-radius: 14px;
     overflow: hidden;
@@ -25,6 +26,9 @@
     display: flex;
     flex-direction: column;
     max-height: 90vh;
+    transition: none;
+    flex-shrink: 0;
+    pointer-events: auto;
 }
 
 /* ==== BARRA SUPERIOR ==== */
