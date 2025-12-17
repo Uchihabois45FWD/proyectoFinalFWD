@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import ListaUsuarios from "../components/Admin/ListaUsuarios.jsx";
 import ListaCursos from "../components/Admin/ListaCursos.jsx";
 import ListaCategorias from "../components/Admin/ListaCategorias.jsx";
+import ListaEventos from "../components/Admin/ListaEventos.jsx";
+import ListaNoticias from "../components/Admin/ListaNoticias.jsx";
 import { getData, patchData, deleteData, postData } from "../services/fetch";
 import "../styles/AdminDashboard.css";
 import AgregarCursosModal from "../components/Admin/AgregarCursosModal.jsx";
@@ -33,9 +35,14 @@ const AdminDashboard = () => {
   const [verModalNoticias, setVerModalNoticias] = useState(false);
   const [verModalCategoria, setVerModalCategoria] = useState(false);
   const [eventos, setEventos] = useState([]);
+  const [noticias, setNoticias] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [loadingCategorias, setLoadingCategorias] = useState(true);
+  const [loadingEventos, setLoadingEventos] = useState(true);
+  const [loadingNoticias, setLoadingNoticias] = useState(true);
   const [errorCategorias, setErrorCategorias] = useState(null);
+  const [errorEventos, setErrorEventos] = useState(null);
+  const [errorNoticias, setErrorNoticias] = useState(null);
 
   // Cargar usuarios
   useEffect(() => {
@@ -84,6 +91,34 @@ const AdminDashboard = () => {
         setErrorCategorias("Error al cargar categorías");
       } finally {
         setLoadingCategorias(false);
+      }
+    })();
+
+    // Cargar eventos
+    (async () => {
+      try {
+        setLoadingEventos(true);
+        const res = await getData("crear-evento");
+        const eventoData = Array.isArray(res) ? res : [];
+        setEventos(eventoData);
+      } catch {
+        setErrorEventos("Error al cargar eventos");
+      } finally {
+        setLoadingEventos(false);
+      }
+    })();
+
+    // Cargar noticias
+    (async () => {
+      try {
+        setLoadingNoticias(true);
+        const res = await getData("crear-noticia");
+        const noticiaData = Array.isArray(res) ? res : [];
+        setNoticias(noticiaData);
+      } catch {
+        setErrorNoticias("Error al cargar noticias");
+      } finally {
+        setLoadingNoticias(false);
       }
     })();
   }, []);
@@ -175,6 +210,60 @@ const AdminDashboard = () => {
     } catch (err) {
       console.error(err);
       throw err;
+    }
+  };
+
+  // Guardar evento
+  const handleSaveEvento = async (id, formValues) => {
+    try {
+      const payload = { id_evento: Number(id), ...formValues };
+      const res = await patchData(payload, `api/actualizar-evento/${id}`);
+
+      const updated = res?.evento ?? { id_evento: id, ...formValues };
+
+      setEventos(prev =>
+        prev.map(e => (String(e.id_evento) === String(id) ? { ...e, ...updated } : e))
+      );
+      return updated;
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  };
+
+  const handleDeleteEvento = async (id) => {
+    try {
+      await deleteData(`api/eliminar-evento/${id}`);
+      setEventos(prev => prev.filter(e => String(e.id_evento) !== String(id)));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // Guardar noticia
+  const handleSaveNoticia = async (id, formValues) => {
+    try {
+      const payload = { id_noticia: Number(id), ...formValues };
+      const res = await patchData(payload, `api/actualizar-noticia/${id}`);
+
+      const updated = res?.noticia ?? { id_noticia: id, ...formValues };
+
+      setNoticias(prev =>
+        prev.map(n => (String(n.id_noticia) === String(id) ? { ...n, ...updated } : n))
+      );
+      return updated;
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  };
+
+  const handleDeleteNoticia = async (id) => {
+    try {
+      await deleteData(`api/eliminar-noticia/${id}`);
+      setNoticias(prev => prev.filter(n => String(n.id_noticia) !== String(id)));
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -301,6 +390,38 @@ const AdminDashboard = () => {
           </div>
         );
 
+      case "eventos":
+        return (
+          <div className="section-content">
+            <h2>Gestión de Eventos</h2>
+            {loadingEventos ? (
+              <p>Cargando eventos...</p>
+            ) : (
+              <ListaEventos
+                eventos={eventos}
+                onSaveEvento={handleSaveEvento}
+                onDeleteEvento={handleDeleteEvento}
+              />
+            )}
+          </div>
+        );
+
+      case "noticias":
+        return (
+          <div className="section-content">
+            <h2>Gestión de Noticias</h2>
+            {loadingNoticias ? (
+              <p>Cargando noticias...</p>
+            ) : (
+              <ListaNoticias
+                noticias={noticias}
+                onSaveNoticia={handleSaveNoticia}
+                onDeleteNoticia={handleDeleteNoticia}
+              />
+            )}
+          </div>
+        );
+
       default:
         return (
           <div className="dashboard-content">
@@ -340,14 +461,28 @@ const AdminDashboard = () => {
               👥 Gestión de Usuarios
             </button>
 
-            {/* Agregar Cursos */}
-            <button className="sidebar-link" onClick={() => setVerModalNoticias(true)}>
-              📰 Agregar noticias
-            <button>
-
+            <button
+              className={`sidebar-link ${activeSection === "eventos" ? "active" : ""}`}
+              onClick={() => setActiveSection("eventos")}
+            >
+              🎉 Gestión de Eventos
             </button>
+
+            <button
+              className={`sidebar-link ${activeSection === "noticias" ? "active" : ""}`}
+              onClick={() => setActiveSection("noticias")}
+            >
+              📰 Gestión de Noticias
+            </button>
+
+            <button className="sidebar-link" onClick={() => setVerModalNoticias(true)}>
+              ➕ Agregar noticias
+            </button>
+
+            <button
               className={`sidebar-link ${activeSection === "categorias" ? "active" : ""}`}
               onClick={() => setActiveSection("categorias")}
+            >
               🏷️ Gestión de Categorías
             </button>
 
@@ -378,12 +513,13 @@ const AdminDashboard = () => {
         onClose={() => setVerModalEventos(false)}
         onSubmit={async (nuevoEvento) => {
           try {
-            await postData("crear-evento", nuevoEvento);
+            await postData("crear-evento/", nuevoEvento);
             setEventos(prev => [...prev, nuevoEvento]);
             setVerModalEventos(false);
           } catch (error) {
             console.error("Error al crear evento:", error);
             alert("Error al crear el evento. Por favor, inténtalo de nuevo.");
+            setVerModalEventos(false);
           }
         }}
       />

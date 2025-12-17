@@ -66,6 +66,8 @@ export default function AgregarEventosModal({ isOpen, onClose, onSubmit, initial
         }
     };
 
+    if (!isOpen) return null;
+
     return (
         <div className="modal-overlay">
             <div className="modal-container">
