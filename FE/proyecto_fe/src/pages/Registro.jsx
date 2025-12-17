@@ -6,7 +6,6 @@ import "../styles/RegisterPage.css"
 function Registro() {
   return (
     <div>
-        <Navbar/>
         <RegistroComp/>,
         <Footer/>
     </div>

@@ -1,79 +1,206 @@
-/* ================================
+/* =====================================
    VARIABLES GLOBALES
-   ================================ */
+   ===================================== */
 :root {
     --font-primary: 'Segoe UI', sans-serif;
-    --color-bg-card: #ffffff;
-    --color-heading: #1e293b;
-    --color-text: #64748b;
-    --color-accent-1: #3c760f;
-    --color-accent-2: #0f766e;
-    --radius-lg: 14px;
-    --shadow-sm: 0 8px 18px rgba(0, 0, 0, 0.08);
-    --shadow-md: 0 12px 24px rgba(0, 0, 0, 0.12);
+
+    /* Fondos */
+    --bg-page: #f1f5f9;
+    --bg-glass: rgba(255, 255, 255, 0.78);
+    --bg-glass-strong: rgba(255, 255, 255, 0.88);
+
+    /* Texto */
+    --text-title: #1e293b;
+    --text-normal: #475569;
+    --text-muted: #64748b;
+
+    /* Colores principales */
+    --primary: #6366f1;
+    --primary-dark: #4f46e5;
+
+    /* Bordes */
+    --border-glass: 1px solid rgba(255, 255, 255, 0.55);
+
+    /* Radius */
+    --radius-lg: 18px;
+    --radius-md: 12px;
+
+    /* Sombras */
+    --shadow-sm: 0 10px 22px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 18px 36px rgba(0, 0, 0, 0.12);
 }
 
+/* =====================================
+   CONTENEDOR PRINCIPAL
+   ===================================== */
+.cursos-container {
+    min-height: 100vh;
+    padding: 2.5rem;
+    background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+    font-family: var(--font-primary);
+    color: var(--text-normal);
+}
 
-/* ================================
-   TARJETA DE CURSO
-   ================================ */
+/* =====================================
+   TÍTULO "CURSOS DESTACADOS"
+   ===================================== */
+.titulo-destacado {
+    display: inline-block;
+    margin: 0 auto 2.5rem;
+    padding: 14px 30px;
+
+    background: var(--bg-glass-strong);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+
+    border-radius: 999px;
+    border: var(--border-glass);
+
+    color: var(--text-title);
+    font-size: 1.9rem;
+    font-weight: 700;
+    text-align: center;
+
+    box-shadow: var(--shadow-sm);
+}
+
+/* =====================================
+   BUSCADOR DE CURSOS (CLARO)
+   ===================================== */
+.buscador-cursos {
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto 2.5rem;
+    display: block;
+
+    padding: 12px 16px;
+    font-size: 1rem;
+
+    background: rgba(255, 255, 255, 0.9);
+    color: #1e293b;
+
+    border-radius: var(--radius-md);
+    border: 1px solid #cbd5f5;
+
+    outline: none;
+    transition: all 0.25s ease;
+}
+
+.buscador-cursos::placeholder {
+    color: #64748b;
+}
+
+.buscador-cursos:hover {
+    border-color: var(--primary);
+}
+
+.buscador-cursos:focus {
+    border-color: var(--primary-dark);
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+}
+
+/* =====================================
+   LISTA DE CURSOS
+   ===================================== */
+.cursos-lista {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2.5rem;
+    justify-items: center;
+}
+
+/* =====================================
+   TARJETA DE CURSO (GLASS SUAVE)
+   ===================================== */
 .curso-card {
     width: 330px;
-    background: var(--color-bg-card);
+
+    background: var(--bg-glass);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
     border-radius: var(--radius-lg);
-    padding: 22px;
+    padding: 24px;
+
+    border: var(--border-glass);
     box-shadow: var(--shadow-sm);
+
     transition: transform 0.25s ease, box-shadow 0.25s ease;
-    font-family: var(--font-primary);
 }
 
 .curso-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-5px);
     box-shadow: var(--shadow-md);
 }
 
-
-/* ================================
-   TITULO Y TEXTO
-   ================================ */
+/* =====================================
+   CONTENIDO TARJETA
+   ===================================== */
 .curso-card h3 {
-    font-size: 1.25rem;
-    color: var(--color-heading);
-    margin-bottom: 10px;
-    font-weight: 600;
-    line-height: 1.4;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text-title);
+    margin-bottom: 0.8rem;
 }
 
 .curso-card p {
-    font-size: 0.95rem;
-    color: var(--color-text);
-    margin-bottom: 10px;
+    font-size: 1rem;
+    color: var(--text-normal);
     line-height: 1.6;
+    margin-bottom: 1rem;
 }
 
+/* =====================================
+   BOTÓN VER CURSO
+   ===================================== */
+.curso-card button {
+    width: 100%;
+    padding: 0.75rem;
 
-/* ================================
-   DATOS DEL CURSO
-   ================================ */
-.cont-datos {
-    display: flex;
-    flex-wrap: wrap;
-    row-gap: 6px;
-    margin-top: 12px;
-}
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #fff;
 
-.cont-datos p:nth-child(1) {
-    font-weight: 500;
-    color: var(--color-accent-1);
-}
+    border: none;
+    border-radius: var(--radius-md);
 
-.cont-datos p:nth-child(2) {
-    font-weight: 500;
-    color: var(--color-accent-2);
-}
-
-.cont-datos p:nth-child(3) {
-    margin-left: auto;
+    font-size: 1rem;
     font-weight: 600;
-    color: var(--color-accent-2);
+    cursor: pointer;
+
+    box-shadow: 0 6px 18px rgba(99, 102, 241, 0.35);
+    transition: all 0.25s ease;
+}
+
+.curso-card button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(99, 102, 241, 0.45);
+}
+
+/* =====================================
+   MENSAJE VACÍO
+   ===================================== */
+.mensaje-vacio {
+    text-align: center;
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    margin-top: 3rem;
+    font-style: italic;
+}
+
+/* =====================================
+   RESPONSIVE
+   ===================================== */
+@media (max-width: 768px) {
+    .cursos-container {
+        padding: 1.5rem;
+    }
+
+    .titulo-destacado {
+        font-size: 1.6rem;
+        padding: 10px 22px;
+    }
+
+    .curso-card {
+        width: 100%;
+    }
 }

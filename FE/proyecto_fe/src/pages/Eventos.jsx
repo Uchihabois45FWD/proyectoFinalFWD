@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { getData } from "../services/fetch";
 import EventosDestacados from "../components/Inicio/EventosDestacados";
-import Navbar from "../components/Global/Navbar";
 import "../styles/Cursos.css";
 import { useNavigate } from "react-router-dom";
 
@@ -38,7 +37,6 @@ const Eventos = () => {
 
   return (
     <>
-      <Navbar />
       <div className="cursos-container">
         <div className="botones-container">
           <button type="button" onClick={() => setView("todos")}>
@@ -47,10 +45,6 @@ const Eventos = () => {
 
           <button type="button" onClick={() => setView("destacados")}>
             Eventos destacados
-          </button>
-
-          <button type="button" onClick={() => setView("explorar")}>
-            Explorar eventos
           </button>
         </div>
 

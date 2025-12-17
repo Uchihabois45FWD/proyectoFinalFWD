@@ -11,6 +11,7 @@ import EventosDetalle from "../pages/EventosDetalle"
 import AdminDashboard from "../pages/AdminDashboard"
 import NoticiasDetalle from "../pages/NoticiasDetalle";
 import MisCursos from "../pages/MisCursos";
+import Navbar from "../components/Global/Navbar";
 
 const ProtectedRoute = ({ children }) => {
     const userRole = localStorage.getItem("user_role"); 
@@ -25,6 +26,7 @@ const ProtectedRoute = ({ children }) => {
 const Routing = () =>{
     return(
         <Router>
+            <Navbar />
             <Routes>
                 <Route path="/" element={<Inicio/>}/>
                 <Route path="/registro" element={<Registro/>}/>

@@ -1,10 +1,15 @@
-# TODO: Implement Collapsible Admin Sidebar
+# TODO List for News System Implementation
 
-- [x] Add useState for sidebar visibility in AdminDashboard.jsx
-- [x] Add toggle button attached to sidebar to show/hide sidebar
-- [x] Conditionally render the sidebar based on visibility state
-- [x] Update AdminDashboard.css to hide sidebar with width: 0 when closed
-- [x] Adjust main content width when sidebar is hidden
-- [x] Position toggle button on sidebar edge, never hiding with sidebar
-- [x] Make dashboard content expand to fill space when sidebar hidden
-- [x] Test the collapsible functionality
+## Backend Changes
+- [x] Change URL from "crear-noticia/" to "noticias/" in urls.py
+- [x] Add EliminarNoticiaView in views.py with admin permission check
+- [x] Add URL for "noticias/<int:pk>/" in urls.py
+- [x] Modify NoticiasCreateView to require authentication and admin role for creation
+
+## Frontend Changes
+- [x] Update AgregarNoticiasModal to post to "noticias/" and return created news on submit
+- [x] Add AgregarNoticiasModal to Noticias.jsx for admin users
+- [x] Update fetch URL in Noticias.jsx to "noticias/"
+- [x] Update delete URL in Noticias.jsx to "noticias/${id}/"
+- [x] Fix userRole check from "administrador" to "admin"
+- [x] Ensure state updates immediately after create/delete without page reload

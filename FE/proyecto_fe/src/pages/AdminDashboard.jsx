@@ -8,6 +8,7 @@ import AgregarCursosModal from "../components/Admin/AgregarCursosModal.jsx";
 import AgregarEventosModal from "../components/Admin/AgregarEventosModal.jsx";
 import AgregarCategoriaModal from "../components/Admin/AgregarCategoriaModal.jsx";
 import Navbar from "../components/Global/Navbar.jsx";
+import AgregarNoticiasModal from "../components/Admin/AgregarNoticiasModal.jsx";
 
 const idFromUser = (user) => (user?.id_usuario ?? user?.id ?? user?.pk ?? "");
 const idFromCourse = (c) => (c?.id_curso ?? c?.id ?? c?.pk ?? "");
@@ -29,6 +30,7 @@ const AdminDashboard = () => {
   // Estados para modales
   const [verModalCurso, setVerModalCurso] = useState(false);
   const [verModalEventos, setVerModalEventos] = useState(false);
+  const [verModalNoticias, setVerModalNoticias] = useState(false);
   const [verModalCategoria, setVerModalCategoria] = useState(false);
   const [eventos, setEventos] = useState([]);
   const [categorias, setCategorias] = useState([]);
@@ -311,7 +313,6 @@ const AdminDashboard = () => {
 
   return (
     <div className="admin-layout">
-      <Navbar />
 
       <div className="admin-main">
         {/* Sidebar */}
@@ -339,10 +340,14 @@ const AdminDashboard = () => {
               👥 Gestión de Usuarios
             </button>
 
-            <button
+            {/* Agregar Cursos */}
+            <button className="sidebar-link" onClick={() => setVerModalNoticias(true)}>
+              📰 Agregar noticias
+            <button>
+
+            </button>
               className={`sidebar-link ${activeSection === "categorias" ? "active" : ""}`}
               onClick={() => setActiveSection("categorias")}
-            >
               🏷️ Gestión de Categorías
             </button>
 
@@ -367,6 +372,33 @@ const AdminDashboard = () => {
         onClose={() => setVerModalCategoria(false)}
         onSubmit={handleCreateCategoria}
       />
+
+      <AgregarEventosModal
+        isOpen={verModalEventos}
+        onClose={() => setVerModalEventos(false)}
+        onSubmit={async (nuevoEvento) => {
+          try {
+            await postData("crear-evento", nuevoEvento);
+            setEventos(prev => [...prev, nuevoEvento]);
+            setVerModalEventos(false);
+          } catch (error) {
+            console.error("Error al crear evento:", error);
+            alert("Error al crear el evento. Por favor, inténtalo de nuevo.");
+          }
+        }}
+      />
+
+      <AgregarNoticiasModal 
+        isOpen={verModalNoticias}
+        onClose={() => setVerModalNoticias(false)}
+        onSubmit={() => {
+          setVerModalNoticias(false);
+        }}
+      />
+
+
+
+
 
     </div>
   );

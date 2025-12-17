@@ -4,25 +4,20 @@
 :root {
   --bg: #f9f9f9;
   --card-bg: #ffffff;
-  --hero-start: #ec6713;
-  --hero-end: #f7bc17;
-  --muted: #ec6713;
+  --hero-start: rgb(138, 194, 212);
+  --hero-end: rgb(102, 192, 222);
+  --muted:  rgb(102, 192, 222);
   --shadow: 0 8px 25px rgba(236, 103, 19, 0.08);
-  --accent: #ec6713;
-  --success: #f7bc17;
+  --accent:  rgb(102, 192, 222);
+  --success: rgb(102, 192, 222);
   --danger: #1d1b21;
-  --border: #f7bc17;
+  --border:  rgb(102, 192, 222);
   --sidebar-bg: #1d1b21;
-  --sidebar-hover: #f7bc17;
+  --sidebar-hover: rgb(102, 192, 222);
   --text-primary: #000000;
   --text-secondary: #000000;
 }
 
-/* ===========================================
-   NEW ADMIN LAYOUT STYLES
-   =========================================== */
-
-/* Main Admin Layout */
 .admin-layout {
   min-height: 100vh;
   background: var(--bg);
@@ -113,7 +108,7 @@
 .sidebar-link.active {
   background: var(--accent);
   color: white;
-  border-right: 3px solid #ff6b81;
+  border-right: 3px solid  rgb(102, 192, 222);
 }
 
 .sidebar-icon {
@@ -382,7 +377,7 @@
   border-radius: 8px;
   border: 1px solid rgba(255,66,108,0.06);
 }
-.confirm-text strong { color: #b91c1c; }
+.confirm-text strong { color:  rgb(102, 192, 222); }
 .confirm-actions { display:flex; gap:8px; }
 
 /* View row: display fields */
@@ -422,7 +417,7 @@
 }
 .edit-row input:focus,
 .edit-row select:focus {
-  border-color: rgba(255, 66, 105, 0.75);
+  border-color:  rgb(102, 192, 222);
   box-shadow: 0 8px 18px rgba(234, 58, 90, 0.08);
 }
 
@@ -451,7 +446,7 @@ button {
 
 /* Edit */
 .btn-edit {
-  background: linear-gradient(90deg, #ff8fa2, #ff416c);
+  background: linear-gradient(90deg,  rgb(102, 192, 222), #1565ab);
   color: #fff;
   box-shadow: 0 10px 24px rgba(255, 65, 108, 0.12);
 }
@@ -459,7 +454,7 @@ button {
 
 /* Save */
 .btn-save {
-  background: linear-gradient(90deg, #ff5a7a, #ff2d55);
+  background: linear-gradient(90deg,  rgb(102, 192, 222), #1565ab);
   color: #fff;
   padding: 8px 14px;
   font-weight: 700;
@@ -478,7 +473,7 @@ button {
 
 /* Delete */
 .btn-delete {
-  background: linear-gradient(90deg, #ff9b4b, #ef4444);
+  background: linear-gradient(90deg,  rgb(102, 192, 222), #1565ab);
   color: #fff;
   padding: 8px 12px;
 }

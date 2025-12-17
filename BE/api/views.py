@@ -78,6 +78,16 @@ class OrganizacionCreateView(ListCreateAPIView):
 class NoticiasCreateView(ListCreateAPIView):
     queryset = Noticias.objects.all()
     serializer_class = NoticiasSerializer
+    # permission_classes = [IsAuthenticated]
+
+    # def create(self, request, *args, **kwargs):
+    #     if request.user.rol != 'admin':
+    #         return Response({"error": "Solo los administradores pueden crear noticias."}, status=status.HTTP_403_FORBIDDEN)
+    #     serializer = self.get_serializer(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     serializer.save(usuario=self.request.user)
+    #     headers = self.get_success_headers(serializer.data)
+    #     return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class UsuarioLoginView(APIView):
@@ -252,6 +262,20 @@ class EliminarCursoView(DestroyAPIView):
             return Response({"error": "Curso no encontrado."}, status=status.HTTP_404_NOT_FOUND)
 
 
+class EliminarInscripcionView(DestroyAPIView):
+    queryset = Inscripcion.objects.all()
+    serializer_class = InscripcionSerializer
+    lookup_field = "id"   # campo en el modelo
+
+    def delete(self, request, *args, **kwargs):
+        try:
+            inscripcion = self.get_object()
+            inscripcion.delete()
+            return Response({"mensaje": "Inscripción eliminada correctamente."}, status=status.HTTP_204_NO_CONTENT)
+        except Inscripcion.DoesNotExist:
+            return Response({"error": "Inscripción no encontrada."}, status=status.HTTP_404_NOT_FOUND)
+
+
 class CursoDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Curso.objects.all()
     serializer_class = UsuarioSerializer
@@ -260,3 +284,18 @@ class CursoDetailView(RetrieveUpdateDestroyAPIView):
 class CategoriaOpcionesCreateView(ListCreateAPIView):
     queryset = CategoriaOpciones.objects.all()
     serializer_class = CategoriaOpcionesSerializer
+
+
+class EliminarNoticiaView(DestroyAPIView):
+    queryset = Noticias.objects.all()
+    serializer_class = NoticiasSerializer
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, *args, **kwargs):
+        if request.user.rol != 'admin':
+            return Response({"error": "Solo los administradores pueden eliminar noticias."}, status=status.HTTP_403_FORBIDDEN)
+        return super().delete(request, *args, **kwargs)
+
+
+    
+    

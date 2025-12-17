@@ -7,7 +7,7 @@
     --color-primary: #2563eb;
     --color-primary-dark: #1e40af;
     --color-focus: #93c5fd;
-    --color-text: #2c2c2c;
+    --color-text: #1f2933;
     --color-muted: #6b7280;
     --radius-md: 8px;
     --shadow-sm: 0 2px 6px rgba(0,0,0,0.08);
@@ -27,7 +27,7 @@
 
 
 /* ================================
-   BOTONES DE FILTRO/ACCIÓN
+   BOTONES DE FILTRO / ACCIÓN
    ================================ */
 .botones-container {
     display: flex;
@@ -37,25 +37,66 @@
 }
 
 .botones-container button {
-    background-color: var(--color-primary);
-    color: #fff;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+    color: #ffffff;
     border: none;
-    padding: 0.7rem 1.2rem;
+    padding: 0.75rem 1.4rem;
     border-radius: var(--radius-md);
     cursor: pointer;
     font-weight: 600;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    transition: all 0.25s ease;
     box-shadow: var(--shadow-sm);
 }
 
 .botones-container button:hover {
-    background-color: var(--color-primary-dark);
     transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(37, 99, 235, 0.3);
 }
 
 .botones-container button:focus {
-    outline: 2px solid var(--color-focus);
-    outline-offset: 2px;
+    outline: none;
+    box-shadow: 0 0 0 3px var(--color-focus);
+}
+
+
+/* ================================
+   BUSCADOR DE CURSOS (MEJORADO Y MÁS CLARO)
+   ================================ */
+.buscador-cursos {
+    width: 100%;
+    max-width: 420px;
+    padding: 12px 16px;
+    margin: 20px auto 30px;
+    display: block;
+
+    background-color: #ffffff;        /* 🔹 MÁS CLARO */
+    border: 1px solid #d1d5db;        /* 🔹 Borde suave */
+    border-radius: var(--radius-md);
+
+    color: var(--color-text);
+    font-size: 15px;
+
+    outline: none;
+    transition: all 0.25s ease;
+    box-shadow: var(--shadow-sm);
+}
+
+/* Placeholder */
+.buscador-cursos::placeholder {
+    color: #9ca3af;
+}
+
+/* Hover */
+.buscador-cursos:hover {
+    border-color: #9ca3af;
+}
+
+/* Focus */
+.buscador-cursos:focus {
+    border-color: var(--color-primary);
+    background-color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+    color: var(--color-text);
 }
 
 
@@ -78,35 +119,4 @@
     color: var(--color-muted);
     margin-top: 2rem;
     font-style: italic;
-}
-.buscador-cursos {
-  width: 100%;
-  max-width: 420px;
-  padding: 10px 14px;
-  margin: 20px auto;
-  display: block;
-  background-color: #4b4d50;
-  border: 1px solid #000000 !important; /* 🔹 Borde oscuro */
-  color: rgb(153, 153, 153);
-  font-size: 15px;
-  outline: none;
-  transition: 0.2s ease;
-}
-
-/* Placeholder */
-.buscador-cursos::placeholder {
-  color: #000000;
-}
-
-/* Cuando pasas el mouse, el borde resalta más */
-.buscador-cursos:hover {
-  border-color: #676767;   /* 🔹 Todavía más oscuro */
-}
-
-/* Focus: borde más fuerte pero sin volverse blanco */
-.buscador-cursos:focus {
-  border-color: #000000; /* 🔹 Super oscuro y marcado */
-  background-color: #b6b6b7;
-  box-shadow: 0 0 6px rgba(211, 211, 211, 0.4); /* Sombra oscura */
-  color: rgb(0, 0, 0);
 }

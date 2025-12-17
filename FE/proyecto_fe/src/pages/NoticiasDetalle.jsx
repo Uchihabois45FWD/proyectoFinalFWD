@@ -3,8 +3,8 @@ import { useParams } from "react-router-dom";
 import { getData, postData } from "../services/fetch";
 
 import "../styles/noticiaDetalle.css";
-import Navbar from "../components/Global/Navbar";
 import Footer from "../components/Global/Footer";
+import Navbar from "../components/Global/Navbar";
 
 export default function NoticiasDetalle() {
     const { id } = useParams();
@@ -25,7 +25,7 @@ export default function NoticiasDetalle() {
     useEffect(() => {
         async function fetchNoticia() {
             try {
-                const noticias = await getData("crear-noticia/");
+                const noticias = await getData("noticias/");
                 if (Array.isArray(noticias)) {
                     const found = noticias.find((n) => Number(n.id) === noticiaId);
                     setNoticia(found || null);
@@ -121,7 +121,6 @@ export default function NoticiasDetalle() {
 
     return (
         <div className="noticia-detalle-layout">
-            <Navbar />
             <div className="noticia-detalle">
                 <h1 className="noticia-titulo">{noticia.titulo_noticia}</h1>
                 <p className="noticia-fecha">
