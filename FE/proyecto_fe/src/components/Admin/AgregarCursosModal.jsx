@@ -7,6 +7,7 @@ export default function AgregarCursosModal({
   onClose,
   onSubmit,
   initialData,
+  currentUser,
 }) {
   const [formData, setFormData] = useState({
     nombre: "",
@@ -22,15 +23,22 @@ export default function AgregarCursosModal({
     instructor: "",
   });
   const [usuarios,setUsuarios] = useState([])
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (initialData) setFormData(initialData);
-  }, [initialData]);
+    if (initialData) {
+      setFormData(initialData);
+    } else if (!loading && currentUser && currentUser.rol === 'instructor') {
+      setFormData(prev => ({ ...prev, instructor: currentUser.id }));
+    }
+  }, [initialData, currentUser, loading]);
 
   useEffect(()=>{
     const fetchUsuarios = async()=>{
       const data = await getData('crear-usuario/');
-      setUsuarios(data);
+      const instructores = data.filter(usuario => usuario.rol === 'instructor');
+      setUsuarios(instructores);
+      setLoading(false);
     }
     fetchUsuarios();
   },[])
@@ -42,6 +50,10 @@ export default function AgregarCursosModal({
 
   const submitForm = async(e) => {
     e.preventDefault();
+    if (!formData.instructor) {
+      alert('Por favor, selecciona un instructor.');
+      return;
+    }
     const guardarCurso = {
       nombre_curso: formData.nombre,
       descripcion_curso: formData.descripcion,
@@ -55,10 +67,16 @@ export default function AgregarCursosModal({
       certificado: formData.certificado,
       instructor: formData.instructor,
     }
-    const peticion = await postData('crear-curso/', guardarCurso);
-    console.log(peticion);
-    
-    onSubmit(formData);
+    try {
+      const peticion = await postData('crear-curso/', guardarCurso);
+      console.log(peticion);
+      onSubmit(formData);
+    } catch (error) {
+      console.error('Error creating course:', error);
+      alert('Error al crear el curso. Revisa la consola para más detalles.');
+      // Still call onSubmit to close the modal, but pass null or handle accordingly
+      onSubmit(null);
+    }
   };
 
   if (!isOpen) return null;
@@ -201,18 +219,22 @@ export default function AgregarCursosModal({
 
               <div className="col-span-2">
                 <label className="modal-label">Instructor</label>
-                <select
-                  className="modal-select"
-                  name="instructor"
-                  value={formData.instructor}
-                  onChange={handleChange}
-                >
-                  {usuarios.map((usuario) => (
-                    <option key={usuario.id} value={usuario.id}>
-                      {usuario.username}
-                    </option>
-                  ))}
-                </select>
+                {loading ? (
+                  <p>Loading instructors...</p>
+                ) : (
+                  <select
+                    className="modal-select"
+                    name="instructor"
+                    value={formData.instructor}
+                    onChange={handleChange}
+                  >
+                    {usuarios.map((usuario) => (
+                      <option key={usuario.id} value={usuario.id}>
+                        {usuario.username}
+                      </option>
+                    ))}
+                  </select>
+                )}
               </div>
 
             </div>

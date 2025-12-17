@@ -42,10 +42,11 @@ class UsuarioSerializer(serializers.ModelSerializer):
         if len(data["direccion"]) < 5:
             raise serializers.ValidationError(
                 {"direccion": "La dirección debe tener al menos 5 caracteres."})
-        if not data["first_name"].isalpha():
+        import re
+        if not re.match(r'^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+$', data["first_name"]):
             raise serializers.ValidationError(
                 {"first_name": "El nombre debe contener solo letras."})
-        if not data["last_name"].isalpha():
+        if not re.match(r'^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+$', data["last_name"]):
             raise serializers.ValidationError(
                 {"last_name": "El apellido debe contener solo letras."})
         if "@" not in data["email"] or "." not in data["email"]:
@@ -68,7 +69,14 @@ class CursoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Curso
-        fields = "__all__"
+        fields = [
+            'id', 'imagen_curso', 'nombre_curso', 'descripcion_curso', 'fecha_inicio_curso',
+            'fecha_fin_curso', 'instructor', 'destacado', 'limite_cupos', 'modalidad',
+            'primer_dia', 'ultimo_dia', 'certificado', 'nombre_instructor', 'apellido_instructor'
+        ]
+        extra_kwargs = {
+            'imagen_curso': {'required': False, 'allow_blank': True},
+        }
 
     def get_nombre_instructor(self, obj):
         try:
@@ -82,23 +90,42 @@ class CursoSerializer(serializers.ModelSerializer):
         except:
             return "Sin instructor"
 
+    def create(self, validated_data):
+        if not validated_data.get('imagen_curso'):
+            validated_data['imagen_curso'] = ""  # Default empty string
+        return super().create(validated_data)
+
     def validate(self, data):
+        initial_data = self.initial_data
         required_fields = ['nombre_curso', 'descripcion_curso', 'fecha_inicio_curso', 'fecha_fin_curso', 'instructor', 'limite_cupos', 'modalidad', 'primer_dia', 'ultimo_dia']
         for field in required_fields:
-            if not data.get(field):
+            if not initial_data.get(field):
                 raise serializers.ValidationError({field: f"El campo {field} es requerido."})
+        # Validate lengths
+        if len(initial_data['nombre_curso']) > 40:
+            raise serializers.ValidationError({"nombre_curso": "El nombre del curso no puede exceder 40 caracteres."})
+        if len(initial_data['descripcion_curso']) > 40:
+            raise serializers.ValidationError({"descripcion_curso": "La descripción del curso no puede exceder 40 caracteres."})
         # Check if instructor exists
+        instructor_input = initial_data['instructor']
         try:
-            instructor_id = int(data['instructor'])
-            Usuario.objects.get(id=instructor_id)
-            data['instructor'] = instructor_id
+            instructor_id = int(instructor_input)
+            instructor = Usuario.objects.get(id=instructor_id)
+        except (ValueError, TypeError):
+            if instructor_input is None or instructor_input == "":
+                raise serializers.ValidationError({"instructor": "Instructor inválido."})
+            try:
+                instructor = Usuario.objects.get(username=instructor_input)
+            except Usuario.DoesNotExist:
+                raise serializers.ValidationError({"instructor": "Instructor inválido."})
         except Usuario.DoesNotExist:
             raise serializers.ValidationError({"instructor": "Instructor no encontrado."})
-        except (ValueError, TypeError):
-            raise serializers.ValidationError({"instructor": "Instructor inválido."})
+        if instructor.rol != 'instructor':
+            raise serializers.ValidationError({"instructor": "El usuario seleccionado no tiene el rol de instructor."})
+        data['instructor'] = instructor
         # Validate limite_cupos
         try:
-            data['limite_cupos'] = int(data['limite_cupos'])
+            data['limite_cupos'] = int(initial_data['limite_cupos'])
         except (ValueError, TypeError):
             raise serializers.ValidationError({"limite_cupos": "Debe ser un número entero."})
         return data
@@ -119,9 +146,15 @@ class CategoriaSerializer(ModelSerializer):
 
 class EventoSerializer(ModelSerializer):
     usuario_nombre = serializers.CharField(source='organizador.username', read_only=True)
+    organizador_nombre = serializers.SerializerMethodField()
     class Meta:
         model = Evento
         fields = "__all__"
+
+    def get_organizador_nombre(self, obj):
+        if obj.organizador:
+            return f"{obj.organizador.first_name} {obj.organizador.last_name}".strip()
+        return "Sin organizador"
 
 class OrganizacionSerializer(ModelSerializer):
     class Meta:

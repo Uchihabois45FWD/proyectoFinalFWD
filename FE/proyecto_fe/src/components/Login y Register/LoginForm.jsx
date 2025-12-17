@@ -25,7 +25,7 @@ export default function LoginForm() {
       // 🔥 SIEMPRE usa localStorage
       const storage = localStorage;
 
-      storage.setItem("auth_token", data.access);
+      storage.setItem("auth_token", data.token);
 
       if (data?.id_usuario) storage.setItem("id_usuario", String(data.id_usuario));
       if (data?.user_id) storage.setItem("id_usuario", String(data.user_id));

@@ -11,6 +11,9 @@ async function postData(endpoint, obj) {
     });
     const data = await peticion.json();
     console.log(data);
+    if (!peticion.ok) {
+      throw new Error(JSON.stringify(data));
+    }
     return data;
   } catch (error) {
     console.error("Error en postData:", error);

@@ -64,7 +64,7 @@ const Eventos = () => {
                 fecha={evento.fecha}
                 hora={evento.hora}
                 lugar={evento.lugar}
-                organizador={evento.organizador?.first_name + " " + evento.organizador?.last_name}
+                organizador={evento.organizador_nombre || "Sin organizador"}
                 destacado={evento.destacado}
                 admin={rolUsuario}
                 onToggleDestacado={() =>

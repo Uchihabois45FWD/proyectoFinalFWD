@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import ListaUsuarios from "../components/Admin/ListaUsuarios.jsx";
 import ListaCursos from "../components/Admin/ListaCursos.jsx";
+import ListaCategorias from "../components/Admin/ListaCategorias.jsx";
 import { getData, patchData, deleteData, postData } from "../services/fetch";
 import "../styles/AdminDashboard.css";
 import AgregarCursosModal from "../components/Admin/AgregarCursosModal.jsx";
 import AgregarEventosModal from "../components/Admin/AgregarEventosModal.jsx";
+import AgregarCategoriaModal from "../components/Admin/AgregarCategoriaModal.jsx";
 import Navbar from "../components/Global/Navbar.jsx";
 import AgregarNoticiasModal from "../components/Admin/AgregarNoticiasModal.jsx";
 
@@ -29,7 +31,11 @@ const AdminDashboard = () => {
   const [verModalCurso, setVerModalCurso] = useState(false);
   const [verModalEventos, setVerModalEventos] = useState(false);
   const [verModalNoticias, setVerModalNoticias] = useState(false);
+  const [verModalCategoria, setVerModalCategoria] = useState(false);
   const [eventos, setEventos] = useState([]);
+  const [categorias, setCategorias] = useState([]);
+  const [loadingCategorias, setLoadingCategorias] = useState(true);
+  const [errorCategorias, setErrorCategorias] = useState(null);
 
   // Cargar usuarios
   useEffect(() => {
@@ -64,6 +70,20 @@ const AdminDashboard = () => {
         setErrorCourses("Error al cargar cursos");
       } finally {
         setLoadingCourses(false);
+      }
+    })();
+
+    // Cargar categorías
+    (async () => {
+      try {
+        setLoadingCategorias(true);
+        const res = await getData("crear-categoria");
+        const categoriaData = Array.isArray(res) ? res : [];
+        setCategorias(categoriaData);
+      } catch {
+        setErrorCategorias("Error al cargar categorías");
+      } finally {
+        setLoadingCategorias(false);
       }
     })();
   }, []);
@@ -114,6 +134,47 @@ const AdminDashboard = () => {
       setCourses(prev => prev.filter(c => String(idFromCourse(c)) !== String(id)));
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  // Guardar categoría
+  const handleSaveCategoria = async (id, formValues) => {
+    try {
+      const payload = { id: Number(id), ...formValues };
+      const res = await patchData(payload, `api/categoria/${id}`);
+
+      const updated = res?.categoria ?? { id: id, ...formValues };
+
+      setCategorias(prev =>
+        prev.map(c => (String(c.id) === String(id) ? { ...c, ...updated } : c))
+      );
+      return updated;
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  };
+
+  const handleDeleteCategoria = async (id) => {
+    try {
+      await deleteData(`api/categoria/${id}`);
+      setCategorias(prev => prev.filter(c => String(c.id) !== String(id)));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // Crear categoría
+  const handleCreateCategoria = async (formValues) => {
+    try {
+      const res = await postData("crear-categoria/", formValues);
+      const nuevaCategoria = res;
+      setCategorias(prev => [...prev, nuevaCategoria]);
+      setVerModalCategoria(false);
+      return nuevaCategoria;
+    } catch (err) {
+      console.error(err);
+      throw err;
     }
   };
 
@@ -223,6 +284,23 @@ const AdminDashboard = () => {
           </div>
         );
 
+      case "categorias":
+        return (
+          <div className="section-content">
+            <h2>Gestión de Categorías</h2>
+            {loadingCategorias ? (
+              <p>Cargando categorías...</p>
+            ) : (
+              <ListaCategorias
+                categorias={categorias}
+                onSaveCategoria={handleSaveCategoria}
+                onDeleteCategoria={handleDeleteCategoria}
+                onCreateCategoria={() => setVerModalCategoria(true)}
+              />
+            )}
+          </div>
+        );
+
       default:
         return (
           <div className="dashboard-content">
@@ -265,12 +343,15 @@ const AdminDashboard = () => {
             {/* Agregar Cursos */}
             <button className="sidebar-link" onClick={() => setVerModalNoticias(true)}>
               📰 Agregar noticias
+            <button>
+
+            </button>
+              className={`sidebar-link ${activeSection === "categorias" ? "active" : ""}`}
+              onClick={() => setActiveSection("categorias")}
+              🏷️ Gestión de Categorías
             </button>
 
-            {/* Agregar Eventos */}
-            <button className="sidebar-link" onClick={() => setVerModalEventos(true)}>
-              🎉 Agregar eventos
-            </button>
+
           </nav>
         </aside>
 
@@ -285,14 +366,11 @@ const AdminDashboard = () => {
         </main>
       </div>
 
-      {/* MODALES */}
-      <AgregarCursosModal
-        isOpen={verModalCurso}
-        onClose={() => setVerModalCurso(false)}
-        onSubmit={(newCourse) => {
-          setCourses(prev => [...prev, newCourse]);
-          setVerModalCurso(false);
-        }}
+      {/* Modales */}
+      <AgregarCategoriaModal
+        isOpen={verModalCategoria}
+        onClose={() => setVerModalCategoria(false)}
+        onSubmit={handleCreateCategoria}
       />
 
       <AgregarEventosModal

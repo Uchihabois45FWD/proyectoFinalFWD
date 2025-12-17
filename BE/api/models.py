@@ -83,11 +83,7 @@ class Evento(models.Model):
     fecha = models.DateField()
     hora = models.TimeField()
     lugar = models.CharField(max_length=100)
-    categoria = models.CharField(max_length=50, choices=[
-        ('charla', 'Charla'),
-        ('taller', 'Taller'),
-        ('conferencia', 'Conferencia')
-    ])
+    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
     cupos = models.IntegerField(default=0)
     imagen = models.URLField(blank=True, null=True)
     destacado = models.BooleanField(default=False)
