@@ -13,7 +13,8 @@ export default function AgregarEventosModal({ isOpen, onClose, onSubmit, initial
         categoria: "",
         organizador: "",
         cupos: "",
-        imagen: ""
+        imagen: "",
+        destacado: false
     });
 
     const [usuarios, setUsuarios] = useState([]);
@@ -45,8 +46,8 @@ export default function AgregarEventosModal({ isOpen, onClose, onSubmit, initial
     }, [initialData]);
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        const { name, value, type, checked } = e.target;
+        setFormData({ ...formData, [name]: type === 'checkbox' ? checked : value });
     };
 
     const submitForm = async (e) => {
@@ -177,6 +178,18 @@ export default function AgregarEventosModal({ isOpen, onClose, onSubmit, initial
                                 value={formData.imagen}
                                 onChange={handleChange}
                             />
+                        </div>
+
+                        <div className="campo campo-check">
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    name="destacado"
+                                    checked={formData.destacado}
+                                    onChange={handleChange}
+                                />
+                                Destacado
+                            </label>
                         </div>
 
                     </div>

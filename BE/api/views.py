@@ -64,6 +64,12 @@ class EventoCreateView(ListCreateAPIView):
     serializer_class = EventoSerializer
 
 
+class EventoDetailView(RetrieveUpdateDestroyAPIView):
+    permission_classes = [AllowAny]
+    queryset = Evento.objects.all()
+    serializer_class = EventoSerializer
+
+
 class OrganizacionCreateView(ListCreateAPIView):
     queryset = Organizacion.objects.all()
     serializer_class = OrganizacionSerializer

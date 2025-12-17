@@ -7,10 +7,12 @@ import NoticiasDestacadas from "../components/Inicio/NoticiasDestacadas"
 import { Link } from "react-router-dom"
 import Navbar from "../components/Global/Navbar"
 import WelcomeNotification from "../components/Global/WelcomeNotification"
+import EventosDestacados from "../components/Inicio/EventosDestacados"
 
 function PaginaInicio() {
     const [cursos, setCursos] = useState([])
     const [noticias, setNoticias] = useState([])
+    const [eventos, setEventos] = useState([])
     const [showWelcome, setShowWelcome] = useState(false)
     const [userName, setUserName] = useState("")
 
@@ -37,6 +39,17 @@ function PaginaInicio() {
             }
         }
 
+        async function traerEventos() {
+            try {
+                const peticion = await getData("crear-evento/")
+                const destacados = peticion.filter((evento) => evento.destacado === true)
+                setEventos(destacados)
+                console.log("Eventos:", peticion)
+            } catch (error) {
+                console.error("Error al traer eventos:", error)
+            }
+        }
+
         // Check if user just logged in
         const justLoggedIn = sessionStorage.getItem("justLoggedIn")
         if (justLoggedIn) {
@@ -48,6 +61,7 @@ function PaginaInicio() {
 
         traerCursos()
         traerNoticias()
+        traerEventos()
     }, [])
 
     const handleCloseWelcome = () => {
@@ -92,6 +106,23 @@ function PaginaInicio() {
                         descripcion={noticia.descripcion_noticia}
                         primer_dia={noticia.dia_de_notificacion}
                         dia_publicacion={noticia.dia_de_notificacion}
+                    />
+                    </Link>
+                ))}
+            </div>
+
+            <h3 className='titulo-eventos'>Eventos destacados</h3>
+            <div className="cont-eventos">
+                {eventos.map((evento) => (
+                    <Link key={evento.id} to={`/eventos/${evento.id}`}>
+                    <EventosDestacados
+                        key={evento.id}
+                        titulo={evento.titulo}
+                        descripcion={evento.descripcion}
+                        fecha={evento.fecha}
+                        hora={evento.hora}
+                        lugar={evento.lugar}
+                        organizador={evento.organizador_nombre}
                     />
                     </Link>
                 ))}

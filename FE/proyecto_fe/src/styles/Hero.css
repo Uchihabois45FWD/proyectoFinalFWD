@@ -74,7 +74,8 @@
    SECCIONES DE CURSOS Y NOTICIAS
    ================================ */
 .titulo-cursos,
-.titulo-noticias {
+.titulo-noticias,
+.titulo-eventos {
     text-align: center;
     color: var(--color-section-title);
     font-size: 1.4rem;
@@ -83,7 +84,8 @@
 }
 
 .cont-cursos,
-.cont-noticias {
+.cont-noticias,
+.cont-eventos {
     display: flex;
     gap: 20px;
     justify-content: center;
