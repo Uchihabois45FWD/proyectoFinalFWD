@@ -5,14 +5,13 @@ import "../styles/loginPage.css";
 const Inicio = () => {
   return (
     <div className="login-page">
-      <Navbar />
       <main className="login-container">
         <LoginForm />
       </main>
       <Footer />
     </div>
     
-    
+
   );
 };
 

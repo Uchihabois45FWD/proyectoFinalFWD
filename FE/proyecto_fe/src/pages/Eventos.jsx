@@ -46,10 +46,6 @@ const Eventos = () => {
           <button type="button" onClick={() => setView("destacados")}>
             Eventos destacados
           </button>
-
-          <button type="button" onClick={() => setView("explorar")}>
-            Explorar eventos
-          </button>
         </div>
 
         {filtrados.length === 0 ? (

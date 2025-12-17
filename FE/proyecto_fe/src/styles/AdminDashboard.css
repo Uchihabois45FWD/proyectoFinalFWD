@@ -4,8 +4,8 @@
 :root {
   --bg: #f9f9f9;
   --card-bg: #ffffff;
-  --hero-start: #ec6713;
-  --hero-end: #f7bc17;
+  --hero-start: rgb(138, 194, 212);
+  --hero-end: rgb(102, 192, 222);
   --muted:  rgb(102, 192, 222);
   --shadow: 0 8px 25px rgba(236, 103, 19, 0.08);
   --accent:  rgb(102, 192, 222);
@@ -13,7 +13,7 @@
   --danger: #1d1b21;
   --border:  rgb(102, 192, 222);
   --sidebar-bg: #1d1b21;
-  --sidebar-hover: #f7bc17;
+  --sidebar-hover: rgb(102, 192, 222);
   --text-primary: #000000;
   --text-secondary: #000000;
 }

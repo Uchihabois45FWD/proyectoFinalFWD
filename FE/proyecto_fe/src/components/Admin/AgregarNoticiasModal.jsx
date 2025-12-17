@@ -11,6 +11,7 @@ export default function AgregarNoticiasModal({
   const [formData, setFormData] = useState({
     titulo_noticia: "",
     descripcion_noticia: "",
+    imagen_noticia: "",
     destacado: false,
   });
 
@@ -27,15 +28,21 @@ export default function AgregarNoticiasModal({
     e.preventDefault();
 
     const guardarNoticia = {
+      imagen_noticia: formData.imagen_noticia,
       titulo_noticia: formData.titulo_noticia,
       descripcion_noticia: formData.descripcion_noticia,
       destacado: formData.destacado,
     };
 
-    const peticion = await postData("crear-noticia/", guardarNoticia);
-    console.log(peticion);
-
-    onSubmit(formData);
+    try {
+      const peticion = await postData("noticias/", guardarNoticia);
+      console.log(peticion);
+      alert("¡Noticia creada exitosamente!");
+      onSubmit(peticion);
+    } catch (error) {
+      console.error("Error creando noticia:", error);
+      alert("Error al crear la noticia. Por favor, inténtalo de nuevo.");
+    }
   };
 
   if (!isOpen) return null;
@@ -70,6 +77,17 @@ export default function AgregarNoticiasModal({
                   value={formData.descripcion_noticia}
                   onChange={handleChange}
                 ></textarea>
+              </div>
+
+              <div className="col-span-2">
+                <label className="modal-label">URL de la Imagen</label>
+                <input
+                  className="modal-input"
+                  name="imagen_noticia"
+                  value={formData.imagen_noticia}
+                  onChange={handleChange}
+                  placeholder="https://ejemplo.com/imagen.jpg"
+                />
               </div>
 
               <div className="switch-container">

@@ -28,7 +28,7 @@ function PaginaInicio() {
 
         async function traerNoticias() {
             try {
-                const peticion = await getData("crear-noticia/")
+                const peticion = await getData("noticias/")
                 const destacados = peticion.filter((noticia) => noticia.destacado === true)
                 setNoticias(destacados)
                 console.log("Noticias:", peticion)

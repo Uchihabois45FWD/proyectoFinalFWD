@@ -235,7 +235,6 @@ const AdminDashboard = () => {
 
   return (
     <div className="admin-layout">
-      <Navbar />
 
       <div className="admin-main">
         {/* Sidebar */}
