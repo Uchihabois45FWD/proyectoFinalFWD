@@ -1,15 +1,18 @@
-# TODO List for News System Implementation
+# TODO List for Event Details Fix
 
 ## Backend Changes
-- [x] Change URL from "crear-noticia/" to "noticias/" in urls.py
-- [x] Add EliminarNoticiaView in views.py with admin permission check
-- [x] Add URL for "noticias/<int:pk>/" in urls.py
-- [x] Modify NoticiasCreateView to require authentication and admin role for creation
+- [x] Update EventoSerializer to include nested serializers for organizador and categoria
+- [x] Ensure image field is properly serialized
 
 ## Frontend Changes
-- [x] Update AgregarNoticiasModal to post to "noticias/" and return created news on submit
-- [x] Add AgregarNoticiasModal to Noticias.jsx for admin users
-- [x] Update fetch URL in Noticias.jsx to "noticias/"
-- [x] Update delete URL in Noticias.jsx to "noticias/${id}/"
-- [x] Fix userRole check from "administrador" to "admin"
-- [x] Ensure state updates immediately after create/delete without page reload
+- [x] Add image display in EventosDetalle.jsx
+- [x] Verify organizer and category display
+
+## Testing
+- [x] Run backend server
+- [ ] Test event details page to confirm image, organizer, and category are displayed
+- [ ] Check for any console errors
+
+## Follow-up
+- [ ] If issues persist, debug API response
+- [ ] Ensure proper styling for the image

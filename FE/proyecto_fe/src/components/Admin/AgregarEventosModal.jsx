@@ -2,16 +2,20 @@ import { useState, useEffect } from "react";
 import "../../styles/EventoModal.css";
 import { getData, postData } from "../../services/fetch";
 
-export default function AgregarEventosModal({ isOpen, onClose, onSubmit, initialData }) {
-
+export default function AgregarEventosModal({
+    isOpen,
+    onClose,
+    onSubmit,
+    initialData
+}) {
     const [formData, setFormData] = useState({
         titulo: "",
         descripcion: "",
         fecha: "",
         hora: "",
         lugar: "",
-        categoria: "",
-        organizador: "",
+        categoria: null,
+        organizador: null,
         cupos: "",
         imagen: "",
         destacado: false
@@ -22,22 +26,33 @@ export default function AgregarEventosModal({ isOpen, onClose, onSubmit, initial
 
     useEffect(() => {
         if (initialData) {
-            const cleanedData = { ...initialData };
-            Object.keys(cleanedData).forEach(key => {
-                if (cleanedData[key] === null) {
-                    cleanedData[key] = "";
-                }
+            setFormData({
+                titulo: initialData.titulo ?? "",
+                descripcion: initialData.descripcion ?? "",
+                fecha: initialData.fecha ?? "",
+                hora: initialData.hora ?? "",
+                lugar: initialData.lugar ?? "",
+                categoria:
+                    initialData.categoria?.id ??
+                    initialData.categoria ??
+                    null,
+                organizador:
+                    initialData.organizador?.id ??
+                    initialData.organizador ??
+                    null,
+                cupos: initialData.cupos ?? "",
+                imagen: initialData.imagen ?? "",
+                destacado: Boolean(initialData.destacado)
             });
-            setFormData(cleanedData);
         }
 
         const fetchUsuarios = async () => {
-            const data = await getData('crear-usuario/');
+            const data = await getData("crear-usuario/");
             setUsuarios(data);
         };
 
         const fetchCategorias = async () => {
-            const data = await getData('crear-categoria/');
+            const data = await getData("crear-categoria/");
             setCategorias(data);
         };
 
@@ -47,22 +62,35 @@ export default function AgregarEventosModal({ isOpen, onClose, onSubmit, initial
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
-        setFormData({ ...formData, [name]: type === 'checkbox' ? checked : value });
+
+        setFormData(prev => ({
+            ...prev,
+            [name]:
+                type === "checkbox"
+                    ? checked
+                    : name === "categoria" || name === "organizador"
+                        ? value === "" ? null : Number(value)
+                        : value
+        }));
     };
 
     const submitForm = async (e) => {
         e.preventDefault();
+
+        if (!formData.categoria) {
+            alert("Seleccione una categoría");
+            return;
+        }
+
+        console.log("PAYLOAD FINAL 👉", formData);
+
         try {
-            const peticion = await postData('crear-evento/', formData);
-            console.log(peticion);
+            await postData("crear-evento/", formData);
             if (onSubmit) onSubmit(formData);
             onClose();
         } catch (error) {
-            console.error('Error creating event:', error);
-            alert('Error al crear el evento. Revisa la consola para más detalles.');
-            // Still call onSubmit to close the modal, but pass null or handle accordingly
-            if (onSubmit) onSubmit(null);
-            onClose();
+            console.error("Error creating event:", error);
+            alert("Error al crear el evento. Revisa la consola.");
         }
     };
 
@@ -79,7 +107,6 @@ export default function AgregarEventosModal({ isOpen, onClose, onSubmit, initial
 
                 <form onSubmit={submitForm} className="modal-form">
                     <div className="modal-scroll">
-
                         <div className="modal-grid">
 
                             <div className="campo campo-full">
@@ -97,7 +124,7 @@ export default function AgregarEventosModal({ isOpen, onClose, onSubmit, initial
                                     name="descripcion"
                                     value={formData.descripcion}
                                     onChange={handleChange}
-                                ></textarea>
+                                />
                             </div>
 
                             <div className="campo">
@@ -133,11 +160,11 @@ export default function AgregarEventosModal({ isOpen, onClose, onSubmit, initial
                                 <label>Categoría</label>
                                 <select
                                     name="categoria"
-                                    value={formData.categoria}
+                                    value={formData.categoria ?? ""}
                                     onChange={handleChange}
                                 >
                                     <option value="">Seleccione</option>
-                                    {categorias.map((cat) => (
+                                    {categorias.map(cat => (
                                         <option key={cat.id} value={cat.id}>
                                             {cat.nombre_categoria}
                                         </option>
@@ -149,11 +176,11 @@ export default function AgregarEventosModal({ isOpen, onClose, onSubmit, initial
                                 <label>Organizador</label>
                                 <select
                                     name="organizador"
-                                    value={formData.organizador}
+                                    value={formData.organizador ?? ""}
                                     onChange={handleChange}
                                 >
                                     <option value="">Seleccione</option>
-                                    {usuarios.map((user) => (
+                                    {usuarios.map(user => (
                                         <option key={user.id} value={user.id}>
                                             {user.username}
                                         </option>
@@ -193,11 +220,14 @@ export default function AgregarEventosModal({ isOpen, onClose, onSubmit, initial
                                 Destacado
                             </label>
                         </div>
-
                     </div>
 
                     <div className="modal-actions">
-                        <button type="button" className="btn-cancelar" onClick={onClose}>
+                        <button
+                            type="button"
+                            className="btn-cancelar"
+                            onClick={onClose}
+                        >
                             Cancelar
                         </button>
                         <button type="submit" className="btn-guardar">

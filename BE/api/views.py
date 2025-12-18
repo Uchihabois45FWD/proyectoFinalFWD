@@ -78,16 +78,6 @@ class OrganizacionCreateView(ListCreateAPIView):
 class NoticiasCreateView(ListCreateAPIView):
     queryset = Noticias.objects.all()
     serializer_class = NoticiasSerializer
-    # permission_classes = [IsAuthenticated]
-
-    # def create(self, request, *args, **kwargs):
-    #     if request.user.rol != 'admin':
-    #         return Response({"error": "Solo los administradores pueden crear noticias."}, status=status.HTTP_403_FORBIDDEN)
-    #     serializer = self.get_serializer(data=request.data)
-    #     serializer.is_valid(raise_exception=True)
-    #     serializer.save(usuario=self.request.user)
-    #     headers = self.get_success_headers(serializer.data)
-    #     return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class UsuarioLoginView(APIView):

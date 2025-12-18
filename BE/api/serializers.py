@@ -1,138 +1,62 @@
-from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
+from rest_framework.serializers import ModelSerializer
 from django.contrib.auth import authenticate
-from .models import Usuario
-from .models import Curso
-from .models import Inscripcion
-from .models import Categoria
-from .models import Evento
-from .models import Organizacion
-from .models import Noticias
-from .models import ComentariosCursos
-from .models import InscripcionCurso
-from .models import ComentariosNoticias
-from .models import CategoriaOpciones
+
+from .models import (
+    Usuario, Curso, Inscripcion, Categoria, Evento,
+    Organizacion, Noticias, ComentariosCursos,
+    InscripcionCurso, ComentariosNoticias, CategoriaOpciones
+)
 
 
-class UsuarioSerializer(serializers.ModelSerializer):
+class UsuarioSerializer(ModelSerializer):
     class Meta:
         model = Usuario
         fields = [
             "id", "username", "email", "first_name", "last_name", "password",
             "fecha_nacimiento", "direccion", "rol", "num_telefono", "imagen_perfil"
         ]
+        extra_kwargs = {"password": {"write_only": True}}
 
     def create(self, validated_data):
-        clave = validated_data.pop("password")
+        password = validated_data.pop("password")
         usuario = Usuario(**validated_data)
-        usuario.set_password(clave)
+        usuario.set_password(password)
         usuario.save()
         return usuario
 
     def validate(self, data):
         if len(data["password"]) < 6:
-            raise serializers.ValidationError(
-                {"password": "La contraseña debe tener al menos 6 caracteres."})
-        if not data["num_telefono"].isdigit():
-            raise serializers.ValidationError(
-                {"num_telefono": "El número de teléfono debe contener solo dígitos."})
-        if len(data["num_telefono"]) != 8:
-            raise serializers.ValidationError(
-                {"num_telefono": "El número de teléfono debe tener exactamente 8 dígitos."})
+            raise serializers.ValidationError({"password": "Mínimo 6 caracteres."})
+        if not data["num_telefono"].isdigit() or len(data["num_telefono"]) != 8:
+            raise serializers.ValidationError({"num_telefono": "Debe tener 8 dígitos."})
         if len(data["direccion"]) < 5:
-            raise serializers.ValidationError(
-                {"direccion": "La dirección debe tener al menos 5 caracteres."})
+            raise serializers.ValidationError({"direccion": "Dirección muy corta."})
         import re
         if not re.match(r'^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+$', data["first_name"]):
-            raise serializers.ValidationError(
-                {"first_name": "El nombre debe contener solo letras."})
+            raise serializers.ValidationError({"first_name": "Solo letras."})
         if not re.match(r'^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+$', data["last_name"]):
-            raise serializers.ValidationError(
-                {"last_name": "El apellido debe contener solo letras."})
-        if "@" not in data["email"] or "." not in data["email"]:
-            raise serializers.ValidationError(
-                {"email": "El correo electrónico no es válido."})
+            raise serializers.ValidationError({"last_name": "Solo letras."})
+        if "@" not in data["email"]:
+            raise serializers.ValidationError({"email": "Correo inválido."})
         return data
 
-    def to_representation(self, instance):
-        rep = super().to_representation(instance)
-        if instance.imagen_perfil:
-            rep["imagen_perfil"] = instance.imagen_perfil.url
-        else:
-            rep["imagen_perfil"] = None
-        return rep
 
+class CursoSerializer(ModelSerializer):
+    nombre_instructor = serializers.CharField(source="instructor.first_name", read_only=True)
+    apellido_instructor = serializers.CharField(source="instructor.last_name", read_only=True)
 
-class CursoSerializer(serializers.ModelSerializer):
-    nombre_instructor = serializers.SerializerMethodField()
-    apellido_instructor = serializers.SerializerMethodField()
+    instructor = serializers.PrimaryKeyRelatedField(
+        queryset=Usuario.objects.filter(rol="instructor")
+    )
 
     class Meta:
         model = Curso
-        fields = [
-            'id', 'imagen_curso', 'nombre_curso', 'descripcion_curso', 'fecha_inicio_curso',
-            'fecha_fin_curso', 'instructor', 'destacado', 'limite_cupos', 'modalidad',
-            'primer_dia', 'ultimo_dia', 'certificado', 'nombre_instructor', 'apellido_instructor'
-        ]
-        extra_kwargs = {
-            'imagen_curso': {'required': False, 'allow_blank': True},
-        }
-
-    def get_nombre_instructor(self, obj):
-        try:
-            return obj.instructor.first_name if obj.instructor else "Sin instructor"
-        except:
-            return "Sin instructor"
-
-    def get_apellido_instructor(self, obj):
-        try:
-            return obj.instructor.last_name if obj.instructor else "Sin instructor"
-        except:
-            return "Sin instructor"
-
-    def create(self, validated_data):
-        if not validated_data.get('imagen_curso'):
-            validated_data['imagen_curso'] = ""  
-        return super().create(validated_data)
-
-    def validate(self, data):
-        initial_data = self.initial_data
-        required_fields = ['nombre_curso', 'descripcion_curso', 'fecha_inicio_curso', 'fecha_fin_curso', 'instructor', 'limite_cupos', 'modalidad', 'primer_dia', 'ultimo_dia']
-        for field in required_fields:
-            if not initial_data.get(field):
-                raise serializers.ValidationError({field: f"El campo {field} es requerido."})
-        # Validar longitudes
-        if len(initial_data['nombre_curso']) > 40:
-            raise serializers.ValidationError({"nombre_curso": "El nombre del curso no puede exceder 40 caracteres."})
-        if len(initial_data['descripcion_curso']) > 40:
-            raise serializers.ValidationError({"descripcion_curso": "La descripción del curso no puede exceder 40 caracteres."})
-        # Verificar si el instructor existe
-        instructor_input = initial_data['instructor']
-        try:
-            instructor_id = int(instructor_input)
-            instructor = Usuario.objects.get(id=instructor_id)
-        except (ValueError, TypeError):
-            if instructor_input is None or instructor_input == "":
-                raise serializers.ValidationError({"instructor": "Instructor inválido."})
-            try:
-                instructor = Usuario.objects.get(username=instructor_input)
-            except Usuario.DoesNotExist:
-                raise serializers.ValidationError({"instructor": "Instructor inválido."})
-        except Usuario.DoesNotExist:
-            raise serializers.ValidationError({"instructor": "Instructor no encontrado."})
-        if instructor.rol != 'instructor':
-            raise serializers.ValidationError({"instructor": "El usuario seleccionado no tiene el rol de instructor."})
-        data['instructor'] = instructor
-        # Validar limite_cupos
-        try:
-            data['limite_cupos'] = int(initial_data['limite_cupos'])
-        except (ValueError, TypeError):
-            raise serializers.ValidationError({"limite_cupos": "Debe ser un número entero."})
-        return data
+        fields = "__all__"
 
 
 class InscripcionSerializer(ModelSerializer):
-    nombre_curso = serializers.CharField(source='curso.nombre_curso', read_only=True)
+    nombre_curso = serializers.CharField(source="curso.nombre_curso", read_only=True)
 
     class Meta:
         model = Inscripcion
@@ -144,9 +68,20 @@ class CategoriaSerializer(ModelSerializer):
         model = Categoria
         fields = "__all__"
 
+
 class EventoSerializer(ModelSerializer):
-    usuario_nombre = serializers.CharField(source='organizador.username', read_only=True)
+    usuario_nombre = serializers.CharField(source="organizador.username", read_only=True)
     organizador_nombre = serializers.SerializerMethodField()
+
+    categoria = serializers.PrimaryKeyRelatedField(
+        queryset=Categoria.objects.all()
+    )
+
+    organizador = serializers.PrimaryKeyRelatedField(
+        queryset=Usuario.objects.filter(rol="organizador"),
+        allow_null=True
+    )
+
     class Meta:
         model = Evento
         fields = "__all__"
@@ -155,6 +90,7 @@ class EventoSerializer(ModelSerializer):
         if obj.organizador:
             return f"{obj.organizador.first_name} {obj.organizador.last_name}".strip()
         return "Sin organizador"
+
 
 class OrganizacionSerializer(ModelSerializer):
     class Meta:
@@ -170,18 +106,13 @@ class NoticiasSerializer(ModelSerializer):
 
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
-    password = serializers.CharField()
+    password = serializers.CharField(write_only=True)
 
     def validate(self, data):
-        username = data.get("username")
-        password = data.get("password")
-        if not username or not password:
-            raise serializers.ValidationError(
-                "Debes ingresar usuario y contraseña.")
-        if len(password) < 6:
-            raise serializers.ValidationError(
-                {"password": "La contraseña debe tener al menos 6 caracteres."})
-        user = authenticate(username=username, password=password)
+        user = authenticate(
+            username=data.get("username"),
+            password=data.get("password")
+        )
         if not user:
             raise serializers.ValidationError("Credenciales inválidas.")
         data["user"] = user
@@ -195,17 +126,21 @@ class ComentariosCursosSerializer(ModelSerializer):
 
 
 class InscripcionCursoSerializer(ModelSerializer):
-    nombre_curso = serializers.CharField(source='curso.nombre_curso', read_only=True)
+    nombre_curso = serializers.CharField(source="curso.nombre_curso", read_only=True)
+
     class Meta:
         model = InscripcionCurso
         fields = "__all__"
 
+
 class ComentariosNoticiasSerializer(ModelSerializer):
-    usuario_nombre = serializers.CharField(source='usuario.username', read_only=True)
+    usuario_nombre = serializers.CharField(source="usuario.username", read_only=True)
+
     class Meta:
         model = ComentariosNoticias
-        fields = ["id", "noticia", "usuario", "usuario_nombre", "contenido_comentario", "fecha_comentario"]
-        
+        fields = "__all__"
+
+
 class CategoriaOpcionesSerializer(ModelSerializer):
     class Meta:
         model = CategoriaOpciones

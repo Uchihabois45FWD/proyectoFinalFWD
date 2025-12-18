@@ -89,7 +89,7 @@ class Evento(models.Model):
     lugar = models.CharField(max_length=100)
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
     cupos = models.IntegerField(default=0)
-    imagen = models.URLField(blank=True, null=True)
+    imagen = models.TextField(blank=True, null=True)
     destacado = models.BooleanField(default=False)
     organizador = models.ForeignKey(
         Usuario, on_delete=models.CASCADE, related_name="eventos_organizados", null=True, blank=True

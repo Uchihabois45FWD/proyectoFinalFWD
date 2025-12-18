@@ -45,6 +45,7 @@ function PaginaInicio() {
                 const destacados = peticion.filter((evento) => evento.destacado === true)
                 setEventos(destacados)
                 console.log("Eventos:", peticion)
+                console.log("Eventos destacados:", destacados)
             } catch (error) {
                 console.error("Error al traer eventos:", error)
             }
@@ -110,7 +111,7 @@ function PaginaInicio() {
                 ))}
             </div>
 
-            <h3 className='titulo-eventos'>Eventos destacados</h3>
+            <h3 className='titulo-eventos'>Eventos Destecados</h3>
             <div className="cont-eventos">
                 {eventos.map((evento) => (
                     <Link key={evento.id} to={`/eventos/${evento.id}`}>
