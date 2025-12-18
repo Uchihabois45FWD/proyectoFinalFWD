@@ -8,6 +8,6 @@ urlpatterns = [
     path('api/', include("api.urls")),
 ]
 
-# Serve media files during development
+# Servir archivos multimedia durante el desarrollo
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

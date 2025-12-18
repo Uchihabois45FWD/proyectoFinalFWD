@@ -50,7 +50,7 @@ function PaginaInicio() {
             }
         }
 
-        // Check if user just logged in
+        // Verificar si el usuario acaba de iniciar sesión
         const justLoggedIn = sessionStorage.getItem("justLoggedIn")
         if (justLoggedIn) {
             const name = localStorage.getItem("user_name") || localStorage.getItem("username") || "Usuario"

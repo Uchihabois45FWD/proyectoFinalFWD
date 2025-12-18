@@ -108,7 +108,10 @@
     font-size: 1.4rem;
     font-weight: 600;
     margin-bottom: 1.5rem;
-    width: 100%;
+    background: #ffffff;
+    width: fit-content;
+    position: relative;
+    left: 650px;
 }
 
 

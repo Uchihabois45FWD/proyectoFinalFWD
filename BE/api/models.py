@@ -4,17 +4,21 @@ from django.conf import settings
 
 
 class Usuario(AbstractUser):
+    """
+    Modelo de usuario personalizado que extiende AbstractUser de Django.
+    Agrega campos adicionales para información del perfil de usuario.
+    """
     ROL_OPCIONES = (
         ("instructor", "Instructor"),
         ("usuario", "Usuario"),
         ("administrador", "Administrador"),
         ("organizador", "Organizador")
     )
-    fecha_nacimiento = models.DateField()
-    num_telefono = models.CharField(max_length=20)
-    direccion = models.TextField()
-    rol = models.CharField(choices=ROL_OPCIONES, max_length=25)
-    imagen_perfil = models.ImageField(upload_to="imagenes_perfil/", blank=True, null=True)
+    fecha_nacimiento = models.DateField()  # Fecha de nacimiento del usuario
+    num_telefono = models.CharField(max_length=20)  # Número de teléfono del usuario
+    direccion = models.TextField()  # Dirección del usuario
+    rol = models.CharField(choices=ROL_OPCIONES, max_length=25)  # Rol del usuario en el sistema
+    imagen_perfil = models.ImageField(upload_to="imagenes_perfil/", blank=True, null=True)  # Imagen de perfil
 
 class Categoria(models.Model):
     nombre_categoria = models.CharField(max_length=50)

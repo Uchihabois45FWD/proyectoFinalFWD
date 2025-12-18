@@ -2,21 +2,32 @@ import React, { useEffect, useState } from 'react';
 import '../../styles/WelcomeNotification.css';
 
 const WelcomeNotification = ({ userName, onClose }) => {
+  // Estado para controlar la visibilidad de la notificación
   const [isVisible, setIsVisible] = useState(true);
+  // Estado para activar la animación de desaparición
+  const [isDisappearing, setIsDisappearing] = useState(false);
 
   useEffect(() => {
-    // Auto-hide after 5 seconds
+    // Ocultar automáticamente después de 5 segundos con animación de deslizamiento
     const timer = setTimeout(() => {
-      setIsVisible(false);
-      onClose();
-    }, 5000);
+      setIsDisappearing(true);
+      // Esperar a que la animación se complete antes de ocultar
+      setTimeout(() => {
+        setIsVisible(false);
+        onClose();
+      }, 500); // Animation duration
+    }, 5000); // Display duration
 
     return () => clearTimeout(timer);
   }, [onClose]);
 
   const handleClose = () => {
-    setIsVisible(false);
-    onClose();
+    // Activar la animación de desaparición cuando se hace clic en el botón de cerrar
+    setIsDisappearing(true);
+    setTimeout(() => {
+      setIsVisible(false);
+      onClose();
+    }, 500); // Animation duration
   };
 
   if (!isVisible) return null;

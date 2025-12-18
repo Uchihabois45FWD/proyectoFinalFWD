@@ -100,6 +100,7 @@ export default function ListaUsuarios({ users = [], onSaveUser, onDeleteUser }) 
                       <option value="usuario">Usuario</option>
                       <option value="instructor">Instructor</option>
                       <option value="administrador">Administrador</option>
+                      <option value="organizador">Organizador</option>
                     </select>
                     <div className="actions">
                       <button onClick={saveEdit} disabled={savingId === uid} className="btn-save">

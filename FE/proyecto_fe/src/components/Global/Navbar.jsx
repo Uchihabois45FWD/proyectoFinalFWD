@@ -10,7 +10,7 @@ const Navbar = () => {
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
-  // Function to format user role for display
+  // Función para formatear el rol del usuario para mostrar
   const formatUserRole = (role) => {
     if (!role) return "";
     switch (role.toLowerCase()) {
@@ -25,7 +25,7 @@ const Navbar = () => {
     }
   };
 
-    // Get current user from localStorage
+    // Obtener el usuario actual desde localStorage
     const currentUser = {
       name: localStorage.getItem("user_name") || localStorage.getItem("username") || "Administrador",
       role: localStorage.getItem("user_role") || "administrador"
@@ -33,7 +33,7 @@ const Navbar = () => {
 
   useEffect(() => {
     const checkLoginStatus = () => {
-      // Check both localStorage and sessionStorage for login data
+    // Verificar tanto localStorage como sessionStorage para datos de inicio de sesión
       const role = localStorage.getItem("user_role") || sessionStorage.getItem("user_role");
       const name = localStorage.getItem("user_name") || sessionStorage.getItem("user_name") || localStorage.getItem("username");
       const token = localStorage.getItem("auth_token") || sessionStorage.getItem("auth_token") || localStorage.getItem("access_token") || sessionStorage.getItem("access_token");
@@ -49,10 +49,10 @@ const Navbar = () => {
       }
     };
 
-    // Check initially
+    // Verificar inicialmente
     checkLoginStatus();
 
-    // Listen for storage changes (in case of login/logout in same tab)
+    // Escuchar cambios de almacenamiento (en caso de inicio de sesión/cerrar sesión en la misma pestaña)
     const handleStorageChange = (e) => {
       if (e.key === "user_role" || e.key === "auth_token" || e.key === "access_token") {
         checkLoginStatus();
@@ -61,7 +61,7 @@ const Navbar = () => {
 
     window.addEventListener("storage", handleStorageChange);
 
-    // Also check periodically (for same-tab changes)
+    // También verificar periódicamente (para cambios en la misma pestaña)
     const interval = setInterval(checkLoginStatus, 1000);
 
     return () => {
@@ -70,7 +70,7 @@ const Navbar = () => {
     };
   }, []);
 
-  // Handle clicks outside sidebar to close it
+  // Manejar clics fuera de la barra lateral para cerrarla
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -106,7 +106,7 @@ const Navbar = () => {
       );
     }
 
-    // Common links for all logged-in users
+    // Enlaces comunes para todos los usuarios conectados
     const commonLinks = (
       <>
         <Link to="/inicio" className="nav">Inicio</Link>

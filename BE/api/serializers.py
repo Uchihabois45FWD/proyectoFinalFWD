@@ -92,7 +92,7 @@ class CursoSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         if not validated_data.get('imagen_curso'):
-            validated_data['imagen_curso'] = ""  # Default empty string
+            validated_data['imagen_curso'] = ""  
         return super().create(validated_data)
 
     def validate(self, data):
@@ -101,12 +101,12 @@ class CursoSerializer(serializers.ModelSerializer):
         for field in required_fields:
             if not initial_data.get(field):
                 raise serializers.ValidationError({field: f"El campo {field} es requerido."})
-        # Validate lengths
+        # Validar longitudes
         if len(initial_data['nombre_curso']) > 40:
             raise serializers.ValidationError({"nombre_curso": "El nombre del curso no puede exceder 40 caracteres."})
         if len(initial_data['descripcion_curso']) > 40:
             raise serializers.ValidationError({"descripcion_curso": "La descripción del curso no puede exceder 40 caracteres."})
-        # Check if instructor exists
+        # Verificar si el instructor existe
         instructor_input = initial_data['instructor']
         try:
             instructor_id = int(instructor_input)
@@ -123,7 +123,7 @@ class CursoSerializer(serializers.ModelSerializer):
         if instructor.rol != 'instructor':
             raise serializers.ValidationError({"instructor": "El usuario seleccionado no tiene el rol de instructor."})
         data['instructor'] = instructor
-        # Validate limite_cupos
+        # Validar limite_cupos
         try:
             data['limite_cupos'] = int(initial_data['limite_cupos'])
         except (ValueError, TypeError):

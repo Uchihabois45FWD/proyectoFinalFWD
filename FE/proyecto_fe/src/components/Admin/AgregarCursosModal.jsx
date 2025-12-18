@@ -72,9 +72,9 @@ export default function AgregarCursosModal({
       console.log(peticion);
       onSubmit(formData);
     } catch (error) {
-      console.error('Error creating course:', error);
+      console.error('Error al crear el curso:', error);
       alert('Error al crear el curso. Revisa la consola para más detalles.');
-      // Still call onSubmit to close the modal, but pass null or handle accordingly
+      // Aún llamar a onSubmit para cerrar el modal, pero pasar null o manejar en consecuencia
       onSubmit(null);
     }
   };
