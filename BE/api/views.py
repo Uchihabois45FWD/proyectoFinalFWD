@@ -8,6 +8,7 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.serializers import ValidationError
 from .serializers import (
     UsuarioSerializer,
     CursoSerializer,
@@ -33,14 +34,17 @@ class CursoCreateView(ListCreateAPIView):
     queryset = Curso.objects.all()
     serializer_class = CursoSerializer
 
-    def create(self, request, *args, **kwargs):
+    def create(self, request):
         try:
-            return super().create(request, *args, **kwargs)
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        except ValidationError as ve:
+            return Response({"error": "Validation error", "details": ve.detail}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            print(f"Error creating course: {e}")
-            import traceback
-            traceback.print_exc()
-            return Response({"error": "Internal server error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({"error": "Internal server error", "details": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class InscripcionCreateView(ListCreateAPIView):

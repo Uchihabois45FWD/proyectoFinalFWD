@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, ValidationError
 from django.contrib.auth import authenticate
 
 from .models import (
@@ -54,6 +54,35 @@ class CursoSerializer(ModelSerializer):
         model = Curso
         fields = "__all__"
 
+    def validate_limite_cupos(self, value):
+        if value <= 0:
+            raise ValidationError("El límite de cupos debe ser mayor a 0.")
+        return value
+
+    def validate_fecha_inicio_curso(self, value):
+        from datetime import date
+        if value < date.today():
+            raise ValidationError("La fecha de inicio no puede ser anterior a hoy.")
+        return value
+
+    def validate_fecha_fin_curso(self, value):
+        from datetime import date
+        fecha_inicio_str = self.initial_data.get('fecha_inicio_curso')
+        if fecha_inicio_str:
+            try:
+                fecha_inicio = date.fromisoformat(fecha_inicio_str)
+                if value <= fecha_inicio:
+                    raise ValidationError("La fecha de fin debe ser posterior a la fecha de inicio.")
+            except ValueError:
+                raise ValidationError("Formato de fecha de inicio inválido.")
+        return value
+
+    def create(self, validated_data):
+        # Ensure imagen_curso has a default value if not provided
+        if 'imagen_curso' not in validated_data or validated_data['imagen_curso'] is None:
+            validated_data['imagen_curso'] = ""
+        return super().create(validated_data)
+
 
 class InscripcionSerializer(ModelSerializer):
     nombre_curso = serializers.CharField(source="curso.nombre_curso", read_only=True)
@@ -72,6 +101,7 @@ class CategoriaSerializer(ModelSerializer):
 class EventoSerializer(ModelSerializer):
     usuario_nombre = serializers.CharField(source="organizador.username", read_only=True)
     organizador_nombre = serializers.SerializerMethodField()
+    id_evento = serializers.IntegerField(source='id', read_only=True)
 
     categoria = serializers.PrimaryKeyRelatedField(
         queryset=Categoria.objects.all()
